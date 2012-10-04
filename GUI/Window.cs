@@ -389,9 +389,11 @@ namespace MCForge.Gui {
         }
 
         private void Window_FormClosing(object sender, FormClosingEventArgs e) {
-
-            if ( Server.shuttingDown == true || MessageBox.Show("Really Shutdown the Server? All Connections will break!", "Exit", MessageBoxButtons.OKCancel) == DialogResult.OK ) {
-                if ( !Server.shuttingDown ) {
+            if (e.CloseReason == CloseReason.WindowsShutDown) {
+                MCForge_.Gui.Program.ExitProgram(false);
+            }
+            if (Server.shuttingDown || MessageBox.Show("Really Shutdown the Server? All Connections will break!", "Exit", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                if (!Server.shuttingDown) {
                     MCForge_.Gui.Program.ExitProgram(false);
                 }
             }
