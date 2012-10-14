@@ -28,7 +28,7 @@ namespace MCForge {
 		}
 		
 		public bool Persistance {
-			get { return false; }
+			get { return true; }
 		}
 
 		public string Prepare() {
@@ -58,7 +58,5 @@ namespace MCForge {
 				}
 			}
 		}
-
-
 	}
 }

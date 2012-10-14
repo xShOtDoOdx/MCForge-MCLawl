@@ -1,3 +1,14 @@
+v5.5.0.4
+-New:
+  N/A
+-Fixes:
+  -Fixed Heartbeater only beating once
+  -Fixed MCForge heartbeater
+-Changes:
+  N/A
+-Removals:
+  N/A
+
 v5.5.0.3
 -New:
   -Ability to turn off omnibans
@@ -36,12 +47,15 @@ v5.5.0.0
 -Added a Global Chat Control Panel for Global Chat Moderators and MCForge Developers.
 	-Allows for muting of individual players on a server. 
 	-Provides the ability to prevent a single user from ever using Global Chat. 
--Added support for  WoM Textures. Once you enable WoM Textures, it will open up an option on the Maps tab in console. You can 
+-Added support for  WoM Textures. Once you enable WoM Textures, it will open up an option on the Maps tab in console. You can 
+
 also configure it in extra/cfg/<mapname>.cfg. 
 -Fixed an issue where a player's title and color would not be reset properly upon leaving a game of TNTWars.
--Fixed an issue with the reference .dll file where the .dll was being falsely registered as a Trojan by most Anti-Virus 
+-Fixed an issue with the reference .dll file where the .dll was being falsely registered as a Trojan by most Anti-Virus 
+
 softwares. 
--Fixed an exploit in commands blocks where people would put in commands like /ban or /setrank and convinced an op/admin to walk 
+-Fixed an exploit in commands blocks where people would put in commands like /ban or /setrank and convinced an op/admin to walk 
+
 through them. You can no longer use sensitive admin commands (like setrank, ban, kick, etc...) in Message Blocks.
 -Fixed numerous small memory leaks and bugs. 
 -Fixed CLI on Windows.
@@ -85,9 +99,11 @@ v5.4.0.0
 	- /copyloadnet - Loads a copy from a network location.
 	- /copysavenet - Saves a copy to a network location. 
 	- /descend - Teleports you to the first free space below you.
-	- /opstats [player] [today]|[yesterday]|[thismonth]|[lastmonth]|[all] - Displays information about operator command 
+	- /opstats [player] [today]|[yesterday]|[thismonth]|[lastmonth]|[all] - Displays information about operator command 
+
 usage.
-	- /quick [function] [block] [type] - Cuboids the selected function instantly. Available functions: cuboid, pyramid, 
+	- /quick [function] [block] [type] - Cuboids the selected function instantly. Available functions: cuboid, pyramid, 
+
 replace, replaceall, replacenot, spheroid. 
 	- /tntwars (shortcut /tw):
 	- /tw list - Lists all current games.
@@ -96,7 +112,8 @@ replace, replaceall, replacenot, spheroid.
 	- /tw scores <top/team/me> - view the top score/team scores/your scores.
 	- /tw players - view current players in your game.
 	- /tw health - view your current health level.
-	- /tw rules - View TNTWars rules. (You can also send these to the map, all players in a TNTWars game, or a single 
+	- /tw rules - View TNTWars rules. (You can also send these to the map, all players in a TNTWars game, or a single 
+
 player)
 	- /tw setup - Sets up the TNT War game (For more info use /tntwars setup help).
 	- /translate - Shows whether translation is enabled or disabled.
@@ -131,7 +148,8 @@ player)
 - Made it so the CLI Console can now use adminchat, opchat, and whisper chat.
 - Made some changes to /votekick to make it function better.
 - Made it so people can now whisper to hidden players of equal or higher rank. 
-- Modified /tp so it is now /tp <player1> [player2]. Player2 is an optional parameter and will move player one to player two if 
+- Modified /tp so it is now /tp <player1> [player2]. Player2 is an optional parameter and will move player one to player two if 
+
 specified. 
 - Re-added shortcut /m for /repeat (Due to complaints.)
 - Removed /zombiespawn due to it being able to crash servers.
@@ -155,7 +173,8 @@ v5.3.0.0
 - Fixed the update checker so it only updates if there actually is an update.
 - Fixed the program crashing after every update
 - Fixed /xban not working at all if the player is offline.
-- Fixed a bug in /ban that allowed a player to ban someone ranked higher than them if the player being banned was below rank 
+- Fixed a bug in /ban that allowed a player to ban someone ranked higher than them if the player being banned was below rank 
+
 permission 80. 
 - Fixed Port Checker.
 - Fixed fireworks leaving blocks behind
@@ -172,7 +191,8 @@ permission 80.
 - Added some default position settings for Lava Survival.
 - Added a shortcut /fz for /freeze.
 - Added new, better CTF and removed the old one. It's pretty much ready to go right out-of-the-box, just type /ctf.
-- Added a lives system to Lava Survival, so players actually have to worry about killer lava/water. You can set the number of 
+- Added a lives system to Lava Survival, so players actually have to worry about killer lava/water. You can set the number of 
+
 lives in the properties.
 - Added Global Chat to the chat tab in the GUI.
 - Added color codes to IRC.
@@ -205,7 +225,8 @@ lives in the properties.
 - Disabled color codes in Global Chat, it's just too risky with the exploits.
 - Waypoints are now saved
 - Hard-Coded command permissions are now editable (GUI and a seperate .properties file)
-- Revamped Zombie Survival Mode, more friendly to servers that want to run it on certain levels, freebuild + zombie servers, 
+- Revamped Zombie Survival Mode, more friendly to servers that want to run it on certain levels, freebuild + zombie servers, 
+
 etc.
 
 v5.2.0.0
@@ -233,7 +254,8 @@ v5.2.0.0
 - Fixed the duplicate "death count" option in the GUI.
 - Added global chat, which allows you to chat with other servers! Can be disabled in the properties.
 - Added /copy [save|load|delete|list], and you can load from a URL by appending a # to the end.
-- Added a per-rank undo limit and ditched the old hard-coded limits. It's in seconds, and the limit only applies to undoing 
+- Added a per-rank undo limit and ditched the old hard-coded limits. It's in seconds, and the limit only applies to undoing 
+
 other players.
 - Added Plugin.Events.CancelEvent().
 - Added tree growing! Use /map growtrees to turn it on, place a sapling and wait a while. Requires physics.
@@ -252,7 +274,8 @@ other players.
 	- /garbage - Runs the .NET garbage collector, which frees up memory. You shouldn't need to use this often.
 	- /lavasurvival or /ls - Setup and use Lava Survival.
 - Added blocks:
-	- griefer_stone - The ultimate anti-griefer block! There are several options for it, such as what it looks like in-game. 
+	- griefer_stone - The ultimate anti-griefer block! There are several options for it, such as what it looks like in-game. 
+
 Defaults to Op+ to place/destroy.
 	- lava_sponge - Like normal sponge, but cleans up lava instead of water. Defaults to AdvBuilder+ to place/destroy.
 	- op_lava - Like op_glass, op_water, ect. Defaults to Op+ to place/destroy.
@@ -266,7 +289,8 @@ Defaults to Op+ to place/destroy.
 - Made it so you can now have different prices for ranks in the Economy.
 - Made it so plugins are loaded last, this fixes a problem with accessing levels in plugins.
 - Made changes to some events (Might break old plugins).
-- Made it so /players now has an option to not show ranks that have no one ranked as them online, and you can see only players 
+- Made it so /players now has an option to not show ranks that have no one ranked as them online, and you can see only players 
+
 of a certain rank with /players [rank].
 
 v5.1.0.3
@@ -281,7 +305,8 @@ v5.1.0.1
 - Hopefully fixed the error-when-a-new-person-joins bug...
 - Fixed the check for updates option
 - Fixed AFK kick!!
-- Added load-on-/goto option for maps, defaults to on and requires the "Load on /goto" server option enabled to work. Disabling 
+- Added load-on-/goto option for maps, defaults to on and requires the "Load on /goto" server option enabled to work. Disabling 
+
 the option on a map will prevent it from being loaded with /goto
 - Added Zombie Survival mode! :D Use /zombiegame to start it, there are several other commands as well
 
@@ -300,7 +325,8 @@ v5.1.0.0
 - New /whois stat(Cuboided blocks) - Shows how many blocks a player has cuboided.
 - Added: /quick [Function] [Block] [Type] - Instantly complete a cuboid.
 	- Functions include: cuboid, pyramid, replace, replaceall, replacenot and spheroid.
-- Removed: /silentcuboid - No longer required, integrated into cuboid in necessary times. Text files are also no longer required 
+- Removed: /silentcuboid - No longer required, integrated into cuboid in necessary times. Text files are also no longer required 
+
 for /pyramid
 - Added: /report [Player] [Reason] - Reports a player for the specified reason.
 [For OPs] - /report check - Shows the reported list.
@@ -329,7 +355,8 @@ v5.0.0.0
 - Added /draw [Shape] [Height] [Radius] -  can create cones, spheres, and pyramids, hollow spheres, and hollow pyramids. 
 - Added /allowguns [Map] -  Allows or disallows gun usage on a specified level.
 - Added a part to /whois that shows the total time a player has spent on a server.
-- Reverted to old CLI Interface due to an issue where the server would lock up when the console used an invalid command. You no 
+- Reverted to old CLI Interface due to an issue where the server would lock up when the console used an invalid command. You no 
+
 longer need to put a "/" infront of commands, for now.
 - Remade the Economy system. Now consolidated into 1 command '/economy' and 1 properties file.
 - /kill now works in the console.
@@ -349,7 +376,8 @@ longer need to put a "/" infront of commands, for now.
     - Note: Passwords are encrypted, but still do not set this as your minecraft password!
 - Made it so player's of lower rank cannot /fetch those of higher rank.
 - MySQL Details can now be edited in the properties.
-- Text files such as autoload, awardslist, badwords, cmdautoload, custom$s, emotelist, joker, messages, player awards, rules and 
+- Text files such as autoload, awardslist, badwords, cmdautoload, custom$s, emotelist, joker, messages, player awards, rules and 
+
 welcome can now be editing in the GUI Properties.
 - Added Box in console to set the server owner, this is used in some commands.
 - Visual Basic Support for Scripting and Add-on in the Console Properties
@@ -408,14 +436,16 @@ v4.8.0.0
 v4.7.0.0
 - Added new game: Countdown
 -Added /splace - Measures a set [distance] and places a stone block at each end. Made by Woldoc, originally named /set.
--Added /chain - Inspired by the StormCom command of the same name, /chain sends a "chain" of brown mushrooms. Upon coming into 
+-Added /chain - Inspired by the StormCom command of the same name, /chain sends a "chain" of brown mushrooms. Upon coming into 
+
 contact with a block other than air or a level's side wall, it will pull that block back to the start of the chain. 
 - Added color code information to /help.
 - Fixed issue where Player.cs doesn't check for all private network IPs starting with 172 (GitHub issue #2)
 - Hopefully fixed issue where certain color codes could sometimes crash the client (GitHub issue #21)
 - Updater should no longer crash when updating (Github issue #3)
 - /zz no longer shows an error when using "/zz blockname" (Github issue #7)
-- Player, Level, and Server now use an ExtrasCollection member named "Extras" to help manage extra data needed by custom 
+- Player, Level, and Server now use an ExtrasCollection member named "Extras" to help manage extra data needed by custom 
+
 commands
 - Custom $ replacements are now possible via file text/custom$s.txt
 - Fixed /fixgrass light not converting shaded grass to dirt.
@@ -465,7 +495,8 @@ v4.3.0.0
 - Fixed issue where errors caused early in server startup weren't being logged correctly and crashing the server.
 - Added a "public IDictionary<string, string> Extras" to Player and Level objects
   - Allows command devs to store extra temporary data
-  - Devs will responsible for managing this data and not overwriting other commands' data (mostly because I'm too lazy to 
+  - Devs will responsible for managing this data and not overwriting other commands' data (mostly because I'm too lazy to 
+
 partition it - it'll be fine :P)
 - Changed web references to our new domain: mcforge.net
 
@@ -510,7 +541,8 @@ v4.1.0.0
   - /votekick - Calls a 30 second vote to kick a player
 - Updated commands
   - /overseer
-    - Fixed /os zone - it wasn't working before.  Downside is that player can't delete a single zone, its all or nothing (for 
+    - Fixed /os zone - it wasn't working before.  Downside is that player can't delete a single zone, its all or nothing (for 
+
 now)
 	- Added ability for player to have max of 2 maps
 	- Added /os map physics
