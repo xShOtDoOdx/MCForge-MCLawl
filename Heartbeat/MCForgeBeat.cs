@@ -44,6 +44,7 @@ namespace MCForge {
                 IEnumerable<string> worlds = from l in Server.levels select l.name;
                 Parameters += "&worlds=" + String.Join(", ", worlds.ToArray());
             }
+            Parameters += "&hash=" + Server.Hash;
 
             return Parameters;
         }

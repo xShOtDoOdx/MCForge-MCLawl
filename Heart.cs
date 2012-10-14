@@ -62,7 +62,7 @@ namespace MCForge {
 #if DEBUG
                 6000, 6000
 #else
-                600000, 600000
+                45000, 45000
 #endif
                 );
             })).Start();
