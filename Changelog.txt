@@ -1,3 +1,15 @@
+v5.5.0.5
+-New:
+  N/A
+-Fixes:
+  -Fixed Physics bug
+  -Fixed Messageblock bug
+  -Fixed Title bug
+-Changes:
+  -Updated dev list
+-Removals:
+  N/A
+
 v5.5.0.4
 -New:
   N/A
