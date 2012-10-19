@@ -87,10 +87,17 @@ namespace MCForge.Commands {
 				Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was given the title of &b[" + newTitle + "]", false);
 			else Player.GlobalChat(who, who.color + who.prefix + who.name + Server.DefaultColor + " had their title removed.", false);
 
-			if ( !Regex.IsMatch(newTitle.ToLower(), @"^[a-z0-9]*?$") ) {
-				Player.SendMessage(p, "That is not allowed");
-				return;
-			}
+			if ( !Regex.IsMatch(cpos.message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
+            	if (Regex.IsMatch(cpos.message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
+            		Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
+            		MatchCollection mc = rg.Matches(cpos.message.ToLower());
+            		if (mc.Count > 0) {
+            			Match ma = mc[0];
+            			GroupCollection gc = ma.Groups;
+            			cpos.message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
+            		}          		
+            	}
+            }
 
 			if ( newTitle == "" ) {
 				query = "UPDATE Players SET Title = '' WHERE Name = '" + who.name + "'";

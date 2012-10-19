@@ -1496,6 +1496,7 @@ namespace MCForge
                 if (ListCheck.Count == 0 || physicssate)
                     return;
                 physThread = new Thread(Physics);
+                PhysicsEnabled = true;
                 physThread.Start();
                 physicssate = true;
             }
