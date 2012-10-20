@@ -45,7 +45,7 @@ namespace MCForge.Commands {
                 }
                 if (who.@group.Permission >= p.@group.Permission){
                     Player.GlobalChat(p,
-                                      p.color + p.name + Server.DefaultColor + " tried to kick " + who.color + who.name +
+                                      p.color + p.name + Server.DefaultColor + " tried to kick " + Server.DefaultColor + who.color + who.name +
                                       " but failed.",
                                       false);
                     return;
