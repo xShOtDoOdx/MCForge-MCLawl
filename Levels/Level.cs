@@ -51,7 +51,7 @@ namespace MCForge
     }
     public enum PhysicsState
     {
-        Stopped, 
+        Stopped,
         Warning,
         Other
     }
@@ -82,10 +82,10 @@ namespace MCForge
         private readonly List<Update> ListUpdate = new List<Update>(); //A list of block to change after calculation
 
         private readonly Dictionary<int, sbyte> leaves = new Dictionary<int, sbyte>();
-                                                // Holds block state for leaf decay
+        // Holds block state for leaf decay
 
         private readonly Dictionary<int, bool[]> liquids = new Dictionary<int, bool[]>();
-                                                 // Holds random flow data for liqiud physics
+        // Holds random flow data for liqiud physics
         bool physicssate = false;
         public bool Death;
         public ExtrasCollection Extras = new ExtrasCollection();
@@ -129,7 +129,7 @@ namespace MCForge
         public LevelPermission perbuildmax = LevelPermission.Nobody;
 
         public LevelPermission permissionbuild = LevelPermission.Builder;
-                               // What ranks can go to this map (excludes banned)
+        // What ranks can go to this map (excludes banned)
 
         public LevelPermission permissionvisit = LevelPermission.Guest;
         public LevelPermission pervisitmax = LevelPermission.Nobody;
@@ -192,10 +192,10 @@ namespace MCForge
             }
 
             name = n;
-            blocks = new byte[width*depth*height];
+            blocks = new byte[width * depth * height];
             ZoneList = new List<Zone>();
 
-            var half = (ushort) (depth/2);
+            var half = (ushort)(depth / 2);
             switch (type)
             {
                 case "flat":
@@ -234,7 +234,7 @@ namespace MCForge
                         for (z = 0; z < height; ++z)
                             for (y = 0; y < depth; ++y)
                                 if (y == 0 || y == depth - 1 || x == 0 || x == width - 1 || z == 0 || z == height - 1)
-                                    SetTile(x, y, z, (byte) random.Next(21, 36));
+                                    SetTile(x, y, z, (byte)random.Next(21, 36));
 
                     break;
 
@@ -255,7 +255,7 @@ namespace MCForge
                                     {
                                         for (int i = 1; i < (depth - y); ++i)
                                         {
-                                            SetTile(x, (ushort) (depth - i), z, Block.lava);
+                                            SetTile(x, (ushort)(depth - i), z, Block.lava);
                                         }
                                     }
                                 }
@@ -270,11 +270,11 @@ namespace MCForge
                     Server.MapGen.GenerateMap(this, type, seed, useSeed);
                     break;
 
-                    //no need for default
+                //no need for default
             }
-            spawnx = (ushort) (width/2);
-            spawny = (ushort) (depth*0.75f);
-            spawnz = (ushort) (height/2);
+            spawnx = (ushort)(width / 2);
+            spawny = (ushort)(depth * 0.75f);
+            spawnz = (ushort)(height / 2);
             rotx = 0;
             roty = 0;
             textures = new LevelTextures(this);
@@ -324,7 +324,7 @@ namespace MCForge
 
         public void CopyBlocks(byte[] source, int offset)
         {
-            blocks = new byte[width*depth*height];
+            blocks = new byte[width * depth * height];
             Array.Copy(source, offset, blocks, 0, blocks.Length);
 
             for (int i = 0; i < blocks.Length; i++)
@@ -367,6 +367,7 @@ namespace MCForge
 
             if (changed && (!Server.ZombieModeOn || !Server.noLevelSaving))
             {
+                ClearPhysics();
                 if ((!Server.lava.active || !Server.lava.HasMap(name)) && save) Save();
                 saveChanges();
             }
@@ -381,24 +382,24 @@ namespace MCForge
                     TntWarsGame.SetTitlesAndColor(pl, true);
                 }
                 Server.s.Log("TNT Wars: Game deleted on " + name);
-                TntWarsGame.GameList.Remove(TntWarsGame.Find(this)); 
-                
+                TntWarsGame.GameList.Remove(TntWarsGame.Find(this));
+
             }
-            
+
             Server.levels.Remove(this);
-            
+
             try
             {
                 //physChecker.Stop();
                 //physChecker.Dispose();
                 physThread.Abort();
                 physThread.Join();
-                
+
             }
             catch
             {
             }
-           
+
             finally
             {
                 Dispose();
@@ -427,8 +428,8 @@ namespace MCForge
                 {
                     int deleted = bP.deleted ? 1 : 0;
                     transaction.Execute(String.Format(template, bP.name,
-                                                      bP.TimePerformed.ToString("yyyy-MM-dd HH:mm:ss"), (int) bP.x,
-                                                      (int) bP.y, (int) bP.z, bP.type, deleted));
+                                                      bP.TimePerformed.ToString("yyyy-MM-dd HH:mm:ss"), (int)bP.x,
+                                                      (int)bP.y, (int)bP.z, bP.type, deleted));
                 }
                 transaction.Commit();
             }
@@ -495,7 +496,7 @@ namespace MCForge
         public void Blockchange(Player p, ushort x, ushort y, ushort z, byte type, bool addaction = true)
         {
             string errorLocation = "start";
-            retry:
+        retry:
             try
             {
                 if (x < 0 || y < 0 || z < 0) return;
@@ -795,7 +796,7 @@ namespace MCForge
             try
             {
                 if (!overRide)
-                    if (Block.OPBlocks(bb) || Block.OPBlocks(type)) return;
+                    if (Block.OPBlocks(bb) || (Block.OPBlocks(type) && extraInfo != "")) return;
 
                 if (Block.Convert(bb) != Block.Convert(type))
                     //Should save bandwidth sending identical looking blocks, like air/op_air changes.
@@ -846,7 +847,7 @@ namespace MCForge
             }
         }
         public void Blockchange(ushort x, ushort y, ushort z, byte type, bool overRide = false, string extraInfo = "")
-            //Block change made by physics
+        //Block change made by physics
         {
             if (x < 0 || y < 0 || z < 0) return;
             if (x >= width || y >= depth || z >= height) return;
@@ -855,7 +856,7 @@ namespace MCForge
             try
             {
                 if (!overRide)
-                    if (Block.OPBlocks(b) || Block.OPBlocks(type)) return;
+                    if (Block.OPBlocks(b) || (Block.OPBlocks(type) && extraInfo != "")) return;
 
                 if (Block.Convert(b) != Block.Convert(type))
                     //Should save bandwidth sending identical looking blocks, like air/op_air changes.
@@ -1161,7 +1162,7 @@ namespace MCForge
 
                         rot[0] = header[12];
                         rot[1] = header[13];
-                        
+
                         //level.permissionvisit = (LevelPermission)header[14];
                         //level.permissionbuild = (LevelPermission)header[15];
                     }
@@ -1183,7 +1184,7 @@ namespace MCForge
 
                     var level = new Level(givenName, vars[0], vars[2], vars[1], "empty")
                                     {
-                                        permissionbuild = (LevelPermission) 30,
+                                        permissionbuild = (LevelPermission)30,
                                         spawnx = vars[3],
                                         spawnz = vars[4],
                                         spawny = vars[5],
@@ -1195,7 +1196,7 @@ namespace MCForge
 
                     level.setPhysics(phys);
 
-                    var blocks = new byte[level.width*level.height*level.depth];
+                    var blocks = new byte[level.width * level.height * level.depth];
                     gs.Read(blocks, 0, blocks.Length);
                     level.blocks = blocks;
                     gs.Close();
@@ -1219,9 +1220,9 @@ namespace MCForge
                         }
                     }
 
-                    level.jailx = (ushort) (level.spawnx*32);
-                    level.jaily = (ushort) (level.spawny*32);
-                    level.jailz = (ushort) (level.spawnz*32);
+                    level.jailx = (ushort)(level.spawnx * 32);
+                    level.jaily = (ushort)(level.spawny * 32);
+                    level.jailz = (ushort)(level.spawnz * 32);
                     level.jailrotx = level.rotx;
                     level.jailroty = level.roty;
                     level.StartPhysics();
@@ -1472,7 +1473,7 @@ namespace MCForge
         }
 
         public void setPhysics(int newValue)
-        {   
+        {
             if (physics == 0 && newValue != 0 && blocks != null)
             {
                 for (int i = 0; i < blocks.Length; i++)
@@ -1508,7 +1509,7 @@ namespace MCForge
         /// <value>
         ///   <c>true</c> if physics are enabled; otherwise, <c>false</c>.
         /// </value>
-        public bool PhysicsEnabled {get; set;}
+        public bool PhysicsEnabled { get; set; }
 
         public void Physics()
         {
@@ -1516,7 +1517,8 @@ namespace MCForge
             while (true)
             {
 
-                if ( !PhysicsEnabled ) {
+                if (!PhysicsEnabled)
+                {
                     Thread.Sleep(500);
                     continue;
                 }
@@ -1537,9 +1539,9 @@ namespace MCForge
                     if (physics > 0) CalcPhysics();
 
                     TimeSpan Took = DateTime.Now - Start;
-                    wait = speedPhysics - (int) Took.TotalMilliseconds;
+                    wait = speedPhysics - (int)Took.TotalMilliseconds;
 
-                    if (wait < (int) (-overload*0.75f))
+                    if (wait < (int)(-overload * 0.75f))
                     {
                         Level Cause = this;
 
@@ -1581,22 +1583,22 @@ namespace MCForge
         {
             if (x < 0 || x >= width || y < 0 || y >= depth || z < 0 || z >= height)
                 return -1;
-            return x + (z*width) + (y*width*height);
+            return x + (z * width) + (y * width * height);
             //alternate method: (h * widthY + y) * widthX + x;
         }
 
         public void IntToPos(int pos, out ushort x, out ushort y, out ushort z)
         {
-            y = (ushort) (pos/width/height);
-            pos -= y*width*height;
-            z = (ushort) (pos/width);
-            pos -= z*width;
-            x = (ushort) pos;
+            y = (ushort)(pos / width / height);
+            pos -= y * width * height;
+            z = (ushort)(pos / width);
+            pos -= z * width;
+            x = (ushort)pos;
         }
 
         public int IntOffset(int pos, int x, int y, int z)
         {
-            return pos + x + z*width + y*width*height;
+            return pos + x + z * width + y * width * height;
         }
 
         public static LevelPermission PermissionFromName(string name)
@@ -1608,7 +1610,7 @@ namespace MCForge
         public static string PermissionToName(LevelPermission perm)
         {
             Group foundGroup = Group.findPerm(perm);
-            return foundGroup != null ? foundGroup.name : ((int) perm).ToString();
+            return foundGroup != null ? foundGroup.name : ((int)perm).ToString();
         }
 
         public List<Player> getPlayers()
@@ -1654,7 +1656,7 @@ namespace MCForge
                                                   {
                                                       PhysicsUpdate(x, y, z, C.time, C.extraInfo, this);
                                                   }
-                                                  newPhysic:
+                                              newPhysic:
                                                   if (foundInfo != "")
                                                   {
                                                       int currentLoop = 0;
@@ -1667,7 +1669,7 @@ namespace MCForge
 
                                                       foreach (string s in C.extraInfo.Split(' '))
                                                       {
-                                                          if (currentLoop%2 == 0)
+                                                          if (currentLoop % 2 == 0)
                                                           {
                                                               //Type of code
                                                               switch (s)
@@ -1686,7 +1688,7 @@ namespace MCForge
                                                           currentLoop++;
                                                       }
 
-                                                      startCheck:
+                                                  startCheck:
                                                       if (wait)
                                                       {
                                                           int storedInt = 0;
@@ -1758,23 +1760,23 @@ namespace MCForge
                                                       switch (blocks[C.b])
                                                       {
                                                           case Block.door_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door2_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door3_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door4_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door5_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door6_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door7_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door8_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door10_air:
-                                                              //door_air         Change any door blocks nearby into door_air
+                                                          //door_air         Change any door blocks nearby into door_air
                                                           case Block.door12_air:
                                                           case Block.door13_air:
                                                           case Block.door_iron_air:
@@ -1898,7 +1900,7 @@ namespace MCForge
                                                   if (PhysicsUpdate != null)
                                                       PhysicsUpdate(x, y, z, C.time, C.extraInfo, this);
                                                   OnPhysicsUpdateEvent.Call(x, y, z, C.time, C.extraInfo, this);
-                                                  newPhysic:
+                                              newPhysic:
                                                   if (foundInfo != "")
                                                   {
                                                       int currentLoop = 0;
@@ -1922,7 +1924,7 @@ namespace MCForge
 
                                                       foreach (string s in C.extraInfo.Split(' '))
                                                       {
-                                                          if (currentLoop%2 == 0)
+                                                          if (currentLoop % 2 == 0)
                                                           {
                                                               //Type of code
                                                               switch (s)
@@ -1948,7 +1950,7 @@ namespace MCForge
                                                                   case "revert":
                                                                       revert = true;
                                                                       reverttype =
-                                                                          Byte.Parse(
+                                                                          byte.Parse(
                                                                               C.extraInfo.Split(' ')[currentLoop + 1]);
                                                                       break;
                                                                   case "explode":
@@ -1977,7 +1979,7 @@ namespace MCForge
                                                           currentLoop++;
                                                       }
 
-                                                      startCheck:
+                                                  startCheck:
                                                       if (wait)
                                                       {
                                                           int storedInt = 0;
@@ -2103,16 +2105,16 @@ namespace MCForge
                                                               }
                                                           if (drop)
                                                               if (rand.Next(1, 100) <= dropnum)
-                                                                  if (GetTile(x, (ushort) (y - 1), z) == Block.air ||
-                                                                      GetTile(x, (ushort) (y - 1), z) == Block.lava ||
-                                                                      GetTile(x, (ushort) (y - 1), z) == Block.water)
+                                                                  if (GetTile(x, (ushort)(y - 1), z) == Block.air ||
+                                                                      GetTile(x, (ushort)(y - 1), z) == Block.lava ||
+                                                                      GetTile(x, (ushort)(y - 1), z) == Block.water)
                                                                   {
                                                                       if (rand.Next(1, 100) <
                                                                           int.Parse(C.extraInfo.Split(' ')[1]))
                                                                       {
                                                                           if (
                                                                               AddUpdate(
-                                                                                  PosToInt(x, (ushort) (y - 1), z),
+                                                                                  PosToInt(x, (ushort)(y - 1), z),
                                                                                   blocks[C.b], false, C.extraInfo))
                                                                           {
                                                                               AddUpdate(C.b, Block.air);
@@ -3581,16 +3583,14 @@ namespace MCForge
                                                                           if (
                                                                               GetTile((ushort)(x + cx),
                                                                                       (ushort)(y + cy - 1),
-                                                                                      (ushort)(z + cz)) ==
-                                                                              Block.op_air &&
+                                                                                      (ushort)(z + cz)) == Block.op_air &&
                                                                               (GetTile((ushort)(x + cx),
                                                                                        (ushort)(y + cy),
-                                                                                       (ushort)(z + cz)) ==
-                                                                               Block.air ||
+                                                                                       (ushort)(z + cz)) == Block.air ||
                                                                                GetTile((ushort)(x + cx),
                                                                                        (ushort)(y + cy),
-                                                                                       (ushort)(z + cz)) ==
-                                                                               Block.water) && !InnerChange)
+                                                                                       (ushort)(z + cz)) == Block.water) &&
+                                                                              !InnerChange)
                                                                           {
                                                                               AddUpdate(
                                                                                   PosToInt((ushort)(x + cx),
@@ -3602,6 +3602,7 @@ namespace MCForge
                                                                                         Block.glass, true,
                                                                                         "wait 5 revert " +
                                                                                         Block.op_air.ToString());
+
                                                                               InnerChange = true;
                                                                               break;
                                                                           }
@@ -5276,14 +5277,14 @@ namespace MCForge
                 {
                     ushort x, y, z;
                     IntToPos(b, out x, out y, out z);
-                    AddCheck(b, extraInfo); //Dont need to check physics here....AddCheck will do that
-                    Blockchange(x, y, z, (byte) type, true);
+                    AddCheck(b, extraInfo, true); //Dont need to check physics here....AddCheck will do that
+                    Blockchange(x, y, z, (byte)type, true, extraInfo);
                     return true;
                 }
 
                 if (!ListUpdate.Exists(Update => Update.b == b))
                 {
-                    ListUpdate.Add(new Update(b, (byte) type, extraInfo));
+                    ListUpdate.Add(new Update(b, (byte)type, extraInfo));
                     if (!physicssate && physics > 0)
                         StartPhysics();
                     return true;
@@ -5293,7 +5294,7 @@ namespace MCForge
                     if (type == 12 || type == 13)
                     {
                         ListUpdate.RemoveAll(Update => Update.b == b);
-                        ListUpdate.Add(new Update(b, (byte) type, extraInfo));
+                        ListUpdate.Add(new Update(b, (byte)type, extraInfo));
                         if (!physicssate && physics > 0)
                             StartPhysics();
                         return true;
@@ -5351,7 +5352,7 @@ namespace MCForge
                                               {
                                                   if (s == "revert")
                                                   {
-                                                      Blockchange(x, y, z, Byte.Parse(C.extraInfo.Split(' ')[i + 1]));
+                                                      Blockchange(x, y, z, Byte.Parse(C.extraInfo.Split(' ')[i + 1]), true);
                                                       break;
                                                   }
                                                   i++;
@@ -5626,8 +5627,8 @@ namespace MCForge
 
             switch (blocks[b])
             {
-                    //case 8:     //active water
-                    //case 10:    //active_lava
+                //case 8:     //active water
+                //case 10:    //active_lava
                 case 6: //shrub
                 case 12: //sand
                 case 13: //gravel
@@ -5871,25 +5872,25 @@ namespace MCForge
             byte b;
             if (!random)
             {
-                b = GetTile((ushort) (x + 1), y, z);
-                if (b == Block.air || b == Block.waterstill) Blockchange((ushort) (x + 1), y, z, newBlock);
-                b = GetTile((ushort) (x - 1), y, z);
-                if (b == Block.air || b == Block.waterstill) Blockchange((ushort) (x - 1), y, z, newBlock);
-                b = GetTile(x, y, (ushort) (z + 1));
-                if (b == Block.air || b == Block.waterstill) Blockchange(x, y, (ushort) (z + 1), newBlock);
-                b = GetTile(x, y, (ushort) (z - 1));
-                if (b == Block.air || b == Block.waterstill) Blockchange(x, y, (ushort) (z - 1), newBlock);
+                b = GetTile((ushort)(x + 1), y, z);
+                if (b == Block.air || b == Block.waterstill) Blockchange((ushort)(x + 1), y, z, newBlock);
+                b = GetTile((ushort)(x - 1), y, z);
+                if (b == Block.air || b == Block.waterstill) Blockchange((ushort)(x - 1), y, z, newBlock);
+                b = GetTile(x, y, (ushort)(z + 1));
+                if (b == Block.air || b == Block.waterstill) Blockchange(x, y, (ushort)(z + 1), newBlock);
+                b = GetTile(x, y, (ushort)(z - 1));
+                if (b == Block.air || b == Block.waterstill) Blockchange(x, y, (ushort)(z - 1), newBlock);
             }
             else
             {
-                if (GetTile((ushort) (x + 1), y, z) == Block.air && randNum.Next(1, 10) < 3)
-                    Blockchange((ushort) (x + 1), y, z, newBlock);
-                if (GetTile((ushort) (x - 1), y, z) == Block.air && randNum.Next(1, 10) < 3)
-                    Blockchange((ushort) (x - 1), y, z, newBlock);
-                if (GetTile(x, y, (ushort) (z + 1)) == Block.air && randNum.Next(1, 10) < 3)
-                    Blockchange(x, y, (ushort) (z + 1), newBlock);
-                if (GetTile(x, y, (ushort) (z - 1)) == Block.air && randNum.Next(1, 10) < 3)
-                    Blockchange(x, y, (ushort) (z - 1), newBlock);
+                if (GetTile((ushort)(x + 1), y, z) == Block.air && randNum.Next(1, 10) < 3)
+                    Blockchange((ushort)(x + 1), y, z, newBlock);
+                if (GetTile((ushort)(x - 1), y, z) == Block.air && randNum.Next(1, 10) < 3)
+                    Blockchange((ushort)(x - 1), y, z, newBlock);
+                if (GetTile(x, y, (ushort)(z + 1)) == Block.air && randNum.Next(1, 10) < 3)
+                    Blockchange(x, y, (ushort)(z + 1), newBlock);
+                if (GetTile(x, y, (ushort)(z - 1)) == Block.air && randNum.Next(1, 10) < 3)
+                    Blockchange(x, y, (ushort)(z - 1), newBlock);
             }
         }
 
@@ -5920,13 +5921,13 @@ namespace MCForge
                 {
                     for (zz = -dist; zz <= dist; zz++)
                     {
-                        type = GetTile((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz));
+                        type = GetTile((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz));
                         if (type == Block.trunk)
-                            leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz))] = 0;
+                            leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz))] = 0;
                         else if (type == Block.leaf)
-                            leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz))] = -2;
+                            leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz))] = -2;
                         else
-                            leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz))] = -1;
+                            leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz))] = -1;
                     }
                 }
             }
@@ -5941,55 +5942,55 @@ namespace MCForge
                         {
                             try
                             {
-                                if (leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz))] == i - 1)
+                                if (leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz))] == i - 1)
                                 {
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx - 1), (ushort) (y + yy),
-                                                                    (ushort) (z + zz))) &&
-                                        leaves[PosToInt((ushort) (x + xx - 1), (ushort) (y + yy), (ushort) (z + zz))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx - 1), (ushort)(y + yy),
+                                                                    (ushort)(z + zz))) &&
+                                        leaves[PosToInt((ushort)(x + xx - 1), (ushort)(y + yy), (ushort)(z + zz))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx - 1), (ushort) (y + yy), (ushort) (z + zz))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx - 1), (ushort)(y + yy), (ushort)(z + zz))] =
+                                            (sbyte)i;
 
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx + 1), (ushort) (y + yy),
-                                                                    (ushort) (z + zz))) &&
-                                        leaves[PosToInt((ushort) (x + xx + 1), (ushort) (y + yy), (ushort) (z + zz))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx + 1), (ushort)(y + yy),
+                                                                    (ushort)(z + zz))) &&
+                                        leaves[PosToInt((ushort)(x + xx + 1), (ushort)(y + yy), (ushort)(z + zz))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx + 1), (ushort) (y + yy), (ushort) (z + zz))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx + 1), (ushort)(y + yy), (ushort)(z + zz))] =
+                                            (sbyte)i;
 
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx), (ushort) (y + yy - 1),
-                                                                    (ushort) (z + zz))) &&
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy - 1), (ushort) (z + zz))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx), (ushort)(y + yy - 1),
+                                                                    (ushort)(z + zz))) &&
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy - 1), (ushort)(z + zz))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy - 1), (ushort) (z + zz))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy - 1), (ushort)(z + zz))] =
+                                            (sbyte)i;
 
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx), (ushort) (y + yy + 1),
-                                                                    (ushort) (z + zz))) &&
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy + 1), (ushort) (z + zz))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx), (ushort)(y + yy + 1),
+                                                                    (ushort)(z + zz))) &&
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy + 1), (ushort)(z + zz))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy + 1), (ushort) (z + zz))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy + 1), (ushort)(z + zz))] =
+                                            (sbyte)i;
 
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx), (ushort) (y + yy),
-                                                                    (ushort) (z + zz - 1))) &&
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz - 1))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx), (ushort)(y + yy),
+                                                                    (ushort)(z + zz - 1))) &&
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz - 1))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz - 1))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz - 1))] =
+                                            (sbyte)i;
 
                                     if (
-                                        leaves.ContainsKey(PosToInt((ushort) (x + xx), (ushort) (y + yy),
-                                                                    (ushort) (z + zz + 1))) &&
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz + 1))] ==
+                                        leaves.ContainsKey(PosToInt((ushort)(x + xx), (ushort)(y + yy),
+                                                                    (ushort)(z + zz + 1))) &&
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz + 1))] ==
                                         -2)
-                                        leaves[PosToInt((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz + 1))] =
-                                            (sbyte) i;
+                                        leaves[PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz + 1))] =
+                                            (sbyte)i;
                                 }
                             }
                             catch
@@ -6012,12 +6013,12 @@ namespace MCForge
             ushort x, y, z;
             IntToPos(b, out x, out y, out z);
 
-            if (GetTile((ushort) (x + 1), y, z) == Block.air) dir++;
-            if (GetTile((ushort) (x - 1), y, z) == Block.air) dir++;
-            if (up && GetTile(x, (ushort) (y + 1), z) == Block.air) dir++;
-            if (down && GetTile(x, (ushort) (y - 1), z) == Block.air) dir++;
-            if (GetTile(x, y, (ushort) (z + 1)) == Block.air) dir++;
-            if (GetTile(x, y, (ushort) (z - 1)) == Block.air) dir++;
+            if (GetTile((ushort)(x + 1), y, z) == Block.air) dir++;
+            if (GetTile((ushort)(x - 1), y, z) == Block.air) dir++;
+            if (up && GetTile(x, (ushort)(y + 1), z) == Block.air) dir++;
+            if (down && GetTile(x, (ushort)(y - 1), z) == Block.air) dir++;
+            if (GetTile(x, y, (ushort)(z + 1)) == Block.air) dir++;
+            if (GetTile(x, y, (ushort)(z - 1)) == Block.air) dir++;
 
             return dir;
         }
@@ -6075,42 +6076,42 @@ namespace MCForge
             {
                 try
                 {
-                    PhysDoor((ushort) (x + 1), y, z, instaUpdate);
+                    PhysDoor((ushort)(x + 1), y, z, instaUpdate);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    PhysDoor((ushort) (x - 1), y, z, instaUpdate);
+                    PhysDoor((ushort)(x - 1), y, z, instaUpdate);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    PhysDoor(x, y, (ushort) (z + 1), instaUpdate);
+                    PhysDoor(x, y, (ushort)(z + 1), instaUpdate);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    PhysDoor(x, y, (ushort) (z - 1), instaUpdate);
+                    PhysDoor(x, y, (ushort)(z - 1), instaUpdate);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    PhysDoor(x, (ushort) (y - 1), z, instaUpdate);
+                    PhysDoor(x, (ushort)(y - 1), z, instaUpdate);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    PhysDoor(x, (ushort) (y + 1), z, instaUpdate);
+                    PhysDoor(x, (ushort)(y + 1), z, instaUpdate);
                 }
                 catch
                 {
@@ -6134,15 +6135,15 @@ namespace MCForge
                                             Blockchange(x, y, z, Block.air);
                                             return;
                                         }
-                                        int b1 = IntOffset(C.b, xx*3, yy*3, zz*3);
-                                        int b2 = IntOffset(C.b, xx*2, yy*2, zz*2);
+                                        int b1 = IntOffset(C.b, xx * 3, yy * 3, zz * 3);
+                                        int b2 = IntOffset(C.b, xx * 2, yy * 2, zz * 2);
                                         bool unblocked = blocks[b1] == Block.air && blocks[b2] == Block.air &&
                                                          !ListUpdate.Exists(Update => Update.b == b1) &&
                                                          !ListUpdate.Exists(Update => Update.b == b2);
                                         if (unblocked)
                                         {
-                                            AddUpdate(IntOffset(C.b, xx*3, yy*3, zz*3), Block.rockethead);
-                                            AddUpdate(IntOffset(C.b, xx*2, yy*2, zz*2), Block.fire);
+                                            AddUpdate(IntOffset(C.b, xx * 3, yy * 3, zz * 3), Block.rockethead);
+                                            AddUpdate(IntOffset(C.b, xx * 2, yy * 2, zz * 2), Block.fire);
                                         }
                                     }
                                     else if (b == Block.firework)
@@ -6170,7 +6171,7 @@ namespace MCForge
                                             Blockchange(x, y, z, Block.air);
                                             return;
                                         }
-                                        MakeExplosion((ushort) (x + xx), (ushort) (y + yy), (ushort) (z + zz), 0);
+                                        MakeExplosion((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz), 0);
                                     }
                                 }
                             }
@@ -6225,10 +6226,10 @@ namespace MCForge
                     for (zz = (z - (size + 1)); zz <= (z + (size + 1)); ++zz)
                         try
                         {
-                            b = GetTile((ushort) xx, (ushort) yy, (ushort) zz);
+                            b = GetTile((ushort)xx, (ushort)yy, (ushort)zz);
                             if (b == Block.tnt)
                             {
-                                AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.smalltnt);
+                                AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.smalltnt);
                             }
                             else if (b != Block.smalltnt && b != Block.bigtnt && b != Block.nuketnt)
                             {
@@ -6240,15 +6241,15 @@ namespace MCForge
                                     }
                                 }
                                 if (rand.Next(1, 11) <= 4)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.tntexplosion);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.tntexplosion);
                                 else if (rand.Next(1, 11) <= 8)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.air);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.air);
                                 else
-                                    AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), "drop 50 dissipate 8");
+                                    AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), "drop 50 dissipate 8");
                             }
                             else
                             {
-                                AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz));
+                                AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz));
                             }
                         }
                         catch
@@ -6259,7 +6260,7 @@ namespace MCForge
                 for (yy = (y - (size + 2)); yy <= (y + (size + 2)); ++yy)
                     for (zz = (z - (size + 2)); zz <= (z + (size + 2)); ++zz)
                     {
-                        b = GetTile((ushort) xx, (ushort) yy, (ushort) zz);
+                        b = GetTile((ushort)xx, (ushort)yy, (ushort)zz);
                         if (rand.Next(1, 10) < 7)
                             if (Block.Convert(b) != Block.tnt)
                             {
@@ -6271,19 +6272,19 @@ namespace MCForge
                                     }
                                 }
                                 if (rand.Next(1, 11) <= 4)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.tntexplosion);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.tntexplosion);
                                 else if (rand.Next(1, 11) <= 8)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.air);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.air);
                                 else
-                                    AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), "drop 50 dissipate 8");
+                                    AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), "drop 50 dissipate 8");
                             }
                         if (b == Block.tnt)
                         {
-                            AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.smalltnt);
+                            AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.smalltnt);
                         }
                         else if (b == Block.smalltnt || b == Block.bigtnt || b == Block.nuketnt)
                         {
-                            AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz));
+                            AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz));
                         }
                     }
 
@@ -6291,7 +6292,7 @@ namespace MCForge
                 for (yy = (y - (size + 3)); yy <= (y + (size + 3)); ++yy)
                     for (zz = (z - (size + 3)); zz <= (z + (size + 3)); ++zz)
                     {
-                        b = GetTile((ushort) xx, (ushort) yy, (ushort) zz);
+                        b = GetTile((ushort)xx, (ushort)yy, (ushort)zz);
                         if (rand.Next(1, 10) < 3)
                             if (Block.Convert(b) != Block.tnt)
                             {
@@ -6303,19 +6304,19 @@ namespace MCForge
                                     }
                                 }
                                 if (rand.Next(1, 11) <= 4)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.tntexplosion);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.tntexplosion);
                                 else if (rand.Next(1, 11) <= 8)
-                                    AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.air);
+                                    AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.air);
                                 else
-                                    AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), "drop 50 dissipate 8");
+                                    AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), "drop 50 dissipate 8");
                             }
                         if (b == Block.tnt)
                         {
-                            AddUpdate(PosToInt((ushort) xx, (ushort) yy, (ushort) zz), Block.smalltnt);
+                            AddUpdate(PosToInt((ushort)xx, (ushort)yy, (ushort)zz), Block.smalltnt);
                         }
                         else if (b == Block.smalltnt || b == Block.bigtnt || b == Block.nuketnt)
                         {
-                            AddCheck(PosToInt((ushort) xx, (ushort) yy, (ushort) zz));
+                            AddCheck(PosToInt((ushort)xx, (ushort)yy, (ushort)zz));
                         }
                     }
             //Server.s.Log("Explosion: " + (DateTime.Now - start).TotalMilliseconds.ToString());
@@ -6334,9 +6335,9 @@ namespace MCForge
             // Not using override, since override = true makes it more likely that a colored block will be generated with no extraInfo, because it sets a Check for that position with no extraInfo.
             AddUpdate(PosToInt(x, y, z), Block.air);
 
-            for (xx = (ushort) (x - (size + 1)); xx <= (ushort) (x + (size + 1)); ++xx)
-                for (yy = (ushort) (y - (size + 1)); yy <= (ushort) (y + (size + 1)); ++yy)
-                    for (zz = (ushort) (z - (size + 1)); zz <= (ushort) (z + (size + 1)); ++zz)
+            for (xx = (ushort)(x - (size + 1)); xx <= (ushort)(x + (size + 1)); ++xx)
+                for (yy = (ushort)(y - (size + 1)); yy <= (ushort)(y + (size + 1)); ++yy)
+                    for (zz = (ushort)(z - (size + 1)); zz <= (ushort)(z + (size + 1)); ++zz)
                         if (GetTile(xx, yy, zz) == Block.air)
                             if (rand.Next(1, 40) < 2)
                                 AddUpdate(PosToInt(xx, yy, zz),
@@ -6352,14 +6353,14 @@ namespace MCForge
             var bufferfiniteWater = new List<int>();
             var bufferfiniteWaterList = new List<Pos>();
 
-            if (GetTile(x, (ushort) (y - 1), z) == Block.air)
+            if (GetTile(x, (ushort)(y - 1), z) == Block.air)
             {
-                AddUpdate(PosToInt(x, (ushort) (y - 1), z), blocks[C.b], false, C.extraInfo);
+                AddUpdate(PosToInt(x, (ushort)(y - 1), z), blocks[C.b], false, C.extraInfo);
                 AddUpdate(C.b, Block.air);
                 C.extraInfo = "";
             }
-            else if (GetTile(x, (ushort) (y - 1), z) == Block.waterstill ||
-                     GetTile(x, (ushort) (y - 1), z) == Block.lavastill)
+            else if (GetTile(x, (ushort)(y - 1), z) == Block.waterstill ||
+                     GetTile(x, (ushort)(y - 1), z) == Block.lavastill)
             {
                 AddUpdate(C.b, Block.air);
                 C.extraInfo = "";
@@ -6378,9 +6379,9 @@ namespace MCForge
 
                 Pos pos;
 
-                for (var xx = (ushort) (x - 2); xx <= x + 2; ++xx)
+                for (var xx = (ushort)(x - 2); xx <= x + 2; ++xx)
                 {
-                    for (var zz = (ushort) (z - 2); zz <= z + 2; ++zz)
+                    for (var zz = (ushort)(z - 2); zz <= z + 2; ++zz)
                     {
                         pos.x = xx;
                         pos.z = zz;
@@ -6391,13 +6392,13 @@ namespace MCForge
                 foreach (int i in bufferfiniteWater)
                 {
                     pos = bufferfiniteWaterList[i];
-                    if (GetTile(pos.x, (ushort) (y - 1), pos.z) == Block.air &&
+                    if (GetTile(pos.x, (ushort)(y - 1), pos.z) == Block.air &&
                         GetTile(pos.x, y, pos.z) == Block.air)
                     {
-                        if (pos.x < x) pos.x = (ushort) (Math.Floor((double) (pos.x + x)/2));
-                        else pos.x = (ushort) (Math.Ceiling((double) (pos.x + x)/2));
-                        if (pos.z < z) pos.z = (ushort) (Math.Floor((double) (pos.z + z)/2));
-                        else pos.z = (ushort) (Math.Ceiling((double) (pos.z + z)/2));
+                        if (pos.x < x) pos.x = (ushort)(Math.Floor((double)(pos.x + x) / 2));
+                        else pos.x = (ushort)(Math.Ceiling((double)(pos.x + x) / 2));
+                        if (pos.z < z) pos.z = (ushort)(Math.Floor((double)(pos.z + z) / 2));
+                        else pos.z = (ushort)(Math.Ceiling((double)(pos.z + z) / 2));
 
                         if (GetTile(pos.x, y, pos.z) == Block.air)
                         {
@@ -6478,7 +6479,7 @@ namespace MCForge
             }
             public static sbyte NextCircuit(Level lvl)
             {
-                sbyte number = 1; 
+                sbyte number = 1;
                 foreach (C4s c4 in lvl.C4list)
                 {
                     number++;
