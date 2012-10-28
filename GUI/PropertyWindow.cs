@@ -14,20 +14,13 @@ permissions and limitations under the Licenses.
 */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.CodeDom.Compiler;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Threading;
+using System.Windows.Forms;
 using MCForge.Gui.Popups;
 
 namespace MCForge.Gui {
@@ -38,8 +31,6 @@ namespace MCForge.Gui {
 
         public PropertyWindow() {
             InitializeComponent();
-
-
         }
 
         private void PropertyWindow_Load(object sender, EventArgs e) {

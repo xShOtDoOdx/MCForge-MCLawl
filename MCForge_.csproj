@@ -692,7 +692,7 @@
     <WCFMetadataStorage Include="Service References\TranslateService\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Plugins\OpenClassicEvents" />
+    <Folder Include="Plugins\OpenClassicEvents\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

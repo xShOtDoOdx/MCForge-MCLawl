@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
+using System.Text.RegularExpressions;
 
 namespace MCForge
 {
@@ -127,8 +128,13 @@ namespace MCForge
         public static string MCCharFilter(this string str)
         {
             // Allowed chars are any ASCII char between 20h/32 and 7Dh/125 inclusive, except for 26h/38 (&) and 60h/96 (`)
-            if (String.IsNullOrEmpty(str)) return str;
+            str = Regex.Replace(str, @"[^\u0000-\u007F]", "");
+             
+            if (String.IsNullOrEmpty(str.Trim())) 
+                return str;
+
             StringBuilder sb = new StringBuilder();
+
             foreach (char b in Encoding.ASCII.GetBytes(str))
             {
                 if (b != 38 && b != 96 && b >= 32 && b <= 125)
@@ -136,6 +142,7 @@ namespace MCForge
                 else
                     sb.Append("*");
             }
+
             return sb.ToString();
         }
         public static string GetMimeType(this FileInfo file)

@@ -133,6 +133,7 @@ namespace MCForge.Gui
             this.nightModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoScrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -274,7 +275,6 @@ namespace MCForge.Gui
             this.txtGlobalLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtAdminLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtOpLog = new MCForge.Gui.AutoScrollTextBox();
-            this.autoScrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapsStrip.SuspendLayout();
             this.playerStrip.SuspendLayout();
             this.iconContext.SuspendLayout();
@@ -949,6 +949,15 @@ namespace MCForge.Gui
             this.dateStampToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.dateStampToolStripMenuItem.Text = "Date Stamp";
             this.dateStampToolStripMenuItem.Click += new System.EventHandler(this.dateStampToolStripMenuItem_Click);
+            // 
+            // autoScrollToolStripMenuItem
+            // 
+            this.autoScrollToolStripMenuItem.Checked = true;
+            this.autoScrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoScrollToolStripMenuItem.Name = "autoScrollToolStripMenuItem";
+            this.autoScrollToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.autoScrollToolStripMenuItem.Text = "Auto Scroll";
+            this.autoScrollToolStripMenuItem.Click += new System.EventHandler(this.autoScrollToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -2441,15 +2450,6 @@ namespace MCForge.Gui
             this.txtOpLog.Size = new System.Drawing.Size(741, 96);
             this.txtOpLog.TabIndex = 29;
             // 
-            // autoScrollToolStripMenuItem
-            // 
-            this.autoScrollToolStripMenuItem.Checked = true;
-            this.autoScrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoScrollToolStripMenuItem.Name = "autoScrollToolStripMenuItem";
-            this.autoScrollToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.autoScrollToolStripMenuItem.Text = "Auto Scroll";
-            this.autoScrollToolStripMenuItem.Click += new System.EventHandler(this.autoScrollToolStripMenuItem_Click);
-            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2513,7 +2513,6 @@ namespace MCForge.Gui
 
         #endregion
 
-        private Button btnProperties;
         private Button btnClose;
         private ContextMenuStrip iconContext;
         private ToolStripMenuItem openConsole;
@@ -2725,5 +2724,6 @@ namespace MCForge.Gui
         private ToolStripMenuItem clearToolStripMenuItem;
         private ToolStripMenuItem dateStampToolStripMenuItem;
         private ToolStripMenuItem autoScrollToolStripMenuItem;
+        private Button btnProperties;
     }
 }

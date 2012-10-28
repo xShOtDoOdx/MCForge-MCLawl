@@ -26,7 +26,7 @@ namespace MCForge {
             string flag = "&flags=%5B" + flags + "%5D";
             if ( flags.StartsWith("[") )
                 flag = "&flags=" + flags;
-            string Parameters = "ip=" + IP + "&port=" + Port + "&salt=" + Server.salt + "&alt=" + Name.Replace(' ', '+') + "&desc=" + Disc.Replace(' ', '+') + flag;
+            string Parameters = "ip=" + IP + "&port=" + Port + "&salt=" + Server.salt + "&alt=" + Name.Replace(' ', '+') + "&desc=" + Disc.Replace(' ', '+') + "&noforward=1" + flag;
 
             int totalTries = 0;
             int totalTriesStream = 0;

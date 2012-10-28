@@ -492,6 +492,9 @@ namespace MCForge.Gui {
         private void btnProperties_Click_1(object sender, EventArgs e) {
             if ( !prevLoaded ) { PropertyForm = new PropertyWindow(); prevLoaded = true; }
             PropertyForm.Show();
+            if (!PropertyForm.Focused) {
+                PropertyForm.Focus();
+            }
         }
 
         public static bool prevLoaded = false;
