@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using MCForge.SQL;
+using System.Text.RegularExpressions;
 //using MySql.Data.MySqlClient;
 //using MySql.Data.Types;
 
@@ -45,9 +46,16 @@ namespace MCForge.Commands {
 
             message = message.Substring(message.IndexOf(' ') + 1);
 
-            if ( !System.Text.RegularExpressions.Regex.IsMatch(message.ToLower(), @"^[a-z0-9]*?$") ) {
-                Player.SendMessage(p, "That is not allowed");
-                return;
+            if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
+            	if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
+            		Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
+            		MatchCollection mc = rg.Matches(message.ToLower());
+            		if (mc.Count > 0) {
+            			Match ma = mc[0];
+            			GroupCollection gc = ma.Groups;
+            			message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
+            		}          		
+            	}
             }
 
             //DB
