@@ -365,7 +365,15 @@ namespace MCForge_.Gui
                 if (wait) { if (!Server.checkUpdates) return; Thread.Sleep(10000); }
                 try
                 {
-                    Version availableUpdateVersion = new Version(Client.DownloadString(Program.CurrentVersionFile));
+                	string raw = Client.DownloadString(Program.CurrentVersionFile);
+                	if (raw.EndsWith("b") && !Server.DownloadBeta) {
+                		Player.SendMessage(p, "Beta version found!");
+                		Player.SendMessage(p, "But server set to use release build!");
+                		return;
+                	}
+                	else if (raw.EndsWith("b") && Server.DownloadBeta)
+                		raw = raw.Substring(0, raw.Length - 1);
+                    Version availableUpdateVersion = new Version(raw);
                     if (availableUpdateVersion > Server.Version || availableUpdateVersion > AssemblyName.GetAssemblyName(parent).Version)
                     {
                         if (Server.autoupdate == true || p != null)
