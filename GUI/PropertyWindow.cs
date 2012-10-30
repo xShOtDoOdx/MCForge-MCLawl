@@ -465,6 +465,9 @@ namespace MCForge.Gui {
                         case "check-updates":
                             chkUpdates.Checked = ( value.ToLower() == "true" );
                             break;
+                        case "use-beta-version":
+                            usebeta.Checked = ( value.ToLower() == "true" );
+                            break;
                         case "auto-update":
                             autoUpdate.Checked = ( value.ToLower() == "true" );
                             break;
@@ -810,6 +813,8 @@ namespace MCForge.Gui {
             Server.cheapMessageGiven = txtCheap.Text;
             Server.rankSuper = chkrankSuper.Checked;
             Server.defaultRank = cmbDefaultRank.SelectedItem.ToString();
+            
+            Server.DownloadBeta = usebeta.Checked;
 
             Server.hackrank_kick = hackrank_kick.Checked;
             Server.hackrank_kick_time = int.Parse(hackrank_kick_time.Text);
@@ -2424,5 +2429,24 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             Server.UseTextures = txechx.Checked;
         }
 
+        
+        void AutoUpdateCheckedChanged(object sender, EventArgs e)
+        {
+        	
+        }
+        
+        void UsebetaCheckedChanged(object sender, EventArgs e)
+        {
+        	
+        }
+        
+        void UsebetaClick(object sender, EventArgs e)
+        {
+        	if (usebeta.Checked) {
+        		DialogResult d = MessageBox.Show("Would you like to check for beta versions now?", "Check for updates.", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+        		if (d == DialogResult.Yes)
+        			MCForge_.Gui.Program.UpdateCheck();
+        	}
+        }
     }
 }
