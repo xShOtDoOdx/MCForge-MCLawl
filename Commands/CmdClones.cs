@@ -14,7 +14,7 @@
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
-*/
+ */
 using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -35,48 +35,54 @@ namespace MCForge.Commands
 
 		public override void Use(Player p, string message)
 		{
-			bool messageIsValid = Regex.IsMatch(message, @"^[a-zA-Z0-9]*?$");
-			if (messageIsValid)
-			{
-				if (message == "") message = p.name;
-
-				string originalName = message.ToLower();
-
-				Player who = Player.Find(message);
-				if (who == null)
-				{
-					Player.SendMessage(p, "Could not find player. Searching Player DB.");
-
-					DataTable FindIP = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name='" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name='" + message + "'");
-
-					if (FindIP.Rows.Count == 0) { Player.SendMessage(p, "Could not find any player by the name entered."); FindIP.Dispose(); return; }
-
-					message = FindIP.Rows[0]["IP"].ToString();
-					FindIP.Dispose();
+			if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
+				if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
+					Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
+					MatchCollection mc = rg.Matches(message.ToLower());
+					if (mc.Count > 0) {
+						Match ma = mc[0];
+						GroupCollection gc = ma.Groups;
+						message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
+					}
 				}
-				else
-				{
-					message = who.ip;
-				}
-
-				DataTable Clones = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
-
-				if (Clones.Rows.Count == 0) { Player.SendMessage(p, "Could not find any record of the player entered."); return; }
-
-				List<string> foundPeople = new List<string>();
-				for (int i = 0; i < Clones.Rows.Count; ++i)
-				{
-					if (!foundPeople.Contains(Clones.Rows[i]["Name"].ToString().ToLower()))
-						foundPeople.Add(Clones.Rows[i]["Name"].ToString().ToLower());
-				}
-
-				Clones.Dispose();
-				if (foundPeople.Count <= 1) { Player.SendMessage(p, originalName + " has no clones."); return; }
-
-				Player.SendMessage(p, "These people have the same IP address:");
-				Player.SendMessage(p, string.Join(", ", foundPeople.ToArray()));
 			}
-			else { Player.SendMessage(p, "noooope.avi"); }
+			if (message == "") message = p.name;
+
+			string originalName = message.ToLower();
+
+			Player who = Player.Find(message);
+			if (who == null)
+			{
+				Player.SendMessage(p, "Could not find player. Searching Player DB.");
+
+				DataTable FindIP = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name='" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name='" + message + "'");
+
+				if (FindIP.Rows.Count == 0) { Player.SendMessage(p, "Could not find any player by the name entered."); FindIP.Dispose(); return; }
+
+				message = FindIP.Rows[0]["IP"].ToString();
+				FindIP.Dispose();
+			}
+			else
+			{
+				message = who.ip;
+			}
+
+			DataTable Clones = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
+
+			if (Clones.Rows.Count == 0) { Player.SendMessage(p, "Could not find any record of the player entered."); return; }
+
+			List<string> foundPeople = new List<string>();
+			for (int i = 0; i < Clones.Rows.Count; ++i)
+			{
+				if (!foundPeople.Contains(Clones.Rows[i]["Name"].ToString().ToLower()))
+					foundPeople.Add(Clones.Rows[i]["Name"].ToString().ToLower());
+			}
+
+			Clones.Dispose();
+			if (foundPeople.Count <= 1) { Player.SendMessage(p, originalName + " has no clones."); return; }
+
+			Player.SendMessage(p, "These people have the same IP address:");
+			Player.SendMessage(p, string.Join(", ", foundPeople.ToArray()));
 		}
 
 		public override void Help(Player p)

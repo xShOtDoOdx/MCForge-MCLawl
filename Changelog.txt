@@ -1,3 +1,20 @@
+v5.5.6
+-New:
+  -Admins can now have the server download beta versions
+  -New version system
+-Fixes:
+  -Fixed /ipban
+  -Fixed /mb
+  -Fixed /mb show
+  -Fixed /send
+  -Fixed GC Whitespace issue
+  -Fixed trains (including op_air)
+  -Added &noforward=1 to WOMBeat
+  -Cleans up active physics before unloading a level/server exit
+  -Property window focuses on click
+-Removals:
+  N/A
+
 v5.5.0.5
 -New:
   N/A
