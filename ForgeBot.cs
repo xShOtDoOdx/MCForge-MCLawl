@@ -280,7 +280,7 @@ namespace MCForge {
 			}
 		}
 		public void Disconnect(string reason) {
-			if (Server.irc && IsConnected()) { connection.Disconnect(reason); Server.s.Log("Disconnected from IRC!"); }
+			if (IsConnected()) { connection.Disconnect(reason); Server.s.Log("Disconnected from IRC!"); }
 		}
 		public bool IsConnected() {
 			if (!Server.irc) return false;
