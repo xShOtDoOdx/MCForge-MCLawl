@@ -14,7 +14,7 @@
     BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
-*/
+ */
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -27,45 +27,46 @@ using System.Text.RegularExpressions;
 
 namespace MCForge.Commands
 {
-    public class CmdSeen : Command
-    {
-        public override string name { get { return "seen"; } }
-        public override string shortcut { get { return ""; } }
-        public override string type { get { return "mod"; } }
-        public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
-        public CmdSeen() { }
+	public class CmdSeen : Command
+	{
+		public override string name { get { return "seen"; } }
+		public override string shortcut { get { return ""; } }
+		public override bool museumUsable { get { return true; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
+		public override string type { get { return "mod"; } }
+		public CmdSeen() { }
 
-        public override void Use(Player p, string message)
-        {
-            bool messageIsValid = Regex.IsMatch(message.ToLower(),  @"^[a-z0-9]*?$"); 
-            if (messageIsValid)
-            {
-                Player pl = Player.Find(message);
-                if (pl != null && !pl.hidden)
-                {
-                    Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " is currently online.");
-                    return;
-                }
+		public override void Use(Player p, string message)
+		{
+			if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
+				if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
+					Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
+					MatchCollection mc = rg.Matches(message.ToLower());
+					if (mc.Count > 0) {
+						Match ma = mc[0];
+						GroupCollection gc = ma.Groups;
+						message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
+					}
+				}
+			}
+			Player pl = Player.Find(message);
+			if (pl != null && !pl.hidden)
+			{
+				Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " is currently online.");
+				return;
+			}
 
-                using (DataTable playerDb = Database.fillData("SELECT * FROM Players WHERE Name='" + message + "'"))
-                {
-                    if (playerDb.Rows != null && playerDb.Rows.Count > 0)
-                        Player.SendMessage(p, message + " was last seen: " + playerDb.Rows[0]["LastLogin"]);
-                    else
-                        Player.SendMessage(p, "Unable to find player");
-                }
-            }
-            else { Player.SendMessage(p, "nooooope.avi"); return; }
-            {
-                Player.SendMessage(p, "Error: Erroneous Name - Illegal characters");
-                Player.SendMessage(p, "Valid characters are: A-Z a-z 0-9");
-            }
-
-        }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/seen [player] - says when a player was last seen on the server");
-        }
-    }
+			using (DataTable playerDb = Database.fillData("SELECT * FROM Players WHERE Name='" + message + "'"))
+			{
+				if (playerDb.Rows != null && playerDb.Rows.Count > 0)
+					Player.SendMessage(p, message + " was last seen: " + playerDb.Rows[0]["LastLogin"]);
+				else
+					Player.SendMessage(p, "Unable to find player");
+			}
+		}
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/seen [player] - says when a player was last seen on the server");
+		}
+	}
 }

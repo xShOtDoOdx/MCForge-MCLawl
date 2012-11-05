@@ -34,8 +34,24 @@ namespace MCForge.Commands {
         public CmdMessageBlock() { }
 
         public override void Use(Player p, string message) {
-            if ( message == "" ) { Help(p); return; }
+            if ( message == "" ) { Help(p); return; }          
 
+            CatchPos cpos;
+            cpos.message = "";
+
+            try {
+                switch ( message.Split(' ')[0] ) {
+                    case "air": cpos.type = Block.MsgAir; break;
+                    case "water": cpos.type = Block.MsgWater; break;
+                    case "lava": cpos.type = Block.MsgLava; break;
+                    case "black": cpos.type = Block.MsgBlack; break;
+                    case "white": cpos.type = Block.MsgWhite; break;
+                    case "show": showMBs(p); return;
+                    default: cpos.type = Block.MsgWhite; cpos.message = message; break;
+                }
+            }
+            catch { cpos.type = Block.MsgWhite; cpos.message = message; }
+            
             string current = "";
             string cmdparts = "";
 
@@ -83,23 +99,6 @@ namespace MCForge.Commands {
                 }
             }
             catch { }
-
-
-            CatchPos cpos;
-            cpos.message = "";
-
-            try {
-                switch ( message.Split(' ')[0] ) {
-                    case "air": cpos.type = Block.MsgAir; break;
-                    case "water": cpos.type = Block.MsgWater; break;
-                    case "lava": cpos.type = Block.MsgLava; break;
-                    case "black": cpos.type = Block.MsgBlack; break;
-                    case "white": cpos.type = Block.MsgWhite; break;
-                    case "show": showMBs(p); return;
-                    default: cpos.type = Block.MsgWhite; cpos.message = message; break;
-                }
-            }
-            catch { cpos.type = Block.MsgWhite; cpos.message = message; }
 
             if ( cpos.message == "" ) cpos.message = message.Substring(message.IndexOf(' ') + 1);
             p.blockchangeObject = cpos;
@@ -151,22 +150,26 @@ namespace MCForge.Commands {
         struct CatchPos { public string message; public byte type; }
 
         public void showMBs(Player p) {
-            p.showMBs = !p.showMBs;
+        	try {
+        		p.showMBs = !p.showMBs;
 
-            using ( DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "`") : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "`") ) {
-                int i;
+        		using ( DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "`") : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "`") ) {
+        			int i;
 
-                if ( p.showMBs ) {
-                    for ( i = 0; i < Messages.Rows.Count; i++ )
-                        p.SendBlockchange((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"], Block.MsgWhite);
-                    Player.SendMessage(p, "Now showing &a" + i.ToString() + Server.DefaultColor + " MBs.");
-                }
-                else {
-                    for ( i = 0; i < Messages.Rows.Count; i++ )
-                        p.SendBlockchange((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"], p.level.GetTile((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"]));
-                    Player.SendMessage(p, "Now hiding MBs.");
-                }
-            }
+        			if ( p.showMBs ) {
+        				for ( i = 0; i < Messages.Rows.Count; i++ )
+        					p.SendBlockchange(ushort.Parse(Messages.Rows[i]["X"].ToString()), ushort.Parse(Messages.Rows[i]["Y"].ToString()), ushort.Parse(Messages.Rows[i]["Z"].ToString()), Block.MsgWhite);
+        				Player.SendMessage(p, "Now showing &a" + i.ToString() + Server.DefaultColor + " MBs.");
+        			}
+        			else {
+        				for ( i = 0; i < Messages.Rows.Count; i++ )
+        					p.SendBlockchange(ushort.Parse(Messages.Rows[i]["X"].ToString()), ushort.Parse(Messages.Rows[i]["Y"].ToString()), ushort.Parse(Messages.Rows[i]["Z"].ToString()), p.level.GetTile(ushort.Parse(Messages.Rows[i]["X"].ToString()), ushort.Parse(Messages.Rows[i]["Y"].ToString()), ushort.Parse(Messages.Rows[i]["Z"].ToString())));
+        				Player.SendMessage(p, "Now hiding MBs.");
+        			}
+        		}
+        	} catch (Exception e) {
+        		Server.ErrorLog(e);
+        	}
         }
     }
 }

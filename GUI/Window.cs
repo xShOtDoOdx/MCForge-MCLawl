@@ -181,7 +181,7 @@ namespace MCForge.Gui {
                 this.Invoke(new VoidDelegate(SettingsUpdate));
             }
             else {
-                this.Text = Server.name + " - MCForge " + Server.Version;
+                this.Text = Server.name + " - MCForge " + Server.VersionString;
                 notifyIcon1.Text = ( "MCForge Server: " + Server.name ).Truncate(64);
             }
         }
