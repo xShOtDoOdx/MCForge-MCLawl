@@ -370,7 +370,7 @@ namespace MCForge
 
         public void Disconnect(string reason)
         {
-            if (Server.UseGlobalChat && IsConnected()) { connection.Disconnect(reason); Server.s.Log("Disconnected from Global Chat!"); }
+            if (IsConnected()) { connection.Disconnect(reason); Server.s.Log("Disconnected from Global Chat!"); }
         }
 
         public bool IsConnected()

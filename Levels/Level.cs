@@ -103,6 +103,10 @@ namespace MCForge
         public bool cancelsave1;
         public bool cancelunload;
         public bool changed;
+        public bool physicschanged
+        {
+            get { return ListCheck.Count > 0; }
+        }
         public bool countdowninprogress;
         public bool ctfmode;
         public int currentUndo;
@@ -367,8 +371,7 @@ namespace MCForge
 
             if (changed && (!Server.ZombieModeOn || !Server.noLevelSaving))
             {
-                ClearPhysics();
-                if ((!Server.lava.active || !Server.lava.HasMap(name)) && save) Save();
+                if ((!Server.lava.active || !Server.lava.HasMap(name)) && save) Save(false, true);
                 saveChanges();
             }
             if (TntWarsGame.Find(this) != null)
@@ -923,7 +926,7 @@ namespace MCForge
             SetTile(x, y, z, type);
         }
 
-        public void Save(bool Override = false)
+        public void Save(bool Override = false, bool clearPhysics = false)
         {
             //if (season.started)
             //    season.Stop(this);
@@ -947,8 +950,12 @@ namespace MCForge
                 if (!Directory.Exists("levels")) Directory.CreateDirectory("levels");
                 if (!Directory.Exists("levels/level properties")) Directory.CreateDirectory("levels/level properties");
 
-                if (changed || !File.Exists(path) || Override)
+                if (changed || !File.Exists(path) || Override || (physicschanged && clearPhysics))
                 {
+                    if (clearPhysics)
+                    {
+                        ClearPhysics();
+                    }
                     using (FileStream fs = File.Create(string.Format("{0}.back", path)))
                     {
                         using (GZipStream gs = new GZipStream(fs, CompressionMode.Compress))
