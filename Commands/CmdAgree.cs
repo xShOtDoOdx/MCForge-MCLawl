@@ -47,11 +47,12 @@ namespace MCForge.Commands
                 Player.SendMessage(p, "This command can only be used in-game");
                 return;
             }
-            if (p.group.Permission > LevelPermission.Guest)
+            //If someone is ranked before agreeing to the rules they are locked and cannot use any commands unless demoted back to guest
+            /*if (p.group.Permission > LevelPermission.Guest)
             {
                 Player.SendMessage(p, "Your rank is higher than guest and you have already agreed to the rules!");
                 return;
-            }
+            }*/
             var agreed = File.ReadAllText("ranks/agreed.txt");
             /*
             if (File.Exists("logs/" + DateTime.Now.ToString("yyyy") + "-" + DateTime.Now.ToString("MM") + "-" + DateTime.Now.ToString("dd") + ".txt"))
