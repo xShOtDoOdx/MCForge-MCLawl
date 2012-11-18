@@ -3570,8 +3570,9 @@ level.Unload();
 
                     if ( !Directory.Exists("extra/undo/" + p.name.ToLower()) ) Directory.CreateDirectory("extra/undo/" + p.name.ToLower());
                     di = new DirectoryInfo("extra/undo/" + p.name.ToLower());
-                    File.Create("extra/undo/" + p.name.ToLower() + "/" + di.GetFiles("*.undo").Length + ".undo").Dispose();
-                    using ( StreamWriter w = File.CreateText("extra/undo/" + p.name.ToLower() + "/" + di.GetFiles("*.undo").Length + ".undo") ) {
+                    int number = di.GetFiles("*.undo").Length;
+                    File.Create("extra/undo/" + p.name.ToLower() + "/" + number + ".undo").Dispose();
+                    using ( StreamWriter w = File.CreateText("extra/undo/" + p.name.ToLower() + "/" + number + ".undo") ) {
                         foreach ( UndoPos uP in p.UndoBuffer ) {
                             w.Write(uP.mapName + " " +
                                 uP.x + " " + uP.y + " " + uP.z + " " +
