@@ -773,6 +773,7 @@ namespace MCForge
                 {
                     gcaccepted.Add(line); //loading all playernames of people who turned off translation
                 }
+                MojangAccount.Load();
                 Log("Creating listening socket on port " + port + "... ");
                 Setup();
                 //s.Log(Setup() ? "Done." : "Could not create socket connection. Shutting down.");

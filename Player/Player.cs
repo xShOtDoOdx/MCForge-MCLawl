@@ -45,6 +45,7 @@ namespace MCForge {
 
         public static bool storeHelp = false;
         public static string storedHelp = "";
+        private string truename;
         internal bool dontmindme = false;
         public Socket socket;
         System.Timers.Timer timespent = new System.Timers.Timer(1000);
@@ -211,6 +212,12 @@ namespace MCForge {
         public bool copyAir = false;
         public int[] copyoffset = new int[3] { 0, 0, 0 };
         public ushort[] copystart = new ushort[3] { 0, 0, 0 };
+        
+        public bool mojangaccount {
+        	get {
+        		return truename.Contains('@');
+        	}
+        }
 
         //Undo
         public struct UndoPos { public ushort x, y, z; public byte type, newtype; public string mapName; public DateTime timePlaced; }
@@ -673,6 +680,14 @@ namespace MCForge {
 
                 byte version = message[0];
                 name = enc.GetString(message, 1, 64).Trim();
+                truename = name;
+                if (name.Split('@').Length > 1) 
+                {
+                	name = name.Split('@')[0];
+                	if (!MojangAccount.HasID(truename))
+                		MojangAccount.AddUser(truename);
+                	name += "_" + MojangAccount.GetID(truename);
+                }
                 string verify = enc.GetString(message, 65, 32).Trim();
                 byte type = message[129];
                 try {
@@ -802,7 +817,7 @@ namespace MCForge {
 
                 if ( Server.verify ) {
                     if ( verify == "--" || verify !=
-                        BitConverter.ToString(md5.ComputeHash(enc.GetBytes(Server.salt + name)))
+                        BitConverter.ToString(md5.ComputeHash(enc.GetBytes(Server.salt + truename)))
                         .Replace("-", "").ToLower().TrimStart('0') ) {
                         if ( !IPInPrivateRange(ip) ) {
                             Kick("Login failed! Try again."); return;

@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Levels\Texture_Settings.cs" />
     <Compile Include="MCForgeAccount.cs" />
+    <Compile Include="Player\MojangAccount.cs" />
     <Compile Include="Player\Packet.cs" />
     <Compile Include="Plugins\GroupEvents\OnGroupLoadedEvent.cs" />
     <Compile Include="Plugins\GroupEvents\OnGroupLoadEvent.cs" />
