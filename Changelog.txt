@@ -1,3 +1,13 @@
+v5.5.8
+-New:
+  N/A
+-Fixes:
+  -Mojang Accounts can now log in, the username used is the email username + a UID
+  -Fixed /clones
+  -Fixed /seen
+-Removals:
+  N/A
+  
 v5.5.6
 -New:
   -Admins can now have the server download beta versions
