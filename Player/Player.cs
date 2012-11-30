@@ -3437,7 +3437,7 @@ changed |= 4;*/
                 Server.reviewlist.Remove(name);
             }
             try {
-                SaveUndo();
+ 
                 if ( disconnected ) {
                     this.CloseSocket();
                     if ( connections.Contains(this) )
