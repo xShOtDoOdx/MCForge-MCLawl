@@ -514,6 +514,12 @@ namespace MCForge {
             catch ( Exception e ) {
                 Server.ErrorLog(e);
             }
+            try {
+            	SaveUndo();
+            } catch (Exception e) {
+            	Server.s.Log("Error saving undo data.");
+            	Server.ErrorLog(e);
+            }
         }
 
         #region == INCOMING ==
@@ -3571,33 +3577,31 @@ level.Unload();
             SaveUndo(this);
         }
         public static void SaveUndo(Player p) {
-            if ( p == null || p.UndoBuffer == null || p.UndoBuffer.Count < 1 ) return;
-            try {
-                lock ( p.UndoBuffer ) {
-                    if ( !Directory.Exists("extra/undo") ) Directory.CreateDirectory("extra/undo");
-                    if ( !Directory.Exists("extra/undoPrevious") ) Directory.CreateDirectory("extra/undoPrevious");
-                    DirectoryInfo di = new DirectoryInfo("extra/undo");
-                    if ( di.GetDirectories("*").Length >= Server.totalUndo ) {
-                        Directory.Delete("extra/undoPrevious", true);
-                        Directory.Move("extra/undo", "extra/undoPrevious");
-                        Directory.CreateDirectory("extra/undo");
-                    }
+        	if ( p == null || p.UndoBuffer == null || p.UndoBuffer.Count < 1 ) return;
+        	try {
+        		if ( !Directory.Exists("extra/undo") ) Directory.CreateDirectory("extra/undo");
+        		if ( !Directory.Exists("extra/undoPrevious") ) Directory.CreateDirectory("extra/undoPrevious");
+        		DirectoryInfo di = new DirectoryInfo("extra/undo");
+        		if ( di.GetDirectories("*").Length >= Server.totalUndo ) {
+        			Directory.Delete("extra/undoPrevious", true);
+        			Directory.Move("extra/undo", "extra/undoPrevious");
+        			Directory.CreateDirectory("extra/undo");
+        		}
 
-                    if ( !Directory.Exists("extra/undo/" + p.name.ToLower()) ) Directory.CreateDirectory("extra/undo/" + p.name.ToLower());
-                    di = new DirectoryInfo("extra/undo/" + p.name.ToLower());
-                    int number = di.GetFiles("*.undo").Length;
-                    File.Create("extra/undo/" + p.name.ToLower() + "/" + number + ".undo").Dispose();
-                    using ( StreamWriter w = File.CreateText("extra/undo/" + p.name.ToLower() + "/" + number + ".undo") ) {
-                        foreach ( UndoPos uP in p.UndoBuffer ) {
-                            w.Write(uP.mapName + " " +
-                                uP.x + " " + uP.y + " " + uP.z + " " +
-                                uP.timePlaced.ToString(CultureInfo.InvariantCulture).Replace(' ', '&') + " " +
-                                uP.type + " " + uP.newtype + " ");
-                        }
-                    }
-                }
-            }
-            catch ( Exception e ) { Server.s.Log("Error saving undo data for " + p.name + "!"); Server.ErrorLog(e); }
+        		if ( !Directory.Exists("extra/undo/" + p.name.ToLower()) ) Directory.CreateDirectory("extra/undo/" + p.name.ToLower());
+        		di = new DirectoryInfo("extra/undo/" + p.name.ToLower());
+        		int number = di.GetFiles("*.undo").Length;
+        		File.Create("extra/undo/" + p.name.ToLower() + "/" + number + ".undo").Dispose();
+        		using ( StreamWriter w = File.CreateText("extra/undo/" + p.name.ToLower() + "/" + number + ".undo") ) {
+        			foreach ( UndoPos uP in p.UndoBuffer ) {
+        				w.Write(uP.mapName + " " +
+        				        uP.x + " " + uP.y + " " + uP.z + " " +
+        				        uP.timePlaced.ToString(CultureInfo.InvariantCulture).Replace(' ', '&') + " " +
+        				        uP.type + " " + uP.newtype + " ");
+        			}
+        		}
+        	}
+        	catch ( Exception e ) { Server.s.Log("Error saving undo data for " + p.name + "!"); Server.ErrorLog(e); }
         }
 
         public void Dispose() {
