@@ -53,7 +53,7 @@ namespace MCForge
                 return;
             }*/
             server = "irc.geekshed.net"; 
-            channel = "#MCForge";
+            channel = "#MCForgeGC";
             this.nick = nick.Replace(" ", "");
             connection = new Connection(new ConnectionArgs(nick, server), false, false);
 

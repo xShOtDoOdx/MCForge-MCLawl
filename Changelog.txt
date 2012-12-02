@@ -1,3 +1,13 @@
+v5.5.9
+-New:
+  -If textures are enabled, WoM users sees join/leave messages at the top right
+-Fixes:
+  -Fixed /undo (hopfully)
+  -/womid now compatible with xWoM
+  -Fixed bugs with textures
+-Removals:
+  N/A
+
 v5.5.8
 -New:
   N/A
