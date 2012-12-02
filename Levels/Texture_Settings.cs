@@ -334,7 +334,7 @@ namespace MCForge.Levels.Textures
                 Player.players.ForEach(delegate(Player p1)
                 {
                     if (p1.level == l)
-                        Command.all.Find("reveal").Use(null, p1.name);
+                        Command.all.Find("reveal").Use(p1, p1.name);
                 });
             }
             Player.GlobalMessage("Level textures updated for " + l.name);

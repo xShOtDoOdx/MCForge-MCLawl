@@ -145,25 +145,6 @@ namespace MCForge
                 else { Server.gclastmsg = message.ToLower(); Server.gcspamcount = 0; }
             }
             #endregion
-            /*
-            #region Caps spam
-            int rage = 0;
-            for (int i = 0; i < message.Length; i++) { if (caps.IndexOf(message[i]) != -1) { rage++; } }
-            if (rage >= 7 && !(message.Length <= 7)) { //maybe more if there are still people who use proper capitalization?
-                Player.SendMessage(p, "Woah there Mr whale, lay of the caps!");
-                message = message.ToLower();
-                if (p == null) { Server.gccapscount++; Server.gcmultiwarns++; }
-                else { p.capscount++; p.multi++; }
-                if ((p == null ? Server.gccapscount : p.capscount) >= 5) {
-                    if (p == null) { Server.canusegc = false; }
-                    else { Server.canusegc = false; }
-                    Player.SendMessage(p, "You can no longer use the gc! Reason: caps spam"); 
-                    return; 
-                }
-                if (rage >= 10) { return; }
-            }
-            #endregion*/
-
             #region Flooding
 
             TimeSpan t = DateTime.Now - (p == null ? Server.gclastmsgtime : p.lastmsgtime);

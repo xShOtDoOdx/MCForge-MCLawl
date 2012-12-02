@@ -66,7 +66,10 @@ namespace MCForge.Commands
             Player.SendMessage(p, "> > first logged into the server on &a" + playerDb.Rows[0]["FirstLogin"]);
             Player.SendMessage(p, "> > logged in &a" + playerDb.Rows[0]["totalLogin"] + Server.DefaultColor + " times, &c" + playerDb.Rows[0]["totalKicked"] + Server.DefaultColor + " of which ended in a kick.");
             Player.SendMessage(p, "> > " + Awards.awardAmount(message) + " awards");
-
+            if (Ban.Isbanned(message)) {
+            	string[] data = Ban.Getbandata(message);
+            	Player.SendMessage(p, "> > was banned by " + data[0] + " for " + data[1] + " on " + data[2]);
+            }
             bool skip = false;
             if (p != null) if ((int)p.group.Permission <= CommandOtherPerms.GetPerm(this)) skip = true;
 

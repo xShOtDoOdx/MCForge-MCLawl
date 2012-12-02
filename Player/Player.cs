@@ -799,7 +799,12 @@ namespace MCForge {
                         }
                     }
                     else {
-                        Kick(Server.customBanMessage);
+                		if (Ban.Isbanned(name)) {
+                			string[] data = Ban.Getbandata(name);
+                			Kick("You were banned for \"" + data[1] + "\" by " + data[0]);
+                		}
+                		else
+                        	Kick(Server.customBanMessage);
                         return;
                     }
                 }
@@ -1019,15 +1024,22 @@ namespace MCForge {
                     }
                 }
             }
-            
+            string joinm = "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt");
             if ( this.group.Permission < Server.adminchatperm || Server.adminsjoinsilent == false ) {
-                if ( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) {
-                    GlobalChat(this, "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt"), false);
-                }
-                if ( this.group.Permission > LevelPermission.Guest ) {
-                    GlobalChat(this, "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt"), false);
-                }
-                //IRCBot.Say(this.name + " has joined the server.");
+            	if (( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) || this.group.Permission > LevelPermission.Guest) {
+            		Player.players.ForEach(p1 =>
+            		                       {
+            		                       	if (p1.UsingWom)
+            		                       	{
+            		                       		byte[] buffer = new byte[65];
+            		                       		Player.StringFormat("^detail.user.join=" + color + name + c.white, 64).CopyTo(buffer, 1);
+            		                       		p1.SendRaw(13, buffer);
+            		                       		buffer = null;
+            		                       	}
+            		                       	else
+            		                       		Player.SendMessage(p1, joinm);
+            		                       });
+            	}
             }
             if ( this.group.Permission >= Server.adminchatperm && Server.adminsjoinsilent == true ) {
                 this.hidden = true;
@@ -1770,6 +1782,19 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
 }
 } */
 
+        void SendWomUsers()
+        {
+        	Player.players.ForEach(delegate(Player p)
+			                       {
+			                       	if (p != this)
+			                       	{
+			                       		byte[] buffer = new byte[65];
+			                       		Player.StringFormat("^detail.user.here=" + p.color + p.name, 64).CopyTo(buffer, 1);
+			                       		SendRaw(13, buffer);
+			                       		buffer = null;
+			                       	}
+			                       });
+        }
         void HandleChat(byte[] message) {
             try {
                 if ( !loggedIn ) return;
@@ -1781,11 +1806,14 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
 
                 // handles the /womid client message, which displays the WoM version
                 if ( text.Truncate(6) == "/womid" ) {
-                    Server.s.Log(name + " is using " + text.Substring(7));
+                	string version = (text.Length <= 21 ? text.Substring(text.IndexOf(' ') + 1) : text.Substring(7, 15));
+                	Player.GlobalMessage(c.red + "[INFO] " + color + name + "%f is using wom client");
+                	Player.GlobalMessage(c.red + "[INFO] %fVersion: " + version);
+                	Server.s.Log(c.red + "[INFO] " + color + name + "%f is using wom client");
+                	Server.s.Log(c.red + "[INFO] %fVersion: " + version);
                     UsingWom = true;
-                    WoMVersion = text.Substring(7, 15);
-                    Player.GlobalMessageOps(color + name + " %4is using WoM. Version: " + text.Substring(7, 15));
-                    Server.s.Log(name + " is using WoM. Version " + text.Substring(7, 15));
+                    WoMVersion = version.Split('-')[1];
+                    SendWomUsers();
                     return;
                 }
 
@@ -3510,12 +3538,22 @@ changed |= 4;*/
                             File.WriteAllText("text/logout/" + name + ".txt", "Disconnected.");
                         }
                         if ( !hidden ) {
-                            if ( Server.guestLeaveNotify == true && this.group.Permission <= LevelPermission.Guest ) {
-                                GlobalChat(this, "&c- " + color + prefix + name + Server.DefaultColor + " " + File.ReadAllText("text/logout/" + name + ".txt"), false);
-                            }
-                            if ( this.group.Permission > LevelPermission.Guest ) {
-                                GlobalChat(this, "&c- " + color + prefix + name + Server.DefaultColor + " " + File.ReadAllText("text/logout/" + name + ".txt"), false);
-                            }
+                    		string leavem = "&c- " + color + prefix + name + Server.DefaultColor + " " + File.ReadAllText("text/logout/" + name + ".txt");
+                    		if ((Server.guestLeaveNotify && this.group.Permission <= LevelPermission.Guest) || this.group.Permission > LevelPermission.Guest)
+                    		{
+                    			Player.players.ForEach(delegate(Player p1)
+									                       {
+									                       	if (p1.UsingWom)
+									                       	{
+									                       		byte[] buffer = new byte[65];
+									                       		Player.StringFormat("^detail.user.part=" + color +  name + c.white, 64).CopyTo(buffer, 1);
+									                       		p1.SendRaw(13, buffer);
+									                       		buffer = null;
+									                       	}
+									                       	else
+									                       		Player.SendMessage(p1, leavem);
+									                       });
+                    		}
                         }
                         //IRCBot.Say(name + " left the game.");
                         Server.s.Log(name + " disconnected.");

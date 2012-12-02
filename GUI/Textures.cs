@@ -30,9 +30,6 @@ namespace MCForge.GUI
                 byte block = Block.Byte(comboBox1.Items[comboBox1.SelectedIndex].ToString().Replace(' ', '_'));
                 try
                 {
-                    //To prevent something like this:
-                    //Water (Default)
-                    //We just want "Water"
                     if (comboBox1.Items[comboBox1.SelectedIndex].ToString().Split(' ')[1].StartsWith("("))
                     {
                         block = Block.Byte(comboBox1.Items[comboBox1.SelectedIndex].ToString().Split(' ')[0]);
@@ -60,9 +57,6 @@ namespace MCForge.GUI
                 byte block = Block.Byte(side.Items[side.SelectedIndex].ToString().Replace(' ', '_'));
                 try
                 {
-                    //To prevent something like this:
-                    //Water (Default)
-                    //We just want "Water"
                     if (side.Items[side.SelectedIndex].ToString().Split(' ')[1].StartsWith("("))
                     {
                         block = Block.Byte(side.Items[side.SelectedIndex].ToString().Split(' ')[0]);
@@ -212,7 +206,6 @@ namespace MCForge.GUI
                 return;
             MessageBox.Show("Textures must be enabled for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             checkBox1.Checked = true;
-         
         }
     }
 }
