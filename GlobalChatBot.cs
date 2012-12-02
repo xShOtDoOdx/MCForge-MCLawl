@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Sharkbite.Irc;
+using System.Net;
 //using System.Threading;
 
 namespace MCForge
@@ -52,8 +53,11 @@ namespace MCForge
                 Server.s.Log("[GlobalChat] The IRC dll was not found!");
                 return;
             }*/
-            server = "irc.geekshed.net"; 
-            channel = "#MCForgeGC";
+            using (WebClient wc = new WebClient()) {
+            	string data = wc.DownloadString("http://server.mcforge.net/gcdata");
+            	server = data.Split('&')[0];
+            	channel = data.Split('&')[1];
+            }
             this.nick = nick.Replace(" ", "");
             connection = new Connection(new ConnectionArgs(nick, server), false, false);
 
