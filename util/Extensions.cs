@@ -153,11 +153,11 @@ namespace MCForge
             return "application/octet-stream";
         }
 
-        public static bool IsVowel(string word) {
+        public static string CheckVowel(string word) {
             string vowels = "aeiou"; //y can be both a vowel and consonant depending on the speech sound, but I'm not a dictionary O.o
             if(vowels.Contains(word[0]))
-                return true;
-            return false;
+                return "an";
+            return "a";
         }
     }
 }
