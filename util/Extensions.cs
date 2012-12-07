@@ -152,5 +152,12 @@ namespace MCForge
                 return rk.GetValue("Content Type").ToString();
             return "application/octet-stream";
         }
+
+        public static bool IsVowel(string word) {
+            string vowels = "aeiou"; //y can be both a vowel and consonant depending on the speech sound, but I'm not a dictionary O.o
+            if(vowels.Contains(word[0]))
+                return true;
+            return false;
+        }
     }
 }
