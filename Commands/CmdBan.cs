@@ -72,7 +72,7 @@ namespace MCForge.Commands {
 					Group foundGroup = Group.findPlayerGroup(message);
 
 					if ((int)foundGroup.Permission >= CommandOtherPerms.GetPerm(this)) {
-                        Player.SendMessage(p, "You can't ban " + Extensions.CheckVowel(foundGroup.name) + " " + foundGroup.name + "!");
+                        Player.SendMessage(p, "You can't ban players ranked " + foundGroup.name + " or higher!");
 						return;
 					}
 					if (foundGroup.Permission == LevelPermission.Banned) {
@@ -101,7 +101,7 @@ namespace MCForge.Commands {
 						return;
 					}
 					if ((int)who.group.Permission >= CommandOtherPerms.GetPerm(this)) {
-						Player.SendMessage(p, "You can't ban " + Extensions.CheckVowel(who.group.name) + " " + who.group.name + "!");
+						Player.SendMessage(p, "You can't ban players ranked " + who.group.name + " or higher!");
 						return;
 					}
 					if (who.group.Permission == LevelPermission.Banned) {
