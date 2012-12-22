@@ -21,10 +21,8 @@ using MCForge.SQL;
 using System.Globalization;
 
 
-namespace MCForge.Commands
-{
-    public class CmdPay : Command
-    {
+namespace MCForge.Commands {
+    public class CmdPay : Command {
         public override string name { get { return "pay"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -32,8 +30,7 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public CmdPay() { }
 
-        public override void Use(Player p, string message)
-        {
+        public override void Use(Player p, string message) {
             if (message.IndexOf(' ') == -1) { Help(p); return; }
             if (message.Split(' ').Length != 2) { Help(p); return; }
 
@@ -86,9 +83,8 @@ namespace MCForge.Commands
             Economy.UpdateEcoStats(receiver);
             Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " paid " + who.color + who.prefix + who.name + " %f" + amountPaid + " %3" + Server.moneys);
         }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/pay [player] <amount> - Pays <amount> of " + Server.moneys + " to [player]");
+        public override void Help(Player p) {
+            Player.SendMessage(p, "%f/pay [player] <amount> " + Server.DefaultColor + "- Pays <amount> " + Server.moneys + " to [player]");
         }
 
         private bool IsLegalPayment(Player p, int payer, int receiver, int amount) {

@@ -65,7 +65,7 @@ namespace MCForge {
 
             //Ranks
             public static bool Ranks = false;
-            public static string MaxRank = Group.findPerm(LevelPermission.AdvBuilder).trueName;
+            public static string MaxRank = Group.findPerm(LevelPermission.AdvBuilder).name;
             public static List<Rank> RanksList = new List<Rank>();
             public class Rank {
                 public Group group;
@@ -83,7 +83,7 @@ namespace MCForge {
                     DataTable players = Server.useMySQL ? MySQL.fillData(queryP) : SQLite.fillData(queryP);
                     if (players.Rows.Count == eco.Rows.Count) { } //move along, nothing to do here
                     else if (players.Rows.Count != eco.Rows.Count && eco.Rows.Count == 0) { //if first time, copy content from player to economy
-                        string query = "INSERT Economy (player, money) SELECT Players.Name, Players.Money FROM Players";
+                        string query = "INSERT INTO Economy (player, money) SELECT Players.Name, Players.Money FROM Players";
                         if (Server.useMySQL) MySQL.executeQuery(query); else SQLite.executeQuery(query);
                     } else {
                         //this will only be needed when the server shuts down while it was copying content (or some other error)

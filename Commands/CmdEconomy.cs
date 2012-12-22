@@ -10,7 +10,6 @@ using System.Globalization;
 namespace MCForge.Commands {
     /// <summary>
     /// Economy Beta v1.0 QuantumHive
-    /// There might still be bugs somewhere when console uses this command
     /// </summary>
     public class CmdEconomy : Command {
         public override string name { get { return "economy"; } }
@@ -46,10 +45,15 @@ namespace MCForge.Commands {
                     if ((int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
                         switch (par1) {
                             case "apply":
-                                if (p.name == Server.server_owner) {
+                                if (p != null) {
+                                    if (p.name == Server.server_owner) {
+                                        Economy.Load();
+                                        Player.SendMessage(p, "%aApplied changes");
+                                    } else Player.SendMessage(p, "%cThis command is only usable by the server owner: %6" + Server.server_owner);
+                                } else { //console fix
                                     Economy.Load();
                                     Player.SendMessage(p, "%aApplied changes");
-                                } else Player.SendMessage(p, "%cThis command is only usable by the server owner: %6" + Server.server_owner);
+                                }
                                 return;
                             case "maps":
                             case "levels":
@@ -345,6 +349,7 @@ namespace MCForge.Commands {
 
 
                 case "buy":
+                    if (p == null) { Player.SendMessage(p, "%cConsole cannot buy any items"); return; }
                     Economy.EcoStats ecos = Economy.RetrieveEcoStats(p.name);
                     switch (par1) {
                         case "map":
@@ -620,10 +625,10 @@ namespace MCForge.Commands {
                             ecostats = Economy.RetrieveEcoStats(who.name);
                             Player.SendMessage(p, "%3===Economy stats for: " + who.color + who.name + "%3===");
                         }
-                    } else { //this player
+                    } else if (p != null) { //this player
                         ecostats = Economy.RetrieveEcoStats(p.name);
                         Player.SendMessage(p, "%3===Economy stats for: " + p.color + p.name + "%3===");
-                    }
+                    } else { Player.SendMessage(p, "%cConsole cannot contain any eco stats"); return; }
                     Player.SendMessage(p, "Balance: %f" + ecostats.money + " %3" + Server.moneys);
                     Player.SendMessage(p, "Total spent: %f" + ecostats.totalSpent + " %3" + Server.moneys);
                     Player.SendMessage(p, "Recent purchase: " + ecostats.purchase);
@@ -757,9 +762,9 @@ namespace MCForge.Commands {
 
         public void SetupHelp(Player p) {
             Player.SendMessage(p, "%3===Economy Setup Help Menu===");
-            if (p.name == Server.server_owner) {
+            if (p !=null && p.name == Server.server_owner) {
                 Player.SendMessage(p, "%4/eco setup apply %e- applies the changes made to 'economy.properties'");
-            }
+            } else if (p == null) { Player.SendMessage(p, "%4/eco setup apply %e- applies the changes made to 'economy.properties'"); }
             Player.SendMessage(p, "%4/eco setup [%aenable%4/%cdisable%4] %e- to enable/disable the economy system");
             Player.SendMessage(p, "%4/eco setup [title/color/tcolor/rank/map] [%aenable%4/%cdisable%4] %e- to enable/disable that feature");
             Player.SendMessage(p, "%4/eco setup [title/color/tcolor] [%3price%4] %e- to setup the prices for these features");

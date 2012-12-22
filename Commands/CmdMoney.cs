@@ -25,7 +25,8 @@ namespace MCForge.Commands {
         public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public override void Use(Player p, string message) {
-            if (message == "" || message == null || message == string.Empty) {
+            bool emptyMessage = message == "" || message == null || message == string.Empty;
+            if (p != null && emptyMessage) {
                 Player.SendMessage(p, "You currently have %f" + p.money + " %3" + Server.moneys);
             } else if (message.Split().Length == 1) {
                 Player who = Player.Find(message);
@@ -40,14 +41,17 @@ namespace MCForge.Commands {
                     return;
                 }*/
                 Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " currently has %f" + who.money + " %3" + Server.moneys);
+            } else if (p == null && emptyMessage) {
+                Player.SendMessage(p, "%Console can't have %3" + Server.moneys);
             } else {
                 Player.SendMessage(p, "%cInvalid parameters!");
                 Help(p);
             }
+
         }
 
         public override void Help(Player p) {
-            Player.SendMessage(p, "/money <player> - Shows how much %3" + Server.moneys + Server.DefaultColor + " <player> has");
+            Player.SendMessage(p, "%f/money <player>" + Server.DefaultColor + " - Shows how much %3" + Server.moneys + Server.DefaultColor + " <player> has");
         }
     }
 }

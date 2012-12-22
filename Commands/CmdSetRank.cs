@@ -38,11 +38,13 @@ namespace MCForge.Commands
             Player who = Player.Find(split[0]);
             Group newRank = Group.Find(split[1]);
             string msgGave = "";
-
+            string oldcolor = "";
             string oldgroupstr = "";
+
             if (who != null)
             {
                 oldgroupstr = who.group.name;
+                oldcolor = who.group.color;
             }
             else
             {
@@ -115,7 +117,8 @@ namespace MCForge.Commands
                 Player.GlobalChat(who, "&6" + msgGave, false);
 
                 who.group = newRank;
-                who.color = who.group.color;
+                if(who.color == "" || who.color == oldcolor )
+                    who.color = who.group.color;
                 Player.GlobalDie(who, false);
 
                 who.SendMessage("You are now ranked " + newRank.color + newRank.name + Server.DefaultColor + ", type /help for your new set of commands.");

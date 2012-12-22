@@ -20,10 +20,8 @@ using System.Data;
 using MCForge.SQL;
 using System.Globalization;
 
-namespace MCForge.Commands
-{
-    public class CmdTake : Command
-    {
+namespace MCForge.Commands {
+    public class CmdTake : Command {
         public override string name { get { return "take"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -31,10 +29,13 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public CmdTake() { }
 
-        public override void Use(Player p, string message)
-        {
+        public override void Use(Player p, string message) {
             if (message.IndexOf(' ') == -1) { Help(p); return; }
             if (message.Split(' ').Length != 2) { Help(p); return; }
+
+            string user1 = "";
+            string user2 = "";
+            if (p == null) { user1 = "[Console]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); } else { user1 = p.color + p.name; user2 = p.color + p.prefix + p.name; }
 
             int amountTaken = 0;
             bool all = false;
@@ -59,9 +60,9 @@ namespace MCForge.Commands
                     ecos.money = 0;
                 } else
                     ecos.money -= amountTaken;
-                ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 Economy.UpdateEcoStats(ecos);
-                Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + off.color + off.name + "%f(offline)");
+                Player.GlobalMessage(user2 + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + off.color + off.name + "%f(offline)");
                 return;
             }
             ecos = Economy.RetrieveEcoStats(who.name);
@@ -78,14 +79,13 @@ namespace MCForge.Commands
                 who.money -= amountTaken;
                 ecos.money = who.money;
             }
-            ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             Economy.UpdateEcoStats(ecos);
-            Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + who.color + who.prefix + who.name);
+            Player.GlobalMessage(user2 + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + who.color + who.prefix + who.name);
         }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/take [player] <amount> - Takes <amount> of " + Server.moneys + " from [player]");
-            Player.SendMessage(p, "/take [player] all - Takes all the " + Server.moneys + " from [player]");
+        public override void Help(Player p) {
+            Player.SendMessage(p, "&f/take [player] <amount> " + Server.DefaultColor + "- Takes <amount> of " + Server.moneys + " from [player]");
+            Player.SendMessage(p, "&f/take [player] all " + Server.DefaultColor + "- Takes all the " + Server.moneys + " from [player]");
         }
     }
 }
