@@ -559,6 +559,10 @@ namespace MCForge
 
             zombie = new ZombieGame();
 
+            //derp
+            if (!Server.LevelList.Contains("#(Must be comma seperated, no spaces. Must have changing levels and use level list enabled.)"))
+                Server.LevelList.Add("#(Must be comma seperated, no spaces. Must have changing levels and use level list enabled.)");
+
             // OmniBan
             omniban = new OmniBan();
 
