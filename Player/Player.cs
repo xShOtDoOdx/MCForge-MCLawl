@@ -299,6 +299,14 @@ namespace MCForge {
         public bool InGlobalChat { get; set; }
         public Dictionary<string, string> sounds = new Dictionary<string, string>();
 
+        public struct OfflinePlayer {
+            public string name, color, title, titleColor;
+            public int money;
+            //need moar? add moar! just make sure you adjust Player.FindOffline() method
+
+            public OfflinePlayer(string nm, string clr, string tl, string tlclr, int mon) { name = nm; color = clr; title = tl; titleColor = tlclr; money = mon; }
+        }
+
         public static string CheckPlayerStatus(Player p) {
             if ( p.hidden )
                 return "hidden";
@@ -389,6 +397,7 @@ namespace MCForge {
                         else {
                             Server.s.Log("Could not find Welcome.txt. Using default.");
                             File.WriteAllText("text/welcome.txt", "Welcome to my server!");
+                            SendMessage("Welcome to my server!");
                         }
                         extraTimer.Start();
                         loginTimer.Dispose();
@@ -910,12 +919,14 @@ namespace MCForge {
 
                 this.timeLogged = DateTime.Now;
                 SendMessage("Welcome " + name + "! This is your first visit.");
-
-                if ( Server.useMySQL )
+                string query = "INSERT INTO Economy (player, money, total, purchase, payment, salary, fine) VALUES ('" + name + "', " + money + ", 0, '%cNone', '%cNone', '%cNone', '%cNone')";
+                if (Server.useMySQL) {
                     MySQL.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
-                else
+                    MySQL.executeQuery(query);
+                } else {
                     SQLite.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
-
+                    SQLite.executeQuery(query);
+                }
             }
             else {
                 totalLogins = int.Parse(playerDb.Rows[0]["totalLogin"].ToString()) + 1;
@@ -942,7 +953,8 @@ namespace MCForge {
                 SetPrefix();
                 overallDeath = int.Parse(playerDb.Rows[0]["TotalDeaths"].ToString());
                 overallBlocks = long.Parse(playerDb.Rows[0]["totalBlocks"].ToString().Trim());
-                money = int.Parse(playerDb.Rows[0]["Money"].ToString());
+                //money = int.Parse(playerDb.Rows[0]["Money"].ToString());
+                money = Economy.RetrieveEcoStats(this.name).money;
                 totalKicked = int.Parse(playerDb.Rows[0]["totalKicked"].ToString());
                 SendMessage("Welcome back " + color + prefix + name + Server.DefaultColor + "! You've been here " + totalLogins + " times!");
                 if ( Server.muted.Contains(name) ) {
@@ -1012,6 +1024,20 @@ namespace MCForge {
             if ( !File.Exists("text/login/" + this.name + ".txt") ) {
                 File.WriteAllText("text/login/" + this.name + ".txt", "joined the server.");
             }
+
+            if (File.Exists("ranks/jailed.txt")) {
+                using (StreamReader read = new StreamReader("ranks/jailed.txt")) {
+                    string line;
+                    while ((line = read.ReadLine()) != null) {
+                        if (line.Split()[0].ToLower() == this.name.ToLower()) {
+                            Command.all.Find("goto").Use(this, line.Split()[1]);
+                            Command.all.Find("jail").Use(null, line.Split()[0]);
+                            break;
+                        }
+                    }
+                }
+            } else { File.Create("ranks/jailed.txt").Close(); }
+
             if ( Server.agreetorulesonentry == true ) {
                 if ( !File.Exists("ranks/agreed.txt") ) {
                     File.WriteAllText("ranks/agreed.txt", "");
@@ -3695,6 +3721,22 @@ catch { }*/
         public static string GetColor(string name) {
             return GetGroup(name).color;
         }
+        public static OfflinePlayer FindOffline(string name) {
+            OfflinePlayer offPlayer = new OfflinePlayer("", "", "", "", 0);
+            string query = "SELECT * FROM Players WHERE Name = '" + name + "'";
+            using (DataTable playerDB = Server.useMySQL ? MySQL.fillData(query) : SQLite.fillData(query)) {
+                if (playerDB.Rows.Count == 0)
+                    return offPlayer;
+                else {
+                    offPlayer.name = playerDB.Rows[0]["Name"].ToString().Trim();
+                    offPlayer.title = playerDB.Rows[0]["Title"].ToString().Trim();
+                    offPlayer.titleColor = c.Parse(playerDB.Rows[0]["title_color"].ToString().Trim());
+                    offPlayer.color = c.Parse(playerDB.Rows[0]["color"].ToString().Trim());
+                    offPlayer.money = int.Parse(playerDB.Rows[0]["Money"].ToString());
+                }
+            }
+            return offPlayer;
+        }
         #endregion
         #region == OTHER ==
         static byte FreeId() {
@@ -4035,12 +4077,9 @@ Next: continue;
             }
         }
         public bool EnoughMoney(int amount) {
-            if ( this.money >= amount ) {
+            if (this.money >= amount)
                 return true;
-            }
-            else {
-                return false;
-            }
+            return false;
         }
         public void ReviewTimer() {
             this.canusereview = false;

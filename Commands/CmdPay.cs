@@ -16,6 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
+using System.Data;
+using MCForge.SQL;
+using System.Globalization;
 
 
 namespace MCForge.Commands
@@ -35,24 +38,64 @@ namespace MCForge.Commands
             if (message.Split(' ').Length != 2) { Help(p); return; }
 
             Player who = Player.Find(message.Split(' ')[0]);
-            if (who == null) { Player.SendMessage(p, "Could not find player entered"); return; }
-            if (who == p) { Player.SendMessage(p, "Sorry. Can't allow you to pay yourself"); return; }
+            Economy.EcoStats payer;
+            Economy.EcoStats receiver;
 
             int amountPaid;
-            try { amountPaid = int.Parse(message.Split(' ')[1]); }
-            catch { Player.SendMessage(p, "Invalid amount"); return; }
+            try { amountPaid = int.Parse(message.Split(' ')[1]); } catch { Player.SendMessage(p, "%cInvalid amount"); return; }
+            if (amountPaid < 0) { Player.SendMessage(p, "%cCannot pay negative %3" + Server.moneys); return; }
 
-            if (who.money + amountPaid > 16777215) { Player.SendMessage(p, "Players cannot have over 16777215 " + Server.moneys); return; }
-            if (p.money - amountPaid < 0) { Player.SendMessage(p, "You don't have that much " + Server.moneys); return; }
-            if (amountPaid < 0) { Player.SendMessage(p, "Cannot pay negative " + Server.moneys); return; }
+            if (who == null) { //player is offline
+                Player.OfflinePlayer off = Player.FindOffline(message.Split()[0]);
+                if (off.name == "") { Player.SendMessage(p, "%cThe player %f" + message.Split()[0] + Server.DefaultColor + "(offline)%c does not exist or has never logged on to this server"); return; }
 
-            who.money += amountPaid;
+                payer = Economy.RetrieveEcoStats(p.name);
+                receiver = Economy.RetrieveEcoStats(message.Split()[0]);
+                if (!IsLegalPayment(p, payer.money, receiver.money, amountPaid)) return;
+
+                p.money -= amountPaid;
+                who.money += amountPaid;
+
+                payer.money = p.money;
+                receiver.money = who.money;
+
+                payer.payment = "%f" + amountPaid + " %3" + Server.moneys + " to " + off.color + off.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                receiver.salary = "%f" + amountPaid + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+
+                Economy.UpdateEcoStats(payer);
+                Economy.UpdateEcoStats(receiver);
+
+                Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " paid %f" + off.color + off.name + Server.DefaultColor + "(offline) %f" + amountPaid + " %3" + Server.moneys);
+                return;
+            }
+            if (who == p) { Player.SendMessage(p, "%cYou can't pay yourself %3" + Server.moneys); return; }
+
+            payer = Economy.RetrieveEcoStats(p.name);
+            receiver = Economy.RetrieveEcoStats(who.name);
+            if (!IsLegalPayment(p, payer.money, receiver.money, amountPaid)) return;
+
             p.money -= amountPaid;
-            Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " paid " + who.color + who.name + Server.DefaultColor + " " + amountPaid + " " + Server.moneys);
+            who.money += amountPaid;
+
+            payer.money = p.money;
+            receiver.money = who.money;
+
+            payer.payment = "%f" + amountPaid + " %3" + Server.moneys + " to " + who.color + who.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            receiver.salary = "%f" + amountPaid + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+
+            Economy.UpdateEcoStats(payer);
+            Economy.UpdateEcoStats(receiver);
+            Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " paid " + who.color + who.prefix + who.name + " %f" + amountPaid + " %3" + Server.moneys);
         }
         public override void Help(Player p)
         {
             Player.SendMessage(p, "/pay [player] <amount> - Pays <amount> of " + Server.moneys + " to [player]");
+        }
+
+        private bool IsLegalPayment(Player p, int payer, int receiver, int amount) {
+            if (receiver + amount > 16777215) { Player.SendMessage(p, "%cPlayers cannot have over %f16777215 %3" + Server.moneys); return false; }
+            if (payer - amount < 0) { Player.SendMessage(p, "%cYou don't have enough %3" + Server.moneys); return false; }
+            return true;
         }
     }
 }

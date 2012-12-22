@@ -17,43 +17,37 @@
 */
 using System;
 
-
-namespace MCForge.Commands
-{
-	public class CmdMoney : Command
-	{
-		public override string name { get { return "money"; } }
-		public override string shortcut { get { return ""; } }
-		public override string type { get { return "other"; } }
-		public override bool museumUsable { get { return true; } }
+namespace MCForge.Commands {
+    public class CmdMoney : Command {
+        public override string name { get { return "money"; } }
+        public override string shortcut { get { return ""; } }
+        public override string type { get { return "other"; } }
+        public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
-		public override void Use(Player p, string message)
-		{
-            if (message == "")
-            {
-                Player.SendMessage(p, "You currently have " + p.money + " " + Server.moneys + ".");
-            }
-            else
-            {
+        public override void Use(Player p, string message) {
+            if (message == "" || message == null || message == string.Empty) {
+                Player.SendMessage(p, "You currently have %3" + p.money + " " + Server.moneys);
+            } else if (message.Split().Length == 1) {
                 Player who = Player.Find(message);
-                if (who == null)
-                {
-                    Player.SendMessage(p, "Error: Player is not online.");
+                if (who == null) { //player is offline
+                    Economy.EcoStats ecos = Economy.RetrieveEcoStats(message);
+                    Player.SendMessage(p, ecos.playerName + "(%foffline" + Server.DefaultColor + ") currently has %3" + ecos.money + " " + Server.moneys);
                     return;
                 }
-                if (who.group.Permission >= p.group.Permission)
-                {
-                    Player.SendMessage(p, "Cannot see the money of someone of equal or greater rank.");
+                //you can see everyone's stats with /eco stats [player]
+                /*if (who.group.Permission >= p.group.Permission) {
+                    Player.SendMessage(p, "%cCannot see the money of someone of equal or greater rank.");
                     return;
-                }
-
-                Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " currently has " + who.money + " " + Server.moneys + ".");
-            }  
+                }*/
+                Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " currently has %3" + who.money + " " + Server.moneys);
+            } else {
+                Player.SendMessage(p, "%cInvalid parameters!");
+                Help(p);
+            }
         }
 
-		public override void Help(Player p)
-		{
-			Player.SendMessage(p, "/money <player> - Shows how much " + Server.moneys + " <player> has");
-		}
-	}
+        public override void Help(Player p) {
+            Player.SendMessage(p, "/money <player> - Shows how much %3" + Server.moneys + Server.DefaultColor + " <player> has");
+        }
+    }
 }

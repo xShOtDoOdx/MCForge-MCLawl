@@ -152,5 +152,10 @@ namespace MCForge
                 return rk.GetValue("Content Type").ToString();
             return "application/octet-stream";
         }
+
+        public static void DeleteLine(string file, string line) {
+            var complete = from selectLine in File.ReadAllLines(file) where selectLine != line select selectLine;
+            File.WriteAllLines(file, complete.ToArray());
+        }
     }
 }

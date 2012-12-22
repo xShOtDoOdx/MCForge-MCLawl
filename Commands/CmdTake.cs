@@ -16,7 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
+using System.Data;
+using MCForge.SQL;
+using System.Globalization;
 
 namespace MCForge.Commands
 {
@@ -34,23 +36,56 @@ namespace MCForge.Commands
             if (message.IndexOf(' ') == -1) { Help(p); return; }
             if (message.Split(' ').Length != 2) { Help(p); return; }
 
-            Player who = Player.Find(message.Split(' ')[0]);
-            if (who == null) { Player.SendMessage(p, "Could not find player entered"); return; }
-            if (who == p) { Player.SendMessage(p, "Sorry. Can't allow you to take money from yourself"); return; }
+            int amountTaken = 0;
+            bool all = false;
+            try { amountTaken = int.Parse(message.Split(' ')[1]); } catch {
+                if (message.Split()[1].ToLower() != "all") {
+                    Player.SendMessage(p, "%cInvalid amount");
+                    return;
+                }
+                all = true;
+            }
+            if (amountTaken < 0) { Player.SendMessage(p, "%cYou can't take negative %3" + Server.moneys); return; }
 
-            int amountTaken;
-            try { amountTaken = int.Parse(message.Split(' ')[1]); }
-            catch { Player.SendMessage(p, "Invalid amount"); return; }
 
-            if (who.money - amountTaken < 0) { Player.SendMessage(p, "Players cannot have less than 0 " + Server.moneys); return; }
-            if (amountTaken < 0) { Player.SendMessage(p, "Cannot take negative " + Server.moneys); return; }
+            Player who = Player.Find(message.Split()[0]);
+            Economy.EcoStats ecos;
+            if (who == null) { //player is offline
+                Player.OfflinePlayer off = Player.FindOffline(message.Split()[0]);
+                if (off.name == "") { Player.SendMessage(p, "%cThe player %f" + message.Split()[0] + Server.DefaultColor + "(offline)%c does not exist or has never logged on to this server"); return; }
+                ecos = Economy.RetrieveEcoStats(message.Split()[0]);
+                if (all || ecos.money - amountTaken < 0) {
+                    amountTaken = ecos.money;
+                    ecos.money = 0;
+                } else
+                    ecos.money -= amountTaken;
+                ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                Economy.UpdateEcoStats(ecos);
+                Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + off.color + off.name + "%f(offline)");
+                return;
+            }
+            ecos = Economy.RetrieveEcoStats(who.name);
+            if (who == p) {
+                Player.SendMessage(p, "%cYou can't take %3" + Server.moneys + "%c from yourself");
+                return;
+            }
 
-            who.money -= amountTaken;
-            Player.GlobalMessage(who.color + who.prefix + who.name + Server.DefaultColor + " was rattled down for " + amountTaken + " " + Server.moneys);
+            if (all || ecos.money - amountTaken < 0) {
+                amountTaken = who.money;
+                who.money = 0;
+                ecos.money = 0;
+            } else {
+                who.money -= amountTaken;
+                ecos.money = who.money;
+            }
+            ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            Economy.UpdateEcoStats(ecos);
+            Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + who.color + who.prefix + who.name);
         }
         public override void Help(Player p)
         {
             Player.SendMessage(p, "/take [player] <amount> - Takes <amount> of " + Server.moneys + " from [player]");
+            Player.SendMessage(p, "/take [player] all - Takes all the " + Server.moneys + " from [player]");
         }
     }
 }

@@ -17,6 +17,7 @@
 */
 using System;
 using System.IO;
+using System.Linq;
 
 namespace MCForge
 {
@@ -55,6 +56,10 @@ namespace MCForge
                             if (Server.devs.Contains(who.name) || Server.gcmodhasprotection(who.name)) return;
                             Player.SendMessage(p, who.name + " was jailed.");
                         }
+                        if (!File.Exists("ranks/jailed.txt")) File.Create("ranks/jailed.txt");
+                        using (StreamWriter writer = new StreamWriter("ranks/jailed.txt", true)) {
+                            writer.WriteLine(who.name.ToLower() + " " + who.level.name);
+                        }
                         Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was &8jailed", false);
                     }
                     else
@@ -65,6 +70,9 @@ namespace MCForge
                             Player.SendMessage(p, who.name + " was freed from jail.");
                         }
                         who.jailed = false;
+
+                        Extensions.DeleteLine("ranks/jailed.txt", who.name.ToLower());
+
                         Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was &afreed" + Server.DefaultColor + " from jail", false);
                     }
                 }

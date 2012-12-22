@@ -541,8 +541,6 @@ namespace MCForge
                 }
             }
 
-            LoadAllSettings();
-
             if (File.Exists("text/emotelist.txt"))
             {
                 foreach (string s in File.ReadAllLines("text/emotelist.txt"))
@@ -622,6 +620,8 @@ namespace MCForge
                 }
             }
 
+            LoadAllSettings();
+
             if (levels != null)
                 foreach (Level l in levels) { l.Unload(); }
             ml.Queue(delegate
@@ -692,6 +692,7 @@ namespace MCForge
                     grp.playerList = PlayerList.Load(grp.fileName, grp);
                 if (useWhitelist)
                     whiteList = PlayerList.Load("whitelist.txt", null);
+                if (!File.Exists("ranks/jailed.txt")) { File.Create("ranks/jailed.txt").Close(); Server.s.Log("CREATED NEW: ranks/jailed.txt"); }
             });
 
             ml.Queue(delegate
@@ -976,7 +977,7 @@ namespace MCForge
             GrpCommands.fillRanks();
             Block.SetBlocks();
             Awards.Load();
-            Economy.Load();
+            Economy.Load(true);
             Warp.LOAD();
             CommandOtherPerms.Load();
             ProfanityFilter.Init();
