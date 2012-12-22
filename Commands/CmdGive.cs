@@ -47,7 +47,7 @@ namespace MCForge.Commands {
                 ecos.money += amountGiven;
                 ecos.salary = "%f" + amountGiven + " %3 " + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 Economy.UpdateEcoStats(ecos);
-                Player.GlobalMessage("%f" + ecos.playerName + Server.DefaultColor + "(offline) was given %3" + amountGiven + " " + Server.moneys + Server.DefaultColor + " by " + p.color + p.prefix + p.name);
+                Player.GlobalMessage("%f" + ecos.playerName + Server.DefaultColor + "(offline) was given %f" + amountGiven + " %3" + Server.moneys + Server.DefaultColor + " by " + p.color + p.prefix + p.name);
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace MCForge.Commands {
                 ecos.money = p.money;
                 ecos.salary = "%f" + amountGiven + " %3 " + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 Economy.UpdateEcoStats(ecos);
-                Player.SendMessage(p, "You gave yourself %3" + amountGiven + " " + Server.moneys);
+                Player.SendMessage(p, "You gave yourself %f" + amountGiven + " %3" + Server.moneys);
                 return;
             }*/
 

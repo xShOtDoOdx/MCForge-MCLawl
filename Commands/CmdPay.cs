@@ -54,10 +54,9 @@ namespace MCForge.Commands
                 if (!IsLegalPayment(p, payer.money, receiver.money, amountPaid)) return;
 
                 p.money -= amountPaid;
-                who.money += amountPaid;
 
                 payer.money = p.money;
-                receiver.money = who.money;
+                receiver.money += amountPaid;
 
                 payer.payment = "%f" + amountPaid + " %3" + Server.moneys + " to " + off.color + off.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 receiver.salary = "%f" + amountPaid + " %3" + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);

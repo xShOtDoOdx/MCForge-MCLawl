@@ -49,7 +49,6 @@ namespace MCForge {
                 public string y;
                 public string z;
                 public string type;
-                public bool private_; //coming soon
             }
 
             //Titles
@@ -233,7 +232,6 @@ namespace MCForge {
                     w.WriteLine("level:levels:" + lvl.name + ":y:" + lvl.y);
                     w.WriteLine("level:levels:" + lvl.name + ":z:" + lvl.z);
                     w.WriteLine("level:levels:" + lvl.name + ":type:" + lvl.type);
-                    //w.WriteLine("level:levels:" + lvl.name + ":private:" + lvl.private_); //coming soon
                 }
                 w.Close();
             }

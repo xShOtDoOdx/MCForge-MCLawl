@@ -3733,6 +3733,7 @@ catch { }*/
                     offPlayer.titleColor = c.Parse(playerDB.Rows[0]["title_color"].ToString().Trim());
                     offPlayer.color = c.Parse(playerDB.Rows[0]["color"].ToString().Trim());
                     offPlayer.money = int.Parse(playerDB.Rows[0]["Money"].ToString());
+                    if (offPlayer.color == "") { offPlayer.color = GetGroup(offPlayer.name).color; }
                 }
             }
             return offPlayer;
