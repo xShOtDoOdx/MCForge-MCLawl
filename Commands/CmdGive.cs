@@ -33,7 +33,7 @@ namespace MCForge.Commands {
             
             string user1 = "";
             string user2 = "";
-            if (p == null) { user1 = "[Console]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); }
+            if (p == null) { user1 = "%f[ " + Server.DefaultColor + "Console%f]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); }
             else { user1 = p.color + p.name; user2 = p.color + p.prefix + p.name; }
 
             int amountGiven;
@@ -50,7 +50,7 @@ namespace MCForge.Commands {
                 ecos = Economy.RetrieveEcoStats(message.Split()[0]);
                 if (ReachedMax(p, ecos.money, amountGiven)) return;
                 ecos.money += amountGiven;
-                ecos.salary = "%f" + amountGiven + " %3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                ecos.salary = "%f" + amountGiven + "%3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 Economy.UpdateEcoStats(ecos);
                 Player.GlobalMessage("%f" + ecos.playerName + Server.DefaultColor + "(offline) was given %f" + amountGiven + " %3" + Server.moneys + Server.DefaultColor + " by " + user2);
                 return;
@@ -76,7 +76,7 @@ namespace MCForge.Commands {
             who.money += amountGiven;
             ecos = Economy.RetrieveEcoStats(who.name);
             ecos.money = who.money;
-            ecos.salary = "%f" + amountGiven + " %3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            ecos.salary = "%f" + amountGiven + "%3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             Economy.UpdateEcoStats(ecos);
             Player.GlobalMessage(who.color + who.prefix + who.name + Server.DefaultColor + " was given %f" + amountGiven + " %3" + Server.moneys + Server.DefaultColor + " by " + user2);
         }

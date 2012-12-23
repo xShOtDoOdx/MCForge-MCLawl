@@ -157,5 +157,10 @@ namespace MCForge
             var complete = from selectLine in File.ReadAllLines(file) where selectLine != line select selectLine;
             File.WriteAllLines(file, complete.ToArray());
         }
+
+        public static void DeleteLineWord(string file, string word) {
+                var complete = from selectLine in File.ReadAllLines(file) where !selectLine.Contains(word) select selectLine;
+                File.WriteAllLines(file, complete.ToArray());
+        }
     }
 }

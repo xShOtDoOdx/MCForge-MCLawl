@@ -119,6 +119,8 @@ namespace MCForge.Commands
                 who.group = newRank;
                 if(who.color == "" || who.color == oldcolor )
                     who.color = who.group.color;
+                who.SetPrefix();
+
                 Player.GlobalDie(who, false);
 
                 who.SendMessage("You are now ranked " + newRank.color + newRank.name + Server.DefaultColor + ", type /help for your new set of commands.");

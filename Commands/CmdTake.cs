@@ -35,7 +35,7 @@ namespace MCForge.Commands {
 
             string user1 = "";
             string user2 = "";
-            if (p == null) { user1 = "[Console]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); } else { user1 = p.color + p.name; user2 = p.color + p.prefix + p.name; }
+            if (p == null) { user1 = "%f[ " + Server.DefaultColor + "Console%f]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); } else { user1 = p.color + p.name; user2 = p.color + p.prefix + p.name; }
 
             int amountTaken = 0;
             bool all = false;

@@ -1025,18 +1025,27 @@ namespace MCForge {
                 File.WriteAllText("text/login/" + this.name + ".txt", "joined the server.");
             }
 
+            //very very sloppy, yes I know.. but works for the time
+            bool gotoJail = false;
+            string gotoJailMap = "";
+            string gotoJailName = "";
             if (File.Exists("ranks/jailed.txt")) {
                 using (StreamReader read = new StreamReader("ranks/jailed.txt")) {
                     string line;
                     while ((line = read.ReadLine()) != null) {
                         if (line.Split()[0].ToLower() == this.name.ToLower()) {
-                            Command.all.Find("goto").Use(this, line.Split()[1]);
-                            Command.all.Find("jail").Use(null, line.Split()[0]);
+                            gotoJail = true;
+                            gotoJailMap = line.Split()[1];
+                            gotoJailName = line.Split()[0];
                             break;
                         }
                     }
                 }
             } else { File.Create("ranks/jailed.txt").Close(); }
+            if (gotoJail) {
+                Command.all.Find("goto").Use(this, gotoJailMap);
+                Command.all.Find("jail").Use(null, gotoJailName);
+            }
 
             if ( Server.agreetorulesonentry == true ) {
                 if ( !File.Exists("ranks/agreed.txt") ) {
