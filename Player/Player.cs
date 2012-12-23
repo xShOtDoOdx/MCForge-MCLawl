@@ -3930,6 +3930,8 @@ Next: continue;
         #endregion
 
         public static bool IPInPrivateRange(string ip) {
+            if (ip.StartsWith("127.0.0.") || ip.StartsWith("192.168.") || ip.StartsWith("10."))
+                return true;            
             //Too lazy to change usages
             return IsLocalIpAddress(ip);
         }
