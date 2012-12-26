@@ -80,22 +80,11 @@ namespace MCForge.Commands
                 {
                     Player who = Player.Find(param[1]);
 
-                    if (Server.devs.Contains(who.name))
-                    {
-                        Player.SendMessage(p, "You can't lockdown a dev!");
-                        return;
-                    }
-                    if (Server.gcmodhasprotection(who.name))
-                    {
-                        Player.SendMessage(p, "You can't lockdown a Global Chat Moderator!");
-                        return;
-                    }
                     if (who == null)
                     {
                         Player.SendMessage(p, "There is no player with such name online");
                         return;
                     }
-
 
                     if (!who.jailed)
                     {

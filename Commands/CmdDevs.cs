@@ -22,7 +22,7 @@ using System;
 namespace MCForge.Commands {
 	public class CmdDevs : Command {
 		public override string name { get { return "devs"; } }
-		public override string shortcut { get { return ""; } }
+		public override string shortcut { get { return "dev"; } }
 		public override string type { get { return "information"; } }
 		public override bool museumUsable { get { return true; } }
 		public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
@@ -32,7 +32,7 @@ namespace MCForge.Commands {
 			if ( message != "" ) { Help(p); return; }
 			string devlist = "";
 			string temp;
-			foreach ( string dev in Server.devs ) {
+			foreach ( string dev in Server.Devs ) {
 				temp = dev.Substring(0, 1);
 				temp = temp.ToUpper() + dev.Remove(0, 1);
 				devlist += temp + ", ";

@@ -25,7 +25,7 @@ namespace MCForge
 {
     public static class VIP
     {
-        public static readonly string file = "text/vips.txt";
+        public static readonly string file = "text/vips.txt"; //this file is never even created anywhere..
 
 
         public static void Add(string name)

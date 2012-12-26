@@ -94,9 +94,12 @@
     <Compile Include="Commands\CmdC4.cs" />
     <Compile Include="Commands\CmdGcaccept.cs" />
     <Compile Include="Commands\CmdGcbanlistupdate.cs" />
+    <Compile Include="Commands\CmdGcmods.cs" />
     <Compile Include="Commands\CmdGcrules.cs" />
     <Compile Include="Commands\CmdGifToCin.cs" />
+    <Compile Include="Commands\CmdMods.cs" />
     <Compile Include="Commands\CmdSearch.cs" />
+    <Compile Include="Commands\CmdStaff.cs" />
     <Compile Include="Commands\CmdTntWars.cs" />
     <Compile Include="Commands\CommandKeywords.cs" />
     <Compile Include="Donators.cs" />

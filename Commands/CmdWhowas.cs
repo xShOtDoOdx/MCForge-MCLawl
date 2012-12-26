@@ -70,10 +70,19 @@ namespace MCForge.Commands
             	string[] data = Ban.Getbandata(message);
             	Player.SendMessage(p, "> > was banned by " + data[0] + " for " + data[1] + " on " + data[2]);
             }
-            bool skip = false;
-            if (p != null) if ((int)p.group.Permission <= CommandOtherPerms.GetPerm(this)) skip = true;
 
-            if (!skip)
+            if (Server.Devs.Contains(message.ToLower())) {
+                Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
+                if (Server.forgeProtection == ForgeProtection.Mod || Server.forgeProtection == ForgeProtection.Dev)
+                    Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
+            } else if (Server.Mods.Contains(message.ToLower())) {
+                Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9MCForge Moderator");
+                if (Server.forgeProtection == ForgeProtection.Mod)
+                    Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
+            } else if (Server.GCmods.Contains(message.ToLower()))
+                Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Global Chat Moderator");
+
+            if (!(p != null && (int)p.group.Permission <= CommandOtherPerms.GetPerm(this)))
             {
                 if (Server.bannedIP.Contains(playerDb.Rows[0]["IP"].ToString()))
                     playerDb.Rows[0]["IP"] = "&8" + playerDb.Rows[0]["IP"] + ", which is banned";
@@ -84,10 +93,6 @@ namespace MCForge.Commands
                     {
                         Player.SendMessage(p, "> > Player is &fWhitelisted");
                     }
-                }
-                if (Server.devs.Contains(message.ToLower()))
-                {
-                    Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
                 }
             }
             playerDb.Dispose();

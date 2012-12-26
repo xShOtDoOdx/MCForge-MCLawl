@@ -162,5 +162,17 @@ namespace MCForge
                 var complete = from selectLine in File.ReadAllLines(file) where !selectLine.Contains(word) select selectLine;
                 File.WriteAllLines(file, complete.ToArray());
         }
+
+        public static void DeleteExactLineWord(string file, string word) {
+            var complete = from selectLine in File.ReadAllLines(file) where !selectLine.Equals(word) select selectLine;
+            File.WriteAllLines(file, complete.ToArray());
+        }
+
+        public static void UncapitalizeAll(string file) {
+            string[] complete = File.ReadAllLines(file);
+            for (int i = 0; i < complete.Length; i++)
+                complete[i] = complete[i].ToLower();
+            File.WriteAllLines(file, complete);
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace MCForge.Commands
         {
             if (Server.agreetorulesonentry == false)
             {
-                Player.SendMessage(p, "This command can only be used if agree-to-rules-on-entry is enabled in the console!");
+                Player.SendMessage(p, "This command can only be used if agree-to-rules-on-entry is enabled!");
                 return;
             }
             if (p == null)
@@ -74,7 +74,7 @@ namespace MCForge.Commands
                 Player.SendMessage(p, "You have already agreed to the rules!");
                 return;
             }
-            p.jailed = false;
+            p.agreed = true;
             Player.SendMessage(p, "Thank you for agreeing to follow the rules. You may now build and use commands!");
             string playerspath = "ranks/agreed.txt";
             if (File.Exists(playerspath))

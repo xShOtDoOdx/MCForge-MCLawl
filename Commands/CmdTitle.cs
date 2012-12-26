@@ -36,25 +36,8 @@ namespace MCForge.Commands {
             Player who = Player.Find(message.Split(' ')[0]);
             if (who == null) { Player.SendMessage(p, "Could not find player."); return; }
             if (p != null && who.group.Permission > p.group.Permission) {
-                if (!Server.devs.Contains(p.name)) {
                     Player.SendMessage(p, "Cannot change the title of someone of greater rank");
                     return;
-                }
-            }
-
-            if (Server.devs.Contains(who.name)) {
-                if (p == null) { FixThis1(who.name); return; }
-                if (!Server.devs.Contains(p.name)) {
-                    Player.SendMessage(p, "You can't change the title of a developer!");
-                    return;
-                }
-            }
-            if (Server.gcmods.Contains(who.name)) {
-                if (p == null) { FixThis2(who.name); return; }
-                if (!Server.devs.Contains(p.name) && !Server.gcmods.Contains(p.name)) {
-                    Player.SendMessage(p, "You can't change the title of a Global Chat Moderator!");
-                    return;
-                }
             }
 
             string query;
@@ -69,23 +52,20 @@ namespace MCForge.Commands {
                 return;
             }
 
-            if (newTitle != "") {
+            if (newTitle != "") { //remove the brackets from the given title
                 newTitle = newTitle.ToString().Trim().Replace("[", "");
                 newTitle = newTitle.Replace("]", "");
-                /* if (newTitle[0].ToString() != "[") newTitle = "[" + newTitle;
-                if (newTitle.Trim()[newTitle.Trim().Length - 1].ToString() != "]") newTitle = newTitle.Trim() + "]";
-                if (newTitle[newTitle.Length - 1].ToString() != " ") newTitle = newTitle + " "; */
             }
 
             if (newTitle.Length > 17) { Player.SendMessage(p, "Title must be under 17 letters."); return; }
-            if (p != null && !Server.devs.Contains(p.name)) {
-                string title = newTitle.ToLower();
-                foreach (char c in Server.ColourCodesNoPercent) {
-                    title = title.Replace("%" + c, "");
-                    title = title.Replace("&" + c, "");
-                }
-                if (title.Contains("dev")) { Player.SendMessage(p, "You're not a developer! Stop pretending you are!"); return; }
-            }
+            
+
+            /*string title = newTitle.ToLower();
+            foreach (char c in Server.ColourCodesNoPercent) { title = title.Replace("%" + c, ""); title = title.Replace("&" + c, ""); }
+            foreach (string occur in Server.BadTitles) {
+                if (title.Contains(occur)) { Player.SendMessage(p, "%cYou're not a developer! Stop pretending you are!"); return; }
+            }*/
+
 
             if (newTitle != "")
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was given the title of &b[" + newTitle + "]", false);
@@ -116,25 +96,5 @@ namespace MCForge.Commands {
             Player.SendMessage(p, "/title <player> [title] - Gives <player> the [title].");
             Player.SendMessage(p, "If no [title] is given, the player's title is removed.");
         }
-
-        public void FixThis1(string who) {
-            foreach (string name in Server.devs) {
-                Player dev = Player.Find(name);
-                if (dev != null && dev.name == who) {
-                    Player.SendMessage(dev, "%cEither you tried to buy a title or Console tried to change your title. This can't be allowed either way. Want to know why? Ask QuantumHive or dive into the CmdTitle.cs class");
-                    Server.s.Log("A dev's title can't be changed!");
-                }
-            }
-        }
-        public void FixThis2(string who) {
-            foreach (string name in Server.gcmods) {
-                Player gcmod = Player.Find(name);
-                if (gcmod != null && gcmod.name == who) {
-                    Player.SendMessage(gcmod, "%cEither you tried to buy a title or Console tried to change your title. This can't be allowed either way. Want to know why? Ask QuantumHive or dive into the CmdTitle.cs class");
-                    Server.s.Log("A GC mod's title can't be changed!");
-                }
-            }
-        }
-
     }
 }

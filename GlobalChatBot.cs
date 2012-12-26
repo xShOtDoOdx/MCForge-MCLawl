@@ -267,7 +267,7 @@ namespace MCForge
             }
             if (message.Contains("^SENDRULES "))
             { //^GETPLAYERINFO NICK PLAYER
-                if (Server.devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
+                if (Server.Devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
                 else { Player.GlobalMessage("NOTATEST"); }
                 string[] split = message.Split(' ');
                 if (split.Length < 2) { return; }
@@ -305,8 +305,12 @@ namespace MCForge
             if (OnNewRecieveGlobalMessage != null)
                 OnNewRecieveGlobalMessage(user.Nick, message);
             
-            if (Server.devs.Contains(message.Split(':')[0]) && !message.StartsWith("[Dev]") && !message.StartsWith("[Developer]")) 
+            if (Server.Devs.Contains(message.Split(':')[0].ToLower()) && !message.StartsWith("[Dev]") && !message.StartsWith("[Developer]")) 
                 message = "[Dev]" + message;
+            else if(Server.Mods.Contains(message.Split(':')[0].ToLower()) && !message.StartsWith("[Mod]") && !message.StartsWith("[Moderator]"))
+                message = "[Mod]" + message;
+            else if (Server.Mods.Contains(message.Split(':')[0].ToLower()) && !message.StartsWith("[GCMod]"))
+                message = "[GCMod]" + message;
 
             /*try { 
                 if(GUI.GuiEvent != null)

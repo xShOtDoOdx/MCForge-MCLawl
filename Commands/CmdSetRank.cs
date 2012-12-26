@@ -126,7 +126,6 @@ namespace MCForge.Commands
                 who.SendMessage("You are now ranked " + newRank.color + newRank.name + Server.DefaultColor + ", type /help for your new set of commands.");
                 who.SendUserType(Block.canPlace(who.group.Permission, Block.blackrock));
 
-                Boolean tryer = true;
                 string year = DateTime.Now.Year.ToString();
                 string month = DateTime.Now.Month.ToString();
                 string day = DateTime.Now.Day.ToString();
@@ -159,14 +158,8 @@ namespace MCForge.Commands
                 }
                 catch
                 {
-                    tryer = false;
-                }
-
-                if (!tryer)
-                {
                     Player.SendMessage(p, "&cAn error occurred!");
                 }
-
 
                 Player.GlobalSpawn(who, who.pos[0], who.pos[1], who.pos[2], who.rot[0], who.rot[1], false);
             }

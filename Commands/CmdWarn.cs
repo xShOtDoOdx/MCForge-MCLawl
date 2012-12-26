@@ -43,13 +43,6 @@ namespace MCForge.Commands
                 return;
             }
 
-            // Don't warn a dev
-            if (Server.devs.Contains(who.name))
-            {
-                Player.SendMessage(p, "Why are you warning a dev??");
-                return;
-            }
-
             // Don't warn yourself... derp
             if (who == p)
             {

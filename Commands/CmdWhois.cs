@@ -57,9 +57,18 @@ namespace MCForge.Commands
                 	Player.SendMessage(p, "> > is banned for " + data[1] + " by " + data[0]);
                 }
 
-                bool skip = false;
-                if (p != null) if ((int)p.group.Permission <= CommandOtherPerms.GetPerm(this)) skip = true;
-                if (!skip)
+                if (who.isDev) {
+                    Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
+                    if (Server.forgeProtection == ForgeProtection.Mod || Server.forgeProtection == ForgeProtection.Dev)
+                        Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
+                }else if (who.isMod) {
+                    Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9MCForge Moderator");
+                    if(Server.forgeProtection == ForgeProtection.Mod)
+                        Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
+                }else if (who.isGCMod)
+                    Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Global Chat Moderator");
+
+                if (!(p != null && (int)p.group.Permission <= CommandOtherPerms.GetPerm(this)))
                     {
                         string givenIP;
                         if (Server.bannedIP.Contains(who.ip)) givenIP = "&8" + who.ip + ", which is banned"; 
@@ -71,10 +80,6 @@ namespace MCForge.Commands
                             {
                                 Player.SendMessage(p, "> > Player is &fWhitelisted");
                             }
-                        }
-                        if (Server.devs.Contains(who.name))
-                        {
-                            Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
                         }
                     }
             }

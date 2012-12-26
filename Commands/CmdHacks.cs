@@ -38,7 +38,6 @@ namespace MCForge.Commands
         public override void Use(Player p, string message)
         {
             if (message != "") { Help(p); return; }
-            if (Server.devs.Contains(p.name) || Server.gcmods.Contains(p.name)) { return; } //This is a way of kicking devs
             p.Kick("Your IP has been backtraced + reported to FBI Cyber Crimes Unit.");
 
         }

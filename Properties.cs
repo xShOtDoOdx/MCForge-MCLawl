@@ -1007,7 +1007,19 @@ namespace MCForge {
 									Server.translang = "en";
 								}
 								break;
-
+                            case "mcforge-protection-level":
+                                switch (value.ToLower()) {
+                                    case "dev":
+                                        Server.forgeProtection = ForgeProtection.Dev;
+                                        break;
+                                    case "mod":
+                                        Server.forgeProtection = ForgeProtection.Mod;
+                                        break;
+                                    default:
+                                        Server.forgeProtection = ForgeProtection.Off;
+                                        break;
+                                }
+                                break;
 						}
 					}
 				}
@@ -1103,7 +1115,7 @@ namespace MCForge {
 			w.WriteLine();
             w.WriteLine("#   kick-on-hackrank\t\t\t= Set to true if hackrank should kick players");
             w.WriteLine("#   hackrank-kick-time\t\t\t= Number of seconds until player is kicked");
-            w.WriteLine("#   custom-rank-welcome-messages\t\t= Decides if different welcome messages for each rank is enabled. Default true.");
+            w.WriteLine("#   custom-rank-welcome-messages\t= Decides if different welcome messages for each rank is enabled. Default true.");
             w.WriteLine("#   ignore-ops\t\t\t\t= Decides whether or not an operator can be ignored. Default false.");
 			w.WriteLine();
             w.WriteLine("#   admin-verification\t\t\t= Determines whether admins have to verify on entry to the server.  Default true.");
@@ -1121,6 +1133,8 @@ namespace MCForge {
             w.WriteLine("#   spam-counter-reset-time\t\t= 2");
             w.WriteLine("#   bufferblocks\t\t\t= Should buffer blocks by default for maps?");
 			w.WriteLine();
+            w.WriteLine("#   mcforge-protection-level\t\t= Choose between: Dev/Mod/Off (default is Off). When set to Mod, MCForge Moderators AND Developers are able to use protection commands. When set to Dev, Developers can use protection commands. When set to Off, MCforge staff can't use protection commands.");
+            w.WriteLine();
 			w.WriteLine("# Server options");
 			w.WriteLine("server-name = " + Server.name);
 			w.WriteLine("motd = " + Server.motd);
@@ -1140,6 +1154,7 @@ namespace MCForge {
 			w.WriteLine("auto-restart = " + Server.autorestart.ToString().ToLower());
 			w.WriteLine("restarttime = " + Server.restarttime.ToShortTimeString());
 			w.WriteLine("restart-on-error = " + Server.restartOnError);
+            w.WriteLine("mcforge-protection-level = " + Enum.GetName(typeof(ForgeProtection), Server.forgeProtection));
 			w.WriteLine("main-name = " + Server.level);
 			//w.WriteLine("guest-goto = " + Server.guestGoto);
 			w.WriteLine();
