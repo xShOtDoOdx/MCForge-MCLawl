@@ -462,7 +462,9 @@ namespace MCForge.Gui {
                         Server.s.Log("No such command!");
                         return;
                     }
-                    commandcmd.Use(null, sentMsg);
+                    if (!Player.CommandProtected(sentCmd, sentMsg)) {
+                        commandcmd.Use(null, sentMsg);
+                    } else { Server.s.Log("Cannot use command, player has protection level: " + Server.forgeProtection); };
                     newCommand("CONSOLE: USED /" + sentCmd + " " + sentMsg);
 
                 }

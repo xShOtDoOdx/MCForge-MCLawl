@@ -41,9 +41,8 @@ namespace MCForge {
                             Player.SendMessage(p, "You jailed " + who.name);
                         }
                         Player.GlobalDie(who, false);
-                        if (p != null) Player.GlobalSpawn(who, p.level.jailx, p.level.jaily, p.level.jailz, p.level.jailrotx, p.level.jailroty, true);
-                        else Player.GlobalSpawn(who, who.level.jailx, who.level.jaily, who.level.jailz, who.level.jailrotx, who.level.jailroty, true);
                         who.jailed = true;
+                        Player.GlobalSpawn(who, who.level.jailx, who.level.jaily, who.level.jailz, who.level.jailrotx, who.level.jailroty, true);
                         if (!File.Exists("ranks/jailed.txt")) File.Create("ranks/jailed.txt").Close();
                         Extensions.DeleteLineWord("ranks/jailed.txt", who.name);
                         using (StreamWriter writer = new StreamWriter("ranks/jailed.txt", true)) {
@@ -54,7 +53,7 @@ namespace MCForge {
                         if (!File.Exists("ranks/jailed.txt")) File.Create("ranks/jailed.txt").Close();
                         Extensions.DeleteLineWord("ranks/jailed.txt", who.name.ToLower());
                         who.jailed = false;
-                        Command.all.Find("spawn").Use(p, "");
+                        Command.all.Find("spawn").Use(who, "");
                         Player.SendMessage(p, "You freed " + who.name + " from jail");
                         Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was &afreed" + Server.DefaultColor + " from jail", false);
                     }

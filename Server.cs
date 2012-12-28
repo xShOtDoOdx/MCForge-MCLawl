@@ -117,15 +117,15 @@ namespace MCForge
         public static PlayerList ignored;
 
         // The MCForge Developer List
-        internal static readonly List<string> devs = new List<string>(new string[] { "501st_commander", "lavoaster", "alem_zupa", "bemacized", "shade2010", "dmitchell", "edh649", "hypereddie10", "gamemakergm", "serado", "wouto1997", "cazzar", "givo", "headdetect", "quantumparticle"});
+        internal static readonly List<string> devs = new List<string>();
         public static List<string> Devs { get { return new List<string>(devs); } }
         //The MCForge Moderation List
-        internal static readonly List<string> mods = new List<string>(new string[] { "303i", "hells_avenger", "balthizar01", "alecdent", "borediwaz", "themusikid" });
+        internal static readonly List<string> mods = new List<string>();
         public static List<string> Mods { get { return new List<string>(mods); } }
         //GCMods List
-        internal static readonly List<string> gcmods = new List<string>(new string[] { "jackthekat9", "mod_chris", "niels900000", "side2sideful" });
+        internal static readonly List<string> gcmods = new List<string>();
         public static List<string> GCmods { get { return new List<string>(gcmods); } }
-        internal static readonly List<string> protectover = new List<string>(new string[] { "moderate", "mute", "freeze", "lockdown", "ban", "banip", "kickban", "kick", "global", "xban", "xundo", "undo", "uban", "unban", "unbanip", "demote", "promote", "restart", "shutdown", "setrank", "warn", "tempban", "impersonate", "sendcmd", "possess", "joker", "jail", "ignore" });
+        internal static readonly List<string> protectover = new List<string>(new string[] { "moderate", "mute", "freeze", "lockdown", "ban", "banip", "kickban", "kick", "global", "xban", "xundo", "undo", "uban", "unban", "unbanip", "demote", "promote", "restart", "shutdown", "setrank", "warn", "tempban", "impersonate", "sendcmd", "possess", "joker", "jail", "ignore", "voice" });
         public static List<string> ProtectOver { get { return new List<string>(protectover); } }
 
         public static ForgeProtection forgeProtection = ForgeProtection.Off;
@@ -639,7 +639,9 @@ namespace MCForge
             }
 
             LoadAllSettings();
+            UpdateStaffList();
             Log("MCForge Staff Protection Level: " + forgeProtection);
+
             if (levels != null)
                 foreach (Level l in levels) { l.Unload(); }
             ml.Queue(delegate
@@ -1265,20 +1267,35 @@ namespace MCForge
                         gcipbans.Add(line);
                     }
                     gcipbans.Remove("");
-                    /*result = client.DownloadString("http://gccp.nextbattle.net/mcforge/gcmods.php");
-                    foreach (string line in result.Split('|'))
-                    {
-                        gcmods.Add(line.Split('*')[0]);
-                        gcmodprotection.Add(line);
-                    }
-                    gcmods.Remove("");
-                    gcmodprotection.Remove("");*/
                 }
                 Server.s.Log("Global settings updated!");
             }
             catch
             {
                 Server.s.Log("Could not connect to the DevPanel Server!");
+            }
+        }
+        public void UpdateStaffList() {
+            try {
+                devs.Clear();
+                mods.Clear();
+                gcmods.Clear();
+                using (WebClient web = new WebClient()) {
+                    string[] result = web.DownloadString("http://dl.dropbox.com/u/56214562/forgestaff.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    foreach (string line in result) {
+                        string type = line.Split(':')[0].ToLower();
+                        List<string> staffList = type.Equals("devs") ? devs : type.Equals("mods") ? mods : type.Equals("gcmods") ? gcmods : null;
+                        foreach (string name in line.Split(':')[1].Split())
+                            staffList.Add(name.ToLower());
+                    }
+                }
+            } catch (Exception e) {
+                Server.s.Log("Couldn't update MCForge staff list, turning MCForge Staff Protection Level off. . . ");
+                Server.ErrorLog(e);
+                forgeProtection = ForgeProtection.Off;
+                devs.Clear();
+                mods.Clear();
+                gcmods.Clear();
             }
         }
 

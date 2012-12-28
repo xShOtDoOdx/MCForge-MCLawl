@@ -109,7 +109,6 @@ namespace MCForge.Commands
                                     break;
                             }
                         }
-                        Player.GlobalDie(who, false);
                         who.jailed = true;
                         Player.GlobalMessage(who.color + who.name + Server.DefaultColor + " has been locked down!");
                         Player.GlobalMessageOps("Locked by: " + ((p == null) ? "Console" : p.name));

@@ -34,7 +34,11 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
         public override void Use(Player p, string message)
         {
-            Player player = Player.Find(message.Split(' ')[0]);
+            int length = message.Split().Length;
+            Player player = null;
+            if (length >= 1)
+                player = Player.Find(message.Split(' ')[0]);
+            else return;
             if (player == null)
             {
                 Player.SendMessage(p, "Error: Player is not online.");
@@ -44,16 +48,18 @@ namespace MCForge.Commands
                 if (p == null) { }
                 else { if (player.group.Permission >= p.group.Permission) { Player.SendMessage(p, "Cannot use this on someone of equal or greater rank."); return; } }
                 string command;
-                string command2;
+                string cmdMsg = "";
                 try
                 {
                     command = message.Split(' ')[1];
-                    command2 = message.Split(' ')[2];
-                    Command.all.Find(command).Use(player, command2);
+                    for(int i = 2; i < length; i++)
+                        cmdMsg += message.Split(' ')[i] + " ";
+                    cmdMsg.Remove(cmdMsg.Length - 1); //removing the space " " at the end of the msg
+                    Command.all.Find(command).Use(player, cmdMsg);
                 }
                 catch
                 {
-                    Player.SendMessage(p, "No parameter found");
+                    Player.SendMessage(p, "Error: No parameter found");
                     command = message.Split(' ')[1];
                     Command.all.Find(command).Use(player, "");
                 }

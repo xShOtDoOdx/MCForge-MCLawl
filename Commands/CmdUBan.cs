@@ -36,9 +36,10 @@ namespace MCForge.Commands
             Player who = Player.Find(message.Split(' ')[0]);
             string msg = message.Split(' ')[0];
             if (who != null) {
+                string name = who.name;
                 Command.all.Find("ban").Use(p, msg);
                 Command.all.Find("kick").Use(p, message);
-                Command.all.Find("xundo").Use(p, msg);
+                Command.all.Find("xundo").Use(p, name);
 
             } else {
                 Command.all.Find("ban").Use(p, msg);

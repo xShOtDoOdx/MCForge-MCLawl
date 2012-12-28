@@ -1066,8 +1066,8 @@ namespace MCForge {
                 }
             }
 
-            if ( Server.agreetorulesonentry ) {
-                if ( !File.Exists("ranks/agreed.txt") )
+            if (Server.agreetorulesonentry) {
+                if (!File.Exists("ranks/agreed.txt"))
                     File.WriteAllText("ranks/agreed.txt", "");
                 var agreedFile = File.ReadAllText("ranks/agreed.txt");
                 if (this.group.Permission == LevelPermission.Guest) {
@@ -1075,7 +1075,8 @@ namespace MCForge {
                         SendMessage("&9You must read the &c/rules&9 and &c/agree&9 to them before you can build and use commands!");
                     else agreed = true;
                 } else { agreed = true; }
-            }
+            } else { agreed = true; }
+
             string joinm = "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt");
             if ( this.group.Permission < Server.adminchatperm || Server.adminsjoinsilent == false ) {
             	if (( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) || this.group.Permission > LevelPermission.Guest) {
@@ -2296,7 +2297,8 @@ return;
                     }
 
                     if (Player.CommandProtected(cmd.ToLower(), message)) {
-                        SendMessage("You cannot use this command on Mods and/or Devs");
+                        SendMessage("Cannot use command, player has protection level: " + Server.forgeProtection);
+                        Server.s.CommandUsed(name + " used /" + cmd + " " + message);
                         return;
                     }
 
@@ -3902,7 +3904,8 @@ Next: continue;
 
         public static bool CommandProtected(string cmd, string message) {
             string foundName = "";
-            Player who;
+            Player who = null;
+            bool self = false;
             if (Server.ProtectOver.Contains(cmd))
                 switch (cmd) {
                     //case "demote":
@@ -3913,8 +3916,10 @@ Next: continue;
                     case "mute":
                     case "possess":
                     //case "promote":
+                    case "sendcmd":
                     case "tempban":
                     case "uban":
+                    case "voice":
                     case "xban":
                     //case "unban":
                     //case "xundo":
@@ -3936,8 +3941,8 @@ Next: continue;
                         break;
                     case "lockdown":
                         if (message.Split().Length > 1 && message.Split()[0].ToLower() == "player") {
-                            who = Find(message.Split()[0]);
-                            foundName = who != null ? who.name : message.Split()[0];
+                            who = Find(message.Split()[1]);
+                            foundName = who != null ? who.name : message.Split()[1];
                         }
                         break;
                     case "jail":
@@ -3959,10 +3964,13 @@ Next: continue;
                         break;
                 }
             foundName = foundName.ToLower();
-            if (Server.forgeProtection == ForgeProtection.Mod)
-                return Server.Mods.Contains(foundName) || Server.Devs.Contains(foundName);
-            if (Server.forgeProtection == ForgeProtection.Dev)
-                return Server.Devs.Contains(foundName);
+            if (who != null && foundName == who.name.ToLower()) { self = true; }
+            try {
+                if (Server.forgeProtection == ForgeProtection.Mod)
+                    return (Server.Mods.Contains(foundName) || Server.Devs.Contains(foundName)) && !self;
+                if (Server.forgeProtection == ForgeProtection.Dev)
+                    return Server.Devs.Contains(foundName) && !self;
+            } catch { }
             return false;
         }
         #endregion

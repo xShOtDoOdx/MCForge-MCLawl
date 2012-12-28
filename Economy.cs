@@ -213,7 +213,7 @@ namespace MCForge {
                 //tcolor
                 w.WriteLine();
                 w.WriteLine("titlecolor:enabled:" + Settings.TColors);
-                w.WriteLine("titlecolor:price" + Settings.TColorPrice);
+                w.WriteLine("titlecolor:price:" + Settings.TColorPrice);
                 //rank
                 w.WriteLine();
                 w.WriteLine("rank:enabled:" + Settings.Ranks);

@@ -575,13 +575,20 @@ namespace MCForge.Commands {
                                 Player.SendMessage(p, "%cInvalid title! Titles may only contain alphanumeric characters and .-_");
                                 return;
                             }
+                            bool free = false;
+                            if (par2 == null || par2 == string.Empty || par2 == "") {
+                                par2 = ""; //just an extra check to make sure it's good
+                                free = true;
+                            }
                             Command.all.Find("title").Use(null, p.name + " " + par2);
-                            p.money = p.money - Economy.Settings.TitlePrice;
-                            ecos.money = p.money;
-                            ecos.totalSpent += Economy.Settings.TitlePrice;
-                            ecos.purchase = "%3Title: %f" + par2 + "%3 - Price: %f" + Economy.Settings.TitlePrice + " %3" + Server.moneys + " - Date: %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
-                            Economy.UpdateEcoStats(ecos);
-                            Player.SendMessage(p, "%aYour title has been successfully changed to [" + p.titlecolor + par2 + "%a]");
+                            if (!free) {
+                                p.money = p.money - Economy.Settings.TitlePrice;
+                                ecos.money = p.money;
+                                ecos.totalSpent += Economy.Settings.TitlePrice;
+                                ecos.purchase = "%3Title: %f" + par2 + "%3 - Price: %f" + Economy.Settings.TitlePrice + " %3" + Server.moneys + " - Date: %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                                Economy.UpdateEcoStats(ecos);
+                                Player.SendMessage(p, "%aYour title has been successfully changed to [" + p.titlecolor + par2 + "%a]");
+                            } else { Player.SendMessage(p, "%aYour title has been successfully removed for free"); }
                             Player.SendMessage(p, "%aYour balance is now %f" + p.money + " %3" + Server.moneys);
                             return;
 
