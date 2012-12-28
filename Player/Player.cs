@@ -924,6 +924,7 @@ namespace MCForge {
             if ( playerDb.Rows.Count == 0 ) {
                 this.prefix = "";
                 this.time = "0 0 0 1";
+                this.title = "";
                 this.titlecolor = "";
                 this.color = group.color;
                 this.money = 0;
@@ -966,7 +967,6 @@ namespace MCForge {
                 else {
                     color = group.color;
                 }
-                SetPrefix();
                 overallDeath = int.Parse(playerDb.Rows[0]["TotalDeaths"].ToString());
                 overallBlocks = long.Parse(playerDb.Rows[0]["totalBlocks"].ToString().Trim());
                 //money = int.Parse(playerDb.Rows[0]["Money"].ToString());
@@ -978,6 +978,7 @@ namespace MCForge {
                     GlobalMessage(name + " is still muted from the last time they went offline.");
                 }
             }
+            SetPrefix();
             playerDb.Dispose();
             if ( PlayerConnect != null )
                 PlayerConnect(this);
