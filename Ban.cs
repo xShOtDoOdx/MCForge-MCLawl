@@ -65,6 +65,7 @@ namespace MCForge
 		}
 		public static bool Isbanned(string who)
 		{
+			who = who.ToLower();
 			foreach (string line in File.ReadAllLines("text/bans.txt"))
 			{
 				if (line.Split(' ')[1] == who) return true;
@@ -73,6 +74,7 @@ namespace MCForge
 		}
 		public static string[] Getbandata(string who)
 		{
+			who = who.ToLower();
 			string bannedby = "", reason = "", timedate = "", oldrank = "", stealth = "";
 			foreach (string line in File.ReadAllLines("text/bans.txt"))
 			{
@@ -90,6 +92,7 @@ namespace MCForge
 		}
 		public static bool Deleteban(string name)
 		{
+			name = name.ToLower();
 			bool success = false;
 			StringBuilder sb = new StringBuilder();
 			foreach (string line in File.ReadAllLines("text/bans.txt"))
@@ -104,6 +107,7 @@ namespace MCForge
 		}
 		public static string Editreason(string who, string reason)
 		{
+			who = who.ToLower();
 			bool found = false;
 			string endproduct = "";
 			if (Isbanned(who))

@@ -129,7 +129,7 @@ namespace MCForge.Commands {
 					Player.GlobalDie(who, false);
 					Player.GlobalSpawn(who, who.pos[0], who.pos[1], who.pos[2], who.rot[0], who.rot[1], false);
 					Group.findPerm(LevelPermission.Banned).playerList.Add(who.name);
-					Ban.Banplayer(p, who.name, reason, stealth, oldgroup);
+					Ban.Banplayer(p, who.name.ToLower(), reason, stealth, oldgroup);
 				}
 				Group.findPerm(LevelPermission.Banned).playerList.Save();
 
