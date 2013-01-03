@@ -35,20 +35,11 @@ namespace MCForge.Commands
 
             Player who = Player.Find(message.Split(' ')[0]);
             string msg = message.Split(' ')[0];
-            if (Server.devs.Contains(message)) {
-                Player.SendMessage(p, "You can't ban a MCForge Developer!");
-                if (p != null) {
-                    Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");
-                    return;
-                } else {
-                    Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban a MCForge Developer!");
-                }
-                return;
-            }
             if (who != null) {
+                string name = who.name;
                 Command.all.Find("ban").Use(p, msg);
                 Command.all.Find("kick").Use(p, message);
-                Command.all.Find("xundo").Use(p, msg);
+                Command.all.Find("xundo").Use(p, name);
 
             } else {
                 Command.all.Find("ban").Use(p, msg);

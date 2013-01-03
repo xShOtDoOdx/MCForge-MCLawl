@@ -29,7 +29,6 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public override void Use(Player p, string message)
         {
-            if (Server.devs.Contains(p.name) || Server.gcmods.Contains(p.name)) { return; } 
             p.Kick("RAGEQUIT!!");
         }
 

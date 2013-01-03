@@ -117,6 +117,7 @@ namespace MCForge
 			all.Add(new CmdFreeze());
 			all.Add(new CmdGarbage());
 			all.Add(new CmdGcaccept());
+            all.Add(new CmdGcmods());
 			all.Add(new CmdGcrules());
 			all.Add(new CmdGcbanlistupdate());
 			all.Add(new CmdGifToCin());
@@ -170,6 +171,7 @@ namespace MCForge
 			all.Add(new CmdMessageBlock());
 			all.Add(new CmdMissile());
 			all.Add(new CmdMode());
+            all.Add(new CmdMods());
 			all.Add(new CmdModerate());
 			all.Add(new CmdMoney());
 			all.Add(new CmdMove());
@@ -258,6 +260,7 @@ namespace MCForge
 			all.Add(new CmdSpheroid());
 			all.Add(new CmdSpin());
 			all.Add(new CmdSPlace());
+            all.Add(new CmdStaff());
 			all.Add(new CmdStairs());
 			all.Add(new CmdStatic());
 			all.Add(new CmdStore());

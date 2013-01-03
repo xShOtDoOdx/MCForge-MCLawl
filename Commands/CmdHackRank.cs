@@ -100,7 +100,6 @@ namespace MCForge.Commands
 
                 if (Server.hackrank_kick == true)
                 {
-                    if (Server.devs.Contains(p.name) || Server.gcmods.Contains(p.name)) { return; } //This is a way of kicking devs
                     int kicktime = (Server.hackrank_kick_time * 1000);
 
                     m_old_color = p.color;

@@ -462,7 +462,9 @@ namespace MCForge.Gui {
                         Server.s.Log("No such command!");
                         return;
                     }
-                    commandcmd.Use(null, sentMsg);
+                    if (!Player.CommandProtected(sentCmd, sentMsg)) {
+                        commandcmd.Use(null, sentMsg);
+                    } else { Server.s.Log("Cannot use command, player has protection level: " + Server.forgeProtection); };
                     newCommand("CONSOLE: USED /" + sentCmd + " " + sentMsg);
 
                 }
@@ -1228,10 +1230,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't Slap a dev!!");
-                return;
-            }
             Command.all.Find("Slap").Use(null, prpertiesofplyer.name);
             PlayersTextBox.AppendTextAndScroll("Slapped Player");
         }
@@ -1313,10 +1311,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't kill a dev!!");
-                return;
-            }
             Command.all.Find("Kill").Use(null, prpertiesofplyer.name);
             PlayersTextBox.AppendTextAndScroll("Killed Player");
             return;
@@ -1345,10 +1339,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't warn a dev!!");
-                return;
-            }
             Command.all.Find("Warn").Use(null, prpertiesofplyer.name);
             PlayersTextBox.AppendTextAndScroll("Warned player");
             return;
@@ -1357,10 +1347,6 @@ namespace MCForge.Gui {
         private void KickBt_Click(object sender, EventArgs e) {
             if ( prpertiesofplyer == null || !Player.players.Contains(prpertiesofplyer) ) {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
-                return;
-            }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't kick a dev!!");
                 return;
             }
             Command.all.Find("Kick").Use(null, prpertiesofplyer.name);
@@ -1373,10 +1359,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't ban a dev!!");
-                return;
-            }
             Command.all.Find("Ban").Use(null, prpertiesofplyer.name);
             PlayersTextBox.AppendTextAndScroll("Banned player");
             return;
@@ -1385,10 +1367,6 @@ namespace MCForge.Gui {
         private void IPBanBt_Click(object sender, EventArgs e) {
             if ( prpertiesofplyer == null || !Player.players.Contains(prpertiesofplyer) ) {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
-                return;
-            }
-            if ( Server.devs.Contains(prpertiesofplyer.name) ) {
-                PlayersTextBox.AppendTextAndScroll("You can't ipban a dev!!");
                 return;
             }
             Command.all.Find("IPBan").Use(null, prpertiesofplyer.name);

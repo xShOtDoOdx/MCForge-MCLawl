@@ -61,7 +61,7 @@ namespace MCForge.Commands
 
 
 		public override void Help(Player p) {
-			Player.SendMessage(p, "/xban [name] [message]- Bans, undoes, and kicks [name] with [message], if specified.");
+			Player.SendMessage(p, "/xban [name] [message]- Bans, banips, undoes, and kicks [name] with [message], if specified.");
 		}
 	}
 }

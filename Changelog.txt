@@ -1,8 +1,36 @@
+v5.5.10
+-New
+  -New interface for the /eco command and system
+  -'/eco setup apply' added to apply the eco settings changed in Economy.properties (owner and console only)
+  -/eco stats has now additional info: Total spent, Recent purchase, Recent payment, Recent Receivement, Recent fine
+  -Offline support for the Economy system
+  -Offline support when using /give, /take, /pay and /money
+  -When using /jail [player] the player returns to the jail automatically after a relog
+  -The new MCForge Protection System
+  -Option in server.properties to choose a protection level: Off/Mod/Dev
+  -MCForge Devs, Mods and GCMods now have an additional fixed title
+-Fixes
+  -!!!Fixed /xundo!!!
+  -/money and /eco stats without [player] shows personal stats
+  -/eco setup rank [maxrank] can't be set to greater ranks than yourself
+  -No colors in the title allowed when buying a title
+  -When player has a color and gets ranked, the color remains intact without a relog
+  -Title + color fix after a rank
+  -Title + titlecolor fix in general
+  -Devs and GCMods can't buy titles to prevent a NullReferenceException (temporary fix)
+  -Server.properties allignment improvements
+  -Fixed issue where Console couldn't use /give and /take
+  -Fixed issues where Console tries to use /eco, /money and /take
+  -Minor bug fixes
+-Removals:
+  -/eco setup map edit dimensions [x] [y] [z]
+  -using /money on a player ranked higher, because /eco stats shows stats for all players
+  -the old staffprotection system, which was spread throughout the source
+
 v5.5.9
 -New:
   -If textures are enabled, WoM users sees join/leave messages at the top right
 -Fixes:
-  -Fixed /undo (hopfully)
   -/womid now compatible with xWoM
   -Fixed bugs with textures
 -Removals:

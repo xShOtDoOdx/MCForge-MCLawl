@@ -21,14 +21,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace MCForge
-{
+namespace MCForge {
     /// <summary>
     /// This is the group object
     /// Where ranks and there data are stored
     /// </summary>
-    public class Group
-    {
+    public class Group {
         public delegate void RankSet(Player p, Group newrank);
         [Obsolete("Please use OnPlayerRankSetEvent.Register()")]
         public static event RankSet OnPlayerRankSet;
@@ -58,8 +56,7 @@ namespace MCForge
         /// <summary>
         /// Create a new group object
         /// </summary>
-        public Group()
-        {
+        public Group() {
             Permission = LevelPermission.Null;
         }
 
@@ -83,15 +80,14 @@ namespace MCForge
             MOTD = motd;
             fileName = file;
             playerList = name != "nobody" ? PlayerList.Load(fileName, this) : new PlayerList();
-            if(OnGroupLoaded != null)
-            OnGroupLoaded(this);
+            if (OnGroupLoaded != null)
+                OnGroupLoaded(this);
             OnGroupLoadedEvent.Call(this);
         }
         /// <summary>
         /// Fill the commands that this group can use
         /// </summary>
-        public void fillCommands()
-        {
+        public void fillCommands() {
             CommandList _commands = new CommandList();
             GrpCommands.AddCommands(out _commands, Permission);
             commands = _commands;
@@ -108,46 +104,39 @@ namespace MCForge
         /// <summary>
         /// Load up all server groups
         /// </summary>
-        public static void InitAll()
-        {
+        public static void InitAll() {
             GroupList = new List<Group>();
 
-            if (File.Exists("properties/ranks.properties"))
-            {
+            if (File.Exists("properties/ranks.properties")) {
                 string[] lines = File.ReadAllLines("properties/ranks.properties");
 
                 Group thisGroup = new Group();
                 int gots = 0, version = 1;
-                if (lines.Length > 0 && lines[0].StartsWith("#Version "))
-                {
-                    try { version = int.Parse(lines[0].Remove(0, 9)); }
-                    catch { Server.s.Log("The ranks.properties version header is invalid! Ranks may fail to load!"); }
+                if (lines.Length > 0 && lines[0].StartsWith("#Version ")) {
+                    try { version = int.Parse(lines[0].Remove(0, 9)); } catch { Server.s.Log("The ranks.properties version header is invalid! Ranks may fail to load!"); }
                 }
 
-                foreach (string s in lines)
-                {
-                    try
-                    {
+                foreach (string s in lines) {
+                    try {
                         if (s == "" || s[0] == '#') continue;
-                        if (s.Split('=').Length == 2)
-                        {
+                        if (s.Split('=').Length == 2) {
                             string property = s.Split('=')[0].Trim();
                             string value = s.Split('=')[1].Trim();
 
-                            if (thisGroup.name == "" && property.ToLower() != "rankname")
-                            {
+                            if (thisGroup.name == "" && property.ToLower() != "rankname") {
                                 Server.s.Log("Hitting an error at " + s + " of ranks.properties");
-                            }
-                            else
-                            {
-                                switch (property.ToLower())
-                                {
+                            } else {
+                                switch (property.ToLower()) {
                                     case "rankname":
                                         gots = 0;
                                         thisGroup = new Group();
 
                                         if (value.ToLower() == "developer" || value.ToLower() == "dev" || value.ToLower() == "developers" || value.ToLower() == "devs")
-                                            Server.s.Log("You are not a developer. Stop pretending you are.");
+                                            Server.s.Log("You are not a MCForge Developer. Stop pretending you are.");
+                                        if (value.ToLower() == "moderator" || value.ToLower() == "mod" || value.ToLower() == "moderators" || value.ToLower() == "moders")
+                                            Server.s.Log("You are not a MCForge Moderator. Stop pretending you are.");
+                                        if (value.ToLower() == "gcmod" || value.ToLower() == "globalchatmod" || value.ToLower() == "gcmoderator" || value.ToLower() == "globalchatmoderator" || value.ToLower() == "gcmods")
+                                            Server.s.Log("You are not a MCForge Global Chat Moderator. Stop pretending you are.");
                                         if (value.ToLower() == "adv" || value.ToLower() == "op" || value.ToLower() == "super" || value.ToLower() == "nobody" || value.ToLower() == "noone")
                                             Server.s.Log("Cannot have a rank named \"" + value.ToLower() + "\", this rank is hard-coded.");
                                         else if (GroupList.Find(grp => grp.name == value.ToLower()) == null)
@@ -158,44 +147,35 @@ namespace MCForge
                                     case "permission":
                                         int foundPermission;
 
-                                        try
-                                        {
+                                        try {
                                             foundPermission = int.Parse(value);
-                                        }
-                                        catch { Server.s.Log("Invalid permission on " + s); break; }
+                                        } catch { Server.s.Log("Invalid permission on " + s); break; }
 
-                                        if (thisGroup.Permission != LevelPermission.Null)
-                                        {
+                                        if (thisGroup.Permission != LevelPermission.Null) {
                                             Server.s.Log("Setting permission again on " + s);
                                             gots--;
                                         }
 
                                         bool allowed = GroupList.Find(grp => grp.Permission == (LevelPermission)foundPermission) == null;
 
-                                        if (foundPermission > 119 || foundPermission < -50)
-                                        {
+                                        if (foundPermission > 119 || foundPermission < -50) {
                                             Server.s.Log("Permission must be between -50 and 119 for ranks");
                                             break;
                                         }
 
-                                        if (allowed)
-                                        {
+                                        if (allowed) {
                                             gots++;
                                             thisGroup.Permission = (LevelPermission)foundPermission;
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             Server.s.Log("Cannot have 2 ranks set at permission level " + value);
                                         }
                                         break;
                                     case "limit":
                                         int foundLimit;
 
-                                        try
-                                        {
+                                        try {
                                             foundLimit = int.Parse(value);
-                                        }
-                                        catch { Server.s.Log("Invalid limit on " + s); break; }
+                                        } catch { Server.s.Log("Invalid limit on " + s); break; }
 
                                         gots++;
                                         thisGroup.maxBlocks = foundLimit;
@@ -203,11 +183,9 @@ namespace MCForge
                                     case "maxundo":
                                         int foundMax;
 
-                                        try
-                                        {
+                                        try {
                                             foundMax = int.Parse(value);
-                                        }
-                                        catch { Server.s.Log("Invalid maximum on " + s); break; }
+                                        } catch { Server.s.Log("Invalid maximum on " + s); break; }
 
                                         gots++;
                                         thisGroup.maxUndo = foundMax;
@@ -215,25 +193,19 @@ namespace MCForge
                                     case "color":
                                         char foundChar;
 
-                                        try
-                                        {
+                                        try {
                                             foundChar = char.Parse(value);
-                                        }
-                                        catch { Server.s.Log("Incorrect color on " + s); break; }
+                                        } catch { Server.s.Log("Incorrect color on " + s); break; }
 
-                                        if ((foundChar >= '0' && foundChar <= '9') || (foundChar >= 'a' && foundChar <= 'f'))
-                                        {
+                                        if ((foundChar >= '0' && foundChar <= '9') || (foundChar >= 'a' && foundChar <= 'f')) {
                                             gots++;
                                             thisGroup.color = foundChar.ToString(CultureInfo.InvariantCulture);
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             Server.s.Log("Invalid color code at " + s);
                                         }
                                         break;
                                     case "filename":
-                                        if (value.Contains("\\") || value.Contains("/"))
-                                        {
+                                        if (value.Contains("\\") || value.Contains("/")) {
                                             Server.s.Log("Invalid filename on " + s);
                                             break;
                                         }
@@ -248,8 +220,7 @@ namespace MCForge
                                         break;
                                 }
 
-                                if ((gots >= 4 && version < 2) || (gots >= 5 && version < 3) || gots >= 6)
-                                {
+                                if ((gots >= 4 && version < 2) || (gots >= 5 && version < 3) || gots >= 6) {
                                     if (version < 2) {
                                         if ((int)thisGroup.Permission >= 100)
                                             thisGroup.maxUndo = int.MaxValue;
@@ -260,13 +231,10 @@ namespace MCForge
                                     GroupList.Add(new Group(thisGroup.Permission, thisGroup.maxBlocks, thisGroup.maxUndo, thisGroup.trueName, thisGroup.color[0], thisGroup.MOTD, thisGroup.fileName));
                                 }
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Server.s.Log("In ranks.properties, the line " + s + " is wrongly formatted");
                         }
-                    }
-                    catch (Exception e) { Server.s.Log("Encountered an error at line \"" + s + "\" in ranks.properties"); Server.ErrorLog(e); }
+                    } catch (Exception e) { Server.s.Log("Encountered an error at line \"" + s + "\" in ranks.properties"); Server.ErrorLog(e); }
                 }
             }
 
@@ -279,12 +247,10 @@ namespace MCForge
             GroupList.Add(new Group(LevelPermission.Nobody, 65536, -1, "Nobody", '0', String.Empty, "nobody.txt"));
 
             bool swap = true; Group storedGroup;
-            while (swap)
-            {
+            while (swap) {
                 swap = false;
                 for (int i = 0; i < GroupList.Count - 1; i++)
-                    if (GroupList[i].Permission > GroupList[i + 1].Permission)
-                    {
+                    if (GroupList[i].Permission > GroupList[i + 1].Permission) {
                         swap = true;
                         storedGroup = GroupList[i];
                         GroupList[i] = GroupList[i + 1];
@@ -295,8 +261,7 @@ namespace MCForge
             if (Group.Find(Server.defaultRank) != null) standard = Group.Find(Server.defaultRank);
             else standard = Group.findPerm(LevelPermission.Guest);
 
-            foreach (Player pl in Player.players)
-            {
+            foreach (Player pl in Player.players) {
                 pl.group = GroupList.Find(g => g.name == pl.group.name);
             }
             if (OnGroupLoad != null)
@@ -308,57 +273,53 @@ namespace MCForge
         /// Save givenList group
         /// </summary>
         /// <param name="givenList">The list of groups to save</param>
-        public static void saveGroups(List<Group> givenList)
-        {
-			File.Create("properties/ranks.properties").Dispose();
-			using (StreamWriter SW = File.CreateText("properties/ranks.properties"))
-			{
+        public static void saveGroups(List<Group> givenList) {
+            File.Create("properties/ranks.properties").Dispose();
+            using (StreamWriter SW = File.CreateText("properties/ranks.properties")) {
                 SW.WriteLine("#Version 3");
-				SW.WriteLine("#RankName = string");
-				SW.WriteLine("#     The name of the rank, use capitalization.");
-				SW.WriteLine("#");
-				SW.WriteLine("#Permission = num");
-				SW.WriteLine("#     The \"permission\" of the rank. It's a number.");
-				SW.WriteLine("#		There are pre-defined permissions already set. (for the old ranks)");
-				SW.WriteLine("#		Banned = -20, Guest = 0, Builder = 30, AdvBuilder = 50, Operator = 80");
-				SW.WriteLine("#		SuperOP = 100, Nobody = 120");
-				SW.WriteLine("#		Must be greater than -50 and less than 120");
-				SW.WriteLine("#		The higher the number, the more commands do (such as undo allowing more seconds)");
-				SW.WriteLine("#Limit = num");
-				SW.WriteLine("#     The command limit for the rank (can be changed in-game with /limit)");
-				SW.WriteLine("#		Must be greater than 0 and less than 10000000");
+                SW.WriteLine("#RankName = string");
+                SW.WriteLine("#     The name of the rank, use capitalization.");
+                SW.WriteLine("#");
+                SW.WriteLine("#Permission = num");
+                SW.WriteLine("#     The \"permission\" of the rank. It's a number.");
+                SW.WriteLine("#		There are pre-defined permissions already set. (for the old ranks)");
+                SW.WriteLine("#		Banned = -20, Guest = 0, Builder = 30, AdvBuilder = 50, Operator = 80");
+                SW.WriteLine("#		SuperOP = 100, Nobody = 120");
+                SW.WriteLine("#		Must be greater than -50 and less than 120");
+                SW.WriteLine("#		The higher the number, the more commands do (such as undo allowing more seconds)");
+                SW.WriteLine("#Limit = num");
+                SW.WriteLine("#     The command limit for the rank (can be changed in-game with /limit)");
+                SW.WriteLine("#		Must be greater than 0 and less than 10000000");
                 SW.WriteLine("#MaxUndo = num");
-				SW.WriteLine("#     The undo limit for the rank, only applies when undoing others.");
-				SW.WriteLine("#		Must be greater than 0 and less than " + int.MaxValue);
-				SW.WriteLine("#Color = char");
-				SW.WriteLine("#     A single letter or number denoting the color of the rank");
-				SW.WriteLine("#	    Possibilities:");
-				SW.WriteLine("#		    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f");
-				SW.WriteLine("#FileName = string.txt");
-				SW.WriteLine("#     The file which players of this rank will be stored in");
-				SW.WriteLine("#		It doesn't need to be a .txt file, but you may as well");
-				SW.WriteLine("#		Generally a good idea to just use the same file name as the rank name");
+                SW.WriteLine("#     The undo limit for the rank, only applies when undoing others.");
+                SW.WriteLine("#		Must be greater than 0 and less than " + int.MaxValue);
+                SW.WriteLine("#Color = char");
+                SW.WriteLine("#     A single letter or number denoting the color of the rank");
+                SW.WriteLine("#	    Possibilities:");
+                SW.WriteLine("#		    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f");
+                SW.WriteLine("#FileName = string.txt");
+                SW.WriteLine("#     The file which players of this rank will be stored in");
+                SW.WriteLine("#		It doesn't need to be a .txt file, but you may as well");
+                SW.WriteLine("#		Generally a good idea to just use the same file name as the rank name");
                 SW.WriteLine("#MOTD = string");
                 SW.WriteLine("#		Alternate MOTD players of the rank will see when joining the server.");
                 SW.WriteLine("#		Leave blank to use the server MOTD.");
-				SW.WriteLine();
-				SW.WriteLine();
+                SW.WriteLine();
+                SW.WriteLine();
 
-				foreach (Group grp in givenList)
-				{
-					if (grp.name != "nobody")
-					{
-						SW.WriteLine("RankName = " + grp.trueName);
-						SW.WriteLine("Permission = " + (int)grp.Permission);
+                foreach (Group grp in givenList) {
+                    if (grp.name != "nobody") {
+                        SW.WriteLine("RankName = " + grp.trueName);
+                        SW.WriteLine("Permission = " + (int)grp.Permission);
                         SW.WriteLine("Limit = " + grp.maxBlocks);
                         SW.WriteLine("MaxUndo = " + grp.maxUndo);
-						SW.WriteLine("Color = " + grp.color[1]);
+                        SW.WriteLine("Color = " + grp.color[1]);
                         SW.WriteLine("MOTD = " + grp.MOTD);
-						SW.WriteLine("FileName = " + grp.fileName);
-						SW.WriteLine();
-					}
-				}
-			}
+                        SW.WriteLine("FileName = " + grp.fileName);
+                        SW.WriteLine();
+                    }
+                }
+            }
             if (OnGroupSave != null)
                 OnGroupSave();
             OnGroupSaveEvent.Call();
@@ -368,8 +329,7 @@ namespace MCForge
         /// </summary>
         /// <param name="name">The name of the group to search for</param>
         /// <returns>Return true if it does exists, returns false if it doesnt</returns>
-        public static bool Exists(string name)
-        {
+        public static bool Exists(string name) {
             name = name.ToLower();
             return GroupList.Any(gr => gr.name == name);
         }
@@ -378,8 +338,7 @@ namespace MCForge
         /// </summary>
         /// <param name="name">The name of the group</param>
         /// <returns>The group object with that name</returns>
-        public static Group Find(string name)
-        {
+        public static Group Find(string name) {
             name = name.ToLower();
 
             if (name == "adv") name = "advbuilder";
@@ -394,8 +353,7 @@ namespace MCForge
         /// </summary>
         /// <param name="Perm">The level permission to search for</param>
         /// <returns>The group object with that level permission</returns>
-        public static Group findPerm(LevelPermission Perm)
-        {
+        public static Group findPerm(LevelPermission Perm) {
             return GroupList.FirstOrDefault(grp => grp.Permission == Perm);
         }
 
@@ -404,9 +362,8 @@ namespace MCForge
         /// </summary>
         /// <param name="Perm">The level permission to search for</param>
         /// <returns>The group object with that level permission</returns>
-        public static Group findPermInt(int Perm)
-        {
-            return GroupList.FirstOrDefault(grp => (int) grp.Permission == Perm);
+        public static Group findPermInt(int Perm) {
+            return GroupList.FirstOrDefault(grp => (int)grp.Permission == Perm);
         }
 
         /// <summary>
@@ -414,10 +371,8 @@ namespace MCForge
         /// </summary>
         /// <param name="playerName">The player Name</param>
         /// <returns>The group name</returns>
-        public static string findPlayer(string playerName)
-        {
-            foreach (Group grp in Group.GroupList.Where(grp => grp.playerList.Contains(playerName)))
-            {
+        public static string findPlayer(string playerName) {
+            foreach (Group grp in Group.GroupList.Where(grp => grp.playerList.Contains(playerName))) {
                 return grp.name;
             }
             return Group.standard.name;
@@ -428,20 +383,16 @@ namespace MCForge
         /// </summary>
         /// <param name="playerName">The player name</param>
         /// <returns>The group object that the player is in</returns>
-        public static Group findPlayerGroup(string playerName)
-        {
-            foreach (Group grp in Group.GroupList.Where(grp => grp.playerList.Contains(playerName)))
-            {
+        public static Group findPlayerGroup(string playerName) {
+            foreach (Group grp in Group.GroupList.Where(grp => grp.playerList.Contains(playerName))) {
                 return grp;
             }
             return Group.standard;
         }
 
-        public static string concatList(bool includeColor = true, bool skipExtra = false, bool permissions = false)
-        {
+        public static string concatList(bool includeColor = true, bool skipExtra = false, bool permissions = false) {
             string returnString = "";
-            foreach (Group grp in Group.GroupList.Where(grp => !skipExtra || (grp.Permission > LevelPermission.Guest && grp.Permission < LevelPermission.Nobody)))
-            {
+            foreach (Group grp in Group.GroupList.Where(grp => !skipExtra || (grp.Permission > LevelPermission.Guest && grp.Permission < LevelPermission.Nobody))) {
                 if (includeColor) {
                     returnString += ", " + grp.color + grp.name + Server.DefaultColor;
                 } else if (permissions) {
@@ -456,10 +407,9 @@ namespace MCForge
         }
     }
 
-    public class GrpCommands
-    {
-        public class rankAllowance { 
-            public string commandName; 
+    public class GrpCommands {
+        public class rankAllowance {
+            public string commandName;
             public LevelPermission lowestRank;
             public List<LevelPermission> disallow = new List<LevelPermission>();
             public List<LevelPermission> allow = new List<LevelPermission>();
@@ -467,45 +417,39 @@ namespace MCForge
         public static List<rankAllowance> allowedCommands;
         public static List<string> foundCommands = new List<string>();
 
-        public static LevelPermission defaultRanks(string command)
-        {
+        public static LevelPermission defaultRanks(string command) {
             Command cmd = Command.all.Find(command);
 
             return cmd != null ? cmd.defaultRank : LevelPermission.Null;
         }
 
-        public static void fillRanks()
-        {
+        public static void fillRanks() {
             foundCommands = Command.all.commandNames();
             allowedCommands = new List<rankAllowance>();
 
             rankAllowance allowVar;
 
-            foreach (Command cmd in Command.all.All())
-            {
+            foreach (Command cmd in Command.all.All()) {
                 allowVar = new rankAllowance();
                 allowVar.commandName = cmd.name;
                 allowVar.lowestRank = cmd.defaultRank;
                 allowedCommands.Add(allowVar);
             }
 
-            if (File.Exists("properties/command.properties"))
-            {
+            if (File.Exists("properties/command.properties")) {
                 string[] lines = File.ReadAllLines("properties/command.properties");
 
                 //if (lines.Length == 0) ; // this is useless?
-                /*else */if (lines[0] == "#Version 2")
-                {
+                /*else */
+                if (lines[0] == "#Version 2") {
                     string[] colon = new[] { " : " };
-                    foreach (string line in lines)
-                    {
+                    foreach (string line in lines) {
                         allowVar = new rankAllowance();
                         if (line == "" || line[0] == '#') continue;
                         //Name : Lowest : Disallow : Allow
                         string[] command = line.Split(colon, StringSplitOptions.None);
 
-                        if (!foundCommands.Contains(command[0]))
-                        {
+                        if (!foundCommands.Contains(command[0])) {
                             Server.s.Log("Incorrect command name: " + command[0]);
                             continue;
                         }
@@ -518,56 +462,41 @@ namespace MCForge
                         if (command[3] != "")
                             allow = command[3].Split(',');
 
-                        try
-                        {
+                        try {
                             allowVar.lowestRank = (LevelPermission)int.Parse(command[1]);
                             foreach (string s in disallow) { allowVar.disallow.Add((LevelPermission)int.Parse(s)); }
                             foreach (string s in allow) { allowVar.allow.Add((LevelPermission)int.Parse(s)); }
-                        }
-                        catch
-                        {
+                        } catch {
                             Server.s.Log("Hit an error on the command " + line);
                             continue;
                         }
 
                         int current = 0;
-                        foreach (rankAllowance aV in allowedCommands)
-                        {
-                            if (command[0] == aV.commandName)
-                            {
+                        foreach (rankAllowance aV in allowedCommands) {
+                            if (command[0] == aV.commandName) {
                                 allowedCommands[current] = allowVar;
                                 break;
                             }
                             current++;
                         }
                     }
-                }
-                else
-                {
-                    foreach (string line in lines.Where(line => line != "" && line[0] != '#'))
-                    {
+                } else {
+                    foreach (string line in lines.Where(line => line != "" && line[0] != '#')) {
                         allowVar = new rankAllowance();
                         string key = line.Split('=')[0].Trim().ToLower();
                         string value = line.Split('=')[1].Trim().ToLower();
 
-                        if (!foundCommands.Contains(key))
-                        {
+                        if (!foundCommands.Contains(key)) {
                             Server.s.Log("Incorrect command name: " + key);
-                        }
-                        else if (Level.PermissionFromName(value) == LevelPermission.Null)
-                        {
+                        } else if (Level.PermissionFromName(value) == LevelPermission.Null) {
                             Server.s.Log("Incorrect value given for " + key + ", using default value.");
-                        }
-                        else
-                        {
+                        } else {
                             allowVar.commandName = key;
                             allowVar.lowestRank = Level.PermissionFromName(value);
 
                             int current = 0;
-                            foreach (rankAllowance aV in allowedCommands)
-                            {
-                                if (key == aV.commandName)
-                                {
+                            foreach (rankAllowance aV in allowedCommands) {
+                                if (key == aV.commandName) {
                                     allowedCommands[current] = allowVar;
                                     break;
                                 }
@@ -577,55 +506,44 @@ namespace MCForge
                     }
                 }
                 Save(allowedCommands);
-            }
-            else Save(allowedCommands);
+            } else Save(allowedCommands);
 
-            foreach (Group grp in Group.GroupList)
-            {
+            foreach (Group grp in Group.GroupList) {
                 grp.fillCommands();
             }
         }
 
-        public static void Save(List<rankAllowance> givenList)
-        {
-            try
-            {
-				File.Create("properties/command.properties").Dispose();
-				using (StreamWriter w = File.CreateText("properties/command.properties"))
-				{
-					w.WriteLine("#Version 2");
-					w.WriteLine("#   This file contains a reference to every command found in the server software");
-					w.WriteLine("#   Use this file to specify which ranks get which commands");
-					w.WriteLine("#   Current ranks: " + Group.concatList(false, false, true));
-					w.WriteLine("#   Disallow and allow can be left empty, just make sure there's 2 spaces between the colons");
-					w.WriteLine("#   This works entirely on permission values, not names. Do not enter a rank name. Use it's permission value");
-					w.WriteLine("#   CommandName : LowestRank : Disallow : Allow");
-					w.WriteLine("#   gun : 60 : 80,67 : 40,41,55");
-					w.WriteLine("");
-					foreach (rankAllowance aV in givenList)
-					{
-						w.WriteLine(aV.commandName + " : " + (int)aV.lowestRank + " : " + getInts(aV.disallow) + " : " + getInts(aV.allow));
-					}
-				}
-            }
-            catch
-            {
+        public static void Save(List<rankAllowance> givenList) {
+            try {
+                File.Create("properties/command.properties").Dispose();
+                using (StreamWriter w = File.CreateText("properties/command.properties")) {
+                    w.WriteLine("#Version 2");
+                    w.WriteLine("#   This file contains a reference to every command found in the server software");
+                    w.WriteLine("#   Use this file to specify which ranks get which commands");
+                    w.WriteLine("#   Current ranks: " + Group.concatList(false, false, true));
+                    w.WriteLine("#   Disallow and allow can be left empty, just make sure there's 2 spaces between the colons");
+                    w.WriteLine("#   This works entirely on permission values, not names. Do not enter a rank name. Use it's permission value");
+                    w.WriteLine("#   CommandName : LowestRank : Disallow : Allow");
+                    w.WriteLine("#   gun : 60 : 80,67 : 40,41,55");
+                    w.WriteLine("");
+                    foreach (rankAllowance aV in givenList) {
+                        w.WriteLine(aV.commandName + " : " + (int)aV.lowestRank + " : " + getInts(aV.disallow) + " : " + getInts(aV.allow));
+                    }
+                }
+            } catch {
                 Server.s.Log("SAVE FAILED! command.properties");
             }
         }
-        public static string getInts(List<LevelPermission> givenList)
-        {
+        public static string getInts(List<LevelPermission> givenList) {
             string returnString = ""; bool foundOne = false;
-            foreach (LevelPermission Perm in givenList)
-            {
+            foreach (LevelPermission Perm in givenList) {
                 foundOne = true;
                 returnString += "," + (int)Perm;
             }
             if (foundOne) returnString = returnString.Remove(0, 1);
             return returnString;
         }
-        public static void AddCommands(out CommandList commands, LevelPermission perm)
-        {
+        public static void AddCommands(out CommandList commands, LevelPermission perm) {
             commands = new CommandList();
 
             foreach (rankAllowance aV in allowedCommands.Where(aV => (aV.lowestRank <= perm && !aV.disallow.Contains(perm)) || aV.allow.Contains(perm)))

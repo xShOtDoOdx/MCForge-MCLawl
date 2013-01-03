@@ -18,10 +18,13 @@
 using System;
 
 
-namespace MCForge.Commands
-{
-    public class CmdMute : Command
-    {
+namespace MCForge.Commands {
+    /// <summary>
+    /// Bug:
+    /// Doesn't save mute.txt
+    /// Players with the defaultRank can unmute themself
+    /// </summary>
+    public class CmdMute : Command {
         public override string name { get { return "mute"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }
@@ -29,70 +32,46 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public CmdMute() { }
 
-        public override void Use(Player p, string message)
-        {
+        public override void Use(Player p, string message) {
             if (message == "" || message.Split(' ').Length > 2) { Help(p); return; }
             Player who = Player.Find(message);
-            if (Server.devs.Contains(who.name) || Server.gcmodhasprotection(who.name))
-            {
-                Player.SendMessage(p, "The player entered is a developer or a global chat moderator.");
+            if (Server.forgeProtection == ForgeProtection.Mod && who != null && who.isGCMod) {
+                Player.SendMessage(p, "Global Chat Moderators can't be muted");
                 return;
             }
-            if (who == null)
-            {
-                if (Server.muted.Contains(message))
-                {
+            if (who == null) {
+                if (Server.muted.Contains(message)) {
                     Server.muted.Remove(message);
                     Player.GlobalMessage(message + Server.DefaultColor + " is not online but is now &bun-muted");
                     Server.muted.Save("muted.txt");
                     return;
                 }
-            }   
-            
-                
-            
-            if (who == p)
-            {
-                if (p.muted)
-                {
+            }
+
+            if (who == p) {
+                if (p.muted) {
                     p.muted = false;
                     Player.SendMessage(p, "You &bun-muted" + Server.DefaultColor + " yourself!");
-                }
-                else
-                {
+                } else {
                     Player.SendMessage(p, "You cannot mute yourself!");
                 }
                 return;
             }
-            if (who.muted)
-            {
+
+            if (who.muted) {
                 who.muted = false;
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " has been &bun-muted", false);
                 Server.muted.Save("muted.txt");
-            }
-            else
-            {
-                if (p != null)
-                {
+            } else {
+                if (p != null) {
                     if (who != p) if (who.group.Permission >= p.group.Permission) { Player.SendMessage(p, "Cannot mute someone of a higher or equal rank."); return; }
-                }
-                if (Server.devs.Contains(who.name))
-                {
-                    Player.SendMessage(p, "You can't mute a MCForge Developer!");
-                    return;
-                }
-                if (Server.gcmodhasprotection(who.name))
-                {
-                    Player.SendMessage(p, "You can't mute a Global Chat Moderator!");
-                    return;
                 }
                 who.muted = true;
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " has been &8muted", false);
                 Server.muted.Save("muted.txt");
             }
         }
-        public override void Help(Player p)
-        {
+        public override void Help(Player p) {
             Player.SendMessage(p, "/mute <player> - Mutes or unmutes the player.");
         }
     }

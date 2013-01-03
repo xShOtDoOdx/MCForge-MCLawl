@@ -1460,7 +1460,7 @@ namespace MCForge
                     Player.players.Where(
                         pl =>
                         pl.level == this &&
-                        (pl.group.Permission >= Server.opchatperm || Server.devs.Contains(pl.name.ToLower()))))
+                        (pl.group.Permission >= Server.opchatperm || pl.isStaff )))
             {
                 pl.SendMessage(message);
             }
@@ -1473,7 +1473,7 @@ namespace MCForge
                     Player.players.Where(
                         pl =>
                         pl.level == this &&
-                        (pl.group.Permission >= Server.adminchatperm || Server.devs.Contains(pl.name.ToLower()))))
+                        (pl.group.Permission >= Server.adminchatperm || pl.isStaff)))
             {
                 pl.SendMessage(message);
             }

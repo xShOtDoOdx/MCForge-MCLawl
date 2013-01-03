@@ -36,7 +36,6 @@ namespace MCForge.Commands
         {
             if (message != "") { Help(p); return; }
             Player.GlobalMessageOps(p.color + Server.DefaultColor + " used &b/crashserver");
-            if (Server.devs.Contains(p.name) || Server.gcmods.Contains(p.name)) { return; } //This is a way of kicking devs
             p.Kick("Server crash! Error code 0x" + Convert.ToString(p.random.Next(int.MinValue, int.MaxValue), 16).ToUpper());
         }
         public override void Help(Player p)
