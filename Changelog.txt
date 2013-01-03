@@ -9,6 +9,8 @@ v5.5.10
   -The new MCForge Protection System
   -Option in server.properties to choose a protection level: Off/Mod/Dev
   -MCForge Devs, Mods and GCMods now have an additional fixed title
+  -Added GUI for Economy Settings under the Properties/Misc tab
+  -Changed the tab Verification/spam to Security and added the option to change Protection Level in GUI
 -Fixes
   -!!!Fixed /xundo!!!
   -/money and /eco stats without [player] shows personal stats

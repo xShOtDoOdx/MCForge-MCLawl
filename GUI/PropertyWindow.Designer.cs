@@ -379,6 +379,9 @@ namespace MCForge.Gui
             this.chkNoRespawnDuringZombie = new System.Windows.Forms.CheckBox();
             this.chkZombieOnServerStart = new System.Windows.Forms.CheckBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.comboBoxProtection = new System.Windows.Forms.ComboBox();
+            this.label91 = new System.Windows.Forms.Label();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.numCountReset = new System.Windows.Forms.NumericUpDown();
             this.label69 = new System.Windows.Forms.Label();
@@ -482,6 +485,7 @@ namespace MCForge.Gui
             this.tabPage11.SuspendLayout();
             this.groupBox16.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCountReset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSpamMute)).BeginInit();
@@ -4282,6 +4286,7 @@ namespace MCForge.Gui
             // tabPage8
             // 
             this.tabPage8.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage8.Controls.Add(this.groupBox7);
             this.tabPage8.Controls.Add(this.groupBox15);
             this.tabPage8.Controls.Add(this.groupBox14);
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
@@ -4289,7 +4294,38 @@ namespace MCForge.Gui
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage8.Size = new System.Drawing.Size(488, 505);
             this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "Verification/AntiSpam";
+            this.tabPage8.Text = "Security";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.AutoSize = true;
+            this.groupBox7.Controls.Add(this.comboBoxProtection);
+            this.groupBox7.Controls.Add(this.label91);
+            this.groupBox7.Location = new System.Drawing.Point(225, 223);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(247, 116);
+            this.groupBox7.TabIndex = 2;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "MCForge Staff Protection";
+            // 
+            // comboBoxProtection
+            // 
+            this.comboBoxProtection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProtection.FormattingEnabled = true;
+            this.comboBoxProtection.Location = new System.Drawing.Point(115, 30);
+            this.comboBoxProtection.MaxDropDownItems = 3;
+            this.comboBoxProtection.Name = "comboBoxProtection";
+            this.comboBoxProtection.Size = new System.Drawing.Size(83, 25);
+            this.comboBoxProtection.TabIndex = 1;
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(10, 33);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(99, 17);
+            this.label91.TabIndex = 0;
+            this.label91.Text = "Protection Level";
             // 
             // groupBox15
             // 
@@ -4758,6 +4794,9 @@ namespace MCForge.Gui
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCountReset)).EndInit();
@@ -5144,5 +5183,8 @@ namespace MCForge.Gui
         private System.Windows.Forms.CheckBox txechx;
         private System.Windows.Forms.CheckBox chkIgnoreOmnibans;
         private System.Windows.Forms.Button buttonEco;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.ComboBox comboBoxProtection;
+        private System.Windows.Forms.Label label91;
     }
 }

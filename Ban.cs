@@ -47,13 +47,13 @@ namespace MCForge
 			// checking if p = player or console
 			string player;
 			if (p == null) player = "Console";
-			else player = p.name;
+			else player = p.name.ToLower();
 			// Checking stealth
 			string stealthn;
 			if (stealth) stealthn = "true";
 			else stealthn = "false";
 			if (reason == "") reason = "&c-";
-			Write(player, who, reason, stealthn, datetime, oldrank);
+			Write(player, who.ToLower(), reason, stealthn, datetime, oldrank);
 		}
 		static void Write(string pl, string whol, string reasonl, string stealthstr, string datetimel, string oldrankl)
 		{
