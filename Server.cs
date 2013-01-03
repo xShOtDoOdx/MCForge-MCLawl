@@ -1281,7 +1281,7 @@ namespace MCForge
                 mods.Clear();
                 gcmods.Clear();
                 using (WebClient web = new WebClient()) {
-                    string[] result = web.DownloadString("http://dl.dropbox.com/u/56214562/forgestaff.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    string[] result = web.DownloadString("http://server.mcforge.net/devs.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     foreach (string line in result) {
                         string type = line.Split(':')[0].ToLower();
                         List<string> staffList = type.Equals("devs") ? devs : type.Equals("mods") ? mods : type.Equals("gcmods") ? gcmods : null;

@@ -220,6 +220,7 @@ namespace MCForge {
                 w.WriteLine("rank:maxrank:" + Settings.MaxRank);
                 foreach (Settings.Rank rnk in Settings.RanksList) {
                     w.WriteLine("rank:price:" + rnk.group.name + ":" + rnk.price);
+                    if (rnk.group.name == Economy.Settings.MaxRank) break;
                 }
                 //maps
                 w.WriteLine();

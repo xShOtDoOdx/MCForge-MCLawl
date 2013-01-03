@@ -652,7 +652,7 @@ namespace MCForge.Commands {
                             case "maps":
                             case "levels":
                                 if (Economy.Settings.Levels == false) { Player.SendMessage(p, "%cMaps are not enabled for the economy system"); return; }
-                                Player.SendMessage(p, ecoColor + "===Economy info: Maps===");
+                                Player.SendMessage(p, ecoColor + "%3===Economy info: Maps===");
                                 Player.SendMessage(p, "%aAvailable maps to buy:");
                                 if (Economy.Settings.LevelsList.Count == 0)
                                     Player.SendMessage(p, "%8-None-");
@@ -665,7 +665,7 @@ namespace MCForge.Commands {
                             case "title":
                             case "titles":
                                 if (Economy.Settings.Titles == false) { Player.SendMessage(p, "%cTitles are not enabled for the economy system"); return; }
-                                Player.SendMessage(p, ecoColor + "===Economy info: Titles===");
+                                Player.SendMessage(p, ecoColor + "%3===Economy info: Titles===");
                                 Player.SendMessage(p, "Titles cost %f" + Economy.Settings.TitlePrice + " %3" + Server.moneys + Server.DefaultColor + " each");
                                 return;
 
@@ -675,7 +675,7 @@ namespace MCForge.Commands {
                             case "titlecolors":
                             case "tc":
                                 if (!Economy.Settings.TColors) { Player.SendMessage(p, "%cTitlecolors are not enabled for the economy system"); return; }
-                                Player.SendMessage(p, ecoColor + "===Economy info: Titlecolors===");
+                                Player.SendMessage(p, ecoColor + "%3===Economy info: Titlecolors===");
                                 Player.SendMessage(p, "Titlecolors cost %f" + Economy.Settings.TColorPrice + " %3" + Server.moneys + Server.DefaultColor + " each");
                                 return;
 
@@ -684,18 +684,20 @@ namespace MCForge.Commands {
                             case "colours":
                             case "colour":
                                 if (Economy.Settings.Colors == false) { Player.SendMessage(p, "%cColors are not enabled for the economy system"); return; }
-                                Player.SendMessage(p, ecoColor + "===Economy info: Colors===");
+                                Player.SendMessage(p, ecoColor + "%3===Economy info: Colors===");
                                 Player.SendMessage(p, "Colors cost %f" + Economy.Settings.ColorPrice + " %3" + Server.moneys + Server.DefaultColor + " each");
                                 return;
 
                             case "ranks":
                             case "rank":
                                 if (Economy.Settings.Ranks == false) { Player.SendMessage(p, "%cRanks are not enabled for the economy system"); return; }
-                                Player.SendMessage(p, ecoColor + "===Economy info: Ranks===");
+                                Player.SendMessage(p, ecoColor + "%3===Economy info: Ranks===");
                                 Player.SendMessage(p, "%fThe maximum buyable rank is: " + Group.Find(Economy.Settings.MaxRank).color + Economy.Settings.MaxRank);
                                 Player.SendMessage(p, "%fRanks cost:");
                                 foreach (Economy.Settings.Rank rnk in Economy.Settings.RanksList) {
                                     Player.SendMessage(p, rnk.group.color + rnk.group.name + ": %f" + rnk.price + " %3" + Server.moneys);
+                                    if (rnk.group.name == Economy.Settings.MaxRank.ToLower())
+                                        break;
                                 }
                                 return;
 

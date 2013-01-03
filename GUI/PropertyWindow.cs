@@ -36,7 +36,7 @@ namespace MCForge.Gui {
             this.Font = SystemFonts.IconTitleFont;
         }
 
-        void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
+        private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
             if (e.Category == UserPreferenceCategory.Window) {
                 this.Font = SystemFonts.IconTitleFont;
             }
@@ -2460,6 +2460,10 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         		if (d == DialogResult.Yes)
         			MCForge_.Gui.Program.UpdateCheck();
         	}
+        }
+
+        private void buttonEco_Click(object sender, EventArgs e) {
+            new GUI.Eco.EconomyWindow().ShowDialog();
         }
     }
 }

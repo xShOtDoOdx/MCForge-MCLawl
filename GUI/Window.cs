@@ -1239,10 +1239,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if (prpertiesofplyer.isProtected) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
-                return;
-            }
             Command.all.Find("Joker").Use(null, prpertiesofplyer.name);
             if ( prpertiesofplyer.joker == true ) {
                 PlayersTextBox.AppendTextAndScroll("Jokered Player");
@@ -1261,10 +1257,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if (prpertiesofplyer.isProtected) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
-                return;
-            }
             Command.all.Find("Freeze").Use(null, prpertiesofplyer.name);
             if ( prpertiesofplyer.frozen == true ) {
                 PlayersTextBox.AppendTextAndScroll("Froze Player");
@@ -1281,10 +1273,6 @@ namespace MCForge.Gui {
         private void MuteBt_Click(object sender, EventArgs e) {
             if ( prpertiesofplyer == null || !Player.players.Contains(prpertiesofplyer) ) {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
-                return;
-            }
-            if (prpertiesofplyer.isProtected || (prpertiesofplyer.isGCMod && Server.forgeProtection == ForgeProtection.Mod)) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
                 return;
             }
             Command.all.Find("Mute").Use(null, prpertiesofplyer.name);
@@ -1333,10 +1321,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if (prpertiesofplyer.isProtected) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
-                return;
-            }
             Command.all.Find("Jail").Use(null, prpertiesofplyer.name);
             if ( prpertiesofplyer.jailed == true ) {
                 PlayersTextBox.AppendTextAndScroll("Jailed Player");
@@ -1375,10 +1359,6 @@ namespace MCForge.Gui {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
                 return;
             }
-            if ( prpertiesofplyer.isProtected ) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
-                return;
-            }
             Command.all.Find("Ban").Use(null, prpertiesofplyer.name);
             PlayersTextBox.AppendTextAndScroll("Banned player");
             return;
@@ -1387,10 +1367,6 @@ namespace MCForge.Gui {
         private void IPBanBt_Click(object sender, EventArgs e) {
             if ( prpertiesofplyer == null || !Player.players.Contains(prpertiesofplyer) ) {
                 PlayersTextBox.AppendTextAndScroll("No Player Selected");
-                return;
-            }
-            if ( prpertiesofplyer.isProtected ) {
-                PlayersTextBox.AppendTextAndScroll("This player is protected");
                 return;
             }
             Command.all.Find("IPBan").Use(null, prpertiesofplyer.name);

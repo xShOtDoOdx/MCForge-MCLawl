@@ -178,6 +178,7 @@ namespace MCForge.Gui
             this.listRanks = new System.Windows.Forms.ListBox();
             this.label85 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.buttonEco = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.chkPrmOnly = new System.Windows.Forms.CheckBox();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
@@ -245,24 +246,8 @@ namespace MCForge.Gui
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox17 = new System.Windows.Forms.GroupBox();
-            this.usebeta = new System.Windows.Forms.CheckBox();
-            this.forceUpdateBtn = new System.Windows.Forms.Button();
-            this.updateTimeNumeric = new System.Windows.Forms.NumericUpDown();
-            this.label71 = new System.Windows.Forms.Label();
-            this.notifyInGameUpdate = new System.Windows.Forms.CheckBox();
-            this.autoUpdate = new System.Windows.Forms.CheckBox();
-            this.chkUpdates = new System.Windows.Forms.CheckBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.txtServerOwner = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.numPlayers = new System.Windows.Forms.NumericUpDown();
-            this.chkAgreeToRules = new System.Windows.Forms.CheckBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.numGuests = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lblDefault = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label29 = new System.Windows.Forms.Label();
             this.lblOpChat = new System.Windows.Forms.Label();
@@ -288,6 +273,22 @@ namespace MCForge.Gui
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.ChkPort = new System.Windows.Forms.Button();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.usebeta = new System.Windows.Forms.CheckBox();
+            this.forceUpdateBtn = new System.Windows.Forms.Button();
+            this.updateTimeNumeric = new System.Windows.Forms.NumericUpDown();
+            this.label71 = new System.Windows.Forms.Label();
+            this.notifyInGameUpdate = new System.Windows.Forms.CheckBox();
+            this.autoUpdate = new System.Windows.Forms.CheckBox();
+            this.chkUpdates = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.numPlayers = new System.Windows.Forms.NumericUpDown();
+            this.chkAgreeToRules = new System.Windows.Forms.CheckBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.numGuests = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblDefault = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -444,18 +445,18 @@ namespace MCForge.Gui
             this.grpSQL.SuspendLayout();
             this.grpIRC.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox17.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.updateTimeNumeric)).BeginInit();
             this.groupBox8.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPlayers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGuests)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updateTimeNumeric)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPlayers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGuests)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -1106,7 +1107,7 @@ namespace MCForge.Gui
             this.ChkTunnels.AutoSize = true;
             this.ChkTunnels.Location = new System.Drawing.Point(18, 20);
             this.ChkTunnels.Name = "ChkTunnels";
-            this.ChkTunnels.Size = new System.Drawing.Size(110, 27);
+            this.ChkTunnels.Size = new System.Drawing.Size(99, 27);
             this.ChkTunnels.TabIndex = 4;
             this.ChkTunnels.Text = "Anti-Tunneling";
             this.toolTip.SetToolTip(this.ChkTunnels, "Should guests be limited to digging a certain depth?");
@@ -1165,7 +1166,7 @@ namespace MCForge.Gui
             // 
             this.cmbDefaultColour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDefaultColour.FormattingEnabled = true;
-            this.cmbDefaultColour.Location = new System.Drawing.Point(89, 100);
+            this.cmbDefaultColour.Location = new System.Drawing.Point(100, 101);
             this.cmbDefaultColour.Name = "cmbDefaultColour";
             this.cmbDefaultColour.Size = new System.Drawing.Size(57, 25);
             this.cmbDefaultColour.TabIndex = 9;
@@ -1175,24 +1176,24 @@ namespace MCForge.Gui
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(57, 27);
+            this.txtName.Location = new System.Drawing.Point(67, 27);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(333, 24);
+            this.txtName.Size = new System.Drawing.Size(323, 24);
             this.txtName.TabIndex = 0;
             this.toolTip.SetToolTip(this.txtName, "The name of the server.\nPick something good!");
             // 
             // txtMOTD
             // 
-            this.txtMOTD.Location = new System.Drawing.Point(57, 56);
+            this.txtMOTD.Location = new System.Drawing.Point(67, 56);
             this.txtMOTD.Name = "txtMOTD";
-            this.txtMOTD.Size = new System.Drawing.Size(333, 24);
+            this.txtMOTD.Size = new System.Drawing.Size(323, 24);
             this.txtMOTD.TabIndex = 0;
             this.toolTip.SetToolTip(this.txtMOTD, "The MOTD of the server.\nUse \"+hax\" to allow any WoM hack, \"-hax\" to disallow any " +
         "hacks at all and use \"-fly\" and whatnot to disallow other things.");
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(57, 85);
+            this.txtPort.Location = new System.Drawing.Point(67, 85);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(63, 24);
             this.txtPort.TabIndex = 2;
@@ -1267,7 +1268,7 @@ namespace MCForge.Gui
             this.chkTpToHigherRanks.AutoSize = true;
             this.chkTpToHigherRanks.Location = new System.Drawing.Point(170, 41);
             this.chkTpToHigherRanks.Name = "chkTpToHigherRanks";
-            this.chkTpToHigherRanks.Size = new System.Drawing.Size(165, 27);
+            this.chkTpToHigherRanks.Size = new System.Drawing.Size(151, 27);
             this.chkTpToHigherRanks.TabIndex = 40;
             this.chkTpToHigherRanks.Text = "Allow tp to higher ranks";
             this.toolTip.SetToolTip(this.chkTpToHigherRanks, "Allows the use of /tp to players of higher rank");
@@ -1980,6 +1981,7 @@ namespace MCForge.Gui
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.buttonEco);
             this.tabPage4.Controls.Add(this.groupBox18);
             this.tabPage4.Controls.Add(this.groupBox19);
             this.tabPage4.Controls.Add(this.groupBox13);
@@ -1996,13 +1998,27 @@ namespace MCForge.Gui
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Misc";
             // 
+            // buttonEco
+            // 
+            this.buttonEco.AutoSize = true;
+            this.buttonEco.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonEco.Location = new System.Drawing.Point(10, 248);
+            this.buttonEco.Name = "buttonEco";
+            this.buttonEco.Size = new System.Drawing.Size(116, 27);
+            this.buttonEco.TabIndex = 43;
+            this.buttonEco.Text = "Economy Settings";
+            this.buttonEco.UseVisualStyleBackColor = true;
+            this.buttonEco.Click += new System.EventHandler(this.buttonEco_Click);
+            // 
             // groupBox18
             // 
+            this.groupBox18.AutoSize = true;
+            this.groupBox18.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox18.Controls.Add(this.chkIgnoreOmnibans);
             this.groupBox18.Controls.Add(this.chkPrmOnly);
             this.groupBox18.Location = new System.Drawing.Point(369, 394);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(116, 112);
+            this.groupBox18.Size = new System.Drawing.Size(116, 129);
             this.groupBox18.TabIndex = 42;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Access to server";
@@ -2020,6 +2036,8 @@ namespace MCForge.Gui
             // 
             // groupBox19
             // 
+            this.groupBox19.AutoSize = true;
+            this.groupBox19.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox19.Controls.Add(this.cmbGlobalChatColor);
             this.groupBox19.Controls.Add(this.lblGlobalChatColor);
             this.groupBox19.Controls.Add(this.label51);
@@ -2027,7 +2045,7 @@ namespace MCForge.Gui
             this.groupBox19.Controls.Add(this.chkGlobalChat);
             this.groupBox19.Location = new System.Drawing.Point(368, 283);
             this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Size = new System.Drawing.Size(117, 104);
+            this.groupBox19.Size = new System.Drawing.Size(126, 124);
             this.groupBox19.TabIndex = 41;
             this.groupBox19.TabStop = false;
             this.groupBox19.Text = "Global Chat";
@@ -2061,6 +2079,8 @@ namespace MCForge.Gui
             // 
             // groupBox13
             // 
+            this.groupBox13.AutoSize = true;
+            this.groupBox13.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox13.Controls.Add(this.chkGuestLimitNotify);
             this.groupBox13.Controls.Add(this.cmbGrieferStoneRank);
             this.groupBox13.Controls.Add(this.label48);
@@ -2081,7 +2101,7 @@ namespace MCForge.Gui
             this.groupBox13.Controls.Add(this.label34);
             this.groupBox13.Location = new System.Drawing.Point(10, 283);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(352, 223);
+            this.groupBox13.Size = new System.Drawing.Size(373, 241);
             this.groupBox13.TabIndex = 40;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Extra";
@@ -2206,6 +2226,8 @@ namespace MCForge.Gui
             // 
             // groupBox12
             // 
+            this.groupBox12.AutoSize = true;
+            this.groupBox12.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox12.Controls.Add(this.txtGrieferStone);
             this.groupBox12.Controls.Add(this.chkGrieferStone);
             this.groupBox12.Controls.Add(this.chkShutdown);
@@ -2219,7 +2241,7 @@ namespace MCForge.Gui
             this.groupBox12.Controls.Add(this.chkBanMessage);
             this.groupBox12.Location = new System.Drawing.Point(146, 119);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(339, 158);
+            this.groupBox12.Size = new System.Drawing.Size(336, 176);
             this.groupBox12.TabIndex = 39;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Messages";
@@ -2296,6 +2318,8 @@ namespace MCForge.Gui
             // 
             // groupBox11
             // 
+            this.groupBox11.AutoSize = true;
+            this.groupBox11.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox11.Controls.Add(this.label24);
             this.groupBox11.Controls.Add(this.txtRP);
             this.groupBox11.Controls.Add(this.label28);
@@ -2303,7 +2327,7 @@ namespace MCForge.Gui
             this.groupBox11.Controls.Add(this.chkPhysicsRest);
             this.groupBox11.Location = new System.Drawing.Point(8, 119);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(130, 149);
+            this.groupBox11.Size = new System.Drawing.Size(128, 123);
             this.groupBox11.TabIndex = 38;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Physics Restart";
@@ -2333,6 +2357,8 @@ namespace MCForge.Gui
             // 
             // groupBox10
             // 
+            this.groupBox10.AutoSize = true;
+            this.groupBox10.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox10.Controls.Add(this.cmbAFKKickPerm);
             this.groupBox10.Controls.Add(this.label76);
             this.groupBox10.Controls.Add(this.label25);
@@ -2341,7 +2367,7 @@ namespace MCForge.Gui
             this.groupBox10.Controls.Add(this.txtAFKKick);
             this.groupBox10.Location = new System.Drawing.Point(352, 13);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(133, 100);
+            this.groupBox10.Size = new System.Drawing.Size(133, 118);
             this.groupBox10.TabIndex = 37;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "AFK";
@@ -2375,13 +2401,15 @@ namespace MCForge.Gui
             // 
             // groupBox9
             // 
+            this.groupBox9.AutoSize = true;
+            this.groupBox9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox9.Controls.Add(this.label32);
             this.groupBox9.Controls.Add(this.txtBackupLocation);
             this.groupBox9.Controls.Add(this.label9);
             this.groupBox9.Controls.Add(this.txtBackup);
             this.groupBox9.Location = new System.Drawing.Point(8, 13);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(338, 100);
+            this.groupBox9.Size = new System.Drawing.Size(332, 105);
             this.groupBox9.TabIndex = 36;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Backups";
@@ -2676,16 +2704,15 @@ namespace MCForge.Gui
             // 
             // tabPage1
             // 
-            this.tabPage1.AutoScroll = true;
-            this.tabPage1.Controls.Add(this.groupBox17);
             this.tabPage1.Controls.Add(this.groupBox8);
-            this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.groupBox5);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.groupBox17);
+            this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -2694,113 +2721,14 @@ namespace MCForge.Gui
             this.tabPage1.Text = "Server";
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
-            // groupBox17
-            // 
-            this.groupBox17.Controls.Add(this.usebeta);
-            this.groupBox17.Controls.Add(this.forceUpdateBtn);
-            this.groupBox17.Controls.Add(this.updateTimeNumeric);
-            this.groupBox17.Controls.Add(this.label71);
-            this.groupBox17.Controls.Add(this.notifyInGameUpdate);
-            this.groupBox17.Controls.Add(this.autoUpdate);
-            this.groupBox17.Controls.Add(this.chkUpdates);
-            this.groupBox17.Location = new System.Drawing.Point(370, 136);
-            this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(112, 246);
-            this.groupBox17.TabIndex = 44;
-            this.groupBox17.TabStop = false;
-            this.groupBox17.Text = "Update Settings";
-            // 
-            // usebeta
-            // 
-            this.usebeta.Appearance = System.Windows.Forms.Appearance.Button;
-            this.usebeta.AutoSize = true;
-            this.usebeta.Location = new System.Drawing.Point(5, 180);
-            this.usebeta.Name = "usebeta";
-            this.usebeta.Size = new System.Drawing.Size(128, 27);
-            this.usebeta.TabIndex = 30;
-            this.usebeta.Text = "Use Beta Version";
-            this.usebeta.UseVisualStyleBackColor = true;
-            this.usebeta.CheckedChanged += new System.EventHandler(this.UsebetaCheckedChanged);
-            this.usebeta.Click += new System.EventHandler(this.UsebetaClick);
-            // 
-            // forceUpdateBtn
-            // 
-            this.forceUpdateBtn.AutoSize = true;
-            this.forceUpdateBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.forceUpdateBtn.Location = new System.Drawing.Point(5, 140);
-            this.forceUpdateBtn.Name = "forceUpdateBtn";
-            this.forceUpdateBtn.Size = new System.Drawing.Size(102, 27);
-            this.forceUpdateBtn.TabIndex = 6;
-            this.forceUpdateBtn.Text = "Force update";
-            this.forceUpdateBtn.UseVisualStyleBackColor = true;
-            this.forceUpdateBtn.Click += new System.EventHandler(this.forceUpdateBtn_Click);
-            // 
-            // updateTimeNumeric
-            // 
-            this.updateTimeNumeric.Location = new System.Drawing.Point(54, 218);
-            this.updateTimeNumeric.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.updateTimeNumeric.Name = "updateTimeNumeric";
-            this.updateTimeNumeric.Size = new System.Drawing.Size(39, 24);
-            this.updateTimeNumeric.TabIndex = 29;
-            this.updateTimeNumeric.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(5, 220);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(57, 17);
-            this.label71.TabIndex = 5;
-            this.label71.Text = "Seconds:";
-            // 
-            // notifyInGameUpdate
-            // 
-            this.notifyInGameUpdate.Appearance = System.Windows.Forms.Appearance.Button;
-            this.notifyInGameUpdate.AutoSize = true;
-            this.notifyInGameUpdate.Location = new System.Drawing.Point(5, 100);
-            this.notifyInGameUpdate.Name = "notifyInGameUpdate";
-            this.notifyInGameUpdate.Size = new System.Drawing.Size(112, 27);
-            this.notifyInGameUpdate.TabIndex = 7;
-            this.notifyInGameUpdate.Text = "Notify In-Game";
-            this.notifyInGameUpdate.UseVisualStyleBackColor = true;
-            // 
-            // autoUpdate
-            // 
-            this.autoUpdate.Appearance = System.Windows.Forms.Appearance.Button;
-            this.autoUpdate.AutoSize = true;
-            this.autoUpdate.Location = new System.Drawing.Point(5, 60);
-            this.autoUpdate.Name = "autoUpdate";
-            this.autoUpdate.Size = new System.Drawing.Size(97, 27);
-            this.autoUpdate.TabIndex = 6;
-            this.autoUpdate.Text = "Auto Update";
-            this.autoUpdate.UseVisualStyleBackColor = true;
-            this.autoUpdate.CheckedChanged += new System.EventHandler(this.AutoUpdateCheckedChanged);
-            // 
-            // chkUpdates
-            // 
-            this.chkUpdates.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkUpdates.AutoSize = true;
-            this.chkUpdates.Location = new System.Drawing.Point(5, 20);
-            this.chkUpdates.Name = "chkUpdates";
-            this.chkUpdates.Size = new System.Drawing.Size(133, 27);
-            this.chkUpdates.TabIndex = 4;
-            this.chkUpdates.Text = "Check for updates";
-            this.chkUpdates.UseVisualStyleBackColor = true;
-            // 
             // groupBox8
             // 
+            this.groupBox8.AutoSize = true;
+            this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox8.Controls.Add(this.txtServerOwner);
             this.groupBox8.Location = new System.Drawing.Point(230, 218);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(134, 43);
+            this.groupBox8.Size = new System.Drawing.Size(131, 63);
             this.groupBox8.TabIndex = 47;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Server Owner";
@@ -2812,105 +2740,10 @@ namespace MCForge.Gui
             this.txtServerOwner.Size = new System.Drawing.Size(119, 24);
             this.txtServerOwner.TabIndex = 0;
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.label21);
-            this.groupBox6.Controls.Add(this.numPlayers);
-            this.groupBox6.Controls.Add(this.chkAgreeToRules);
-            this.groupBox6.Controls.Add(this.label35);
-            this.groupBox6.Controls.Add(this.numGuests);
-            this.groupBox6.Controls.Add(this.label10);
-            this.groupBox6.Controls.Add(this.cmbDefaultColour);
-            this.groupBox6.Controls.Add(this.lblDefault);
-            this.groupBox6.Location = new System.Drawing.Point(6, 131);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(218, 130);
-            this.groupBox6.TabIndex = 46;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Players";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(12, 22);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(80, 17);
-            this.label21.TabIndex = 3;
-            this.label21.Text = "Max Players:";
-            // 
-            // numPlayers
-            // 
-            this.numPlayers.Location = new System.Drawing.Point(85, 20);
-            this.numPlayers.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.numPlayers.Name = "numPlayers";
-            this.numPlayers.Size = new System.Drawing.Size(60, 24);
-            this.numPlayers.TabIndex = 29;
-            this.numPlayers.Value = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.numPlayers.ValueChanged += new System.EventHandler(this.numPlayers_ValueChanged);
-            // 
-            // chkAgreeToRules
-            // 
-            this.chkAgreeToRules.AutoSize = true;
-            this.chkAgreeToRules.Location = new System.Drawing.Point(15, 77);
-            this.chkAgreeToRules.Name = "chkAgreeToRules";
-            this.chkAgreeToRules.Size = new System.Drawing.Size(252, 21);
-            this.chkAgreeToRules.TabIndex = 32;
-            this.chkAgreeToRules.Tag = "Forces guests to use /agree on entry to the server";
-            this.chkAgreeToRules.Text = "Force guests to read rules on entry\r\n";
-            this.chkAgreeToRules.UseVisualStyleBackColor = true;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(12, 48);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(78, 17);
-            this.label35.TabIndex = 27;
-            this.label35.Text = "Max Guests:";
-            // 
-            // numGuests
-            // 
-            this.numGuests.Location = new System.Drawing.Point(83, 46);
-            this.numGuests.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.numGuests.Name = "numGuests";
-            this.numGuests.Size = new System.Drawing.Size(60, 24);
-            this.numGuests.TabIndex = 28;
-            this.numGuests.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 104);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 17);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Default color:";
-            // 
-            // lblDefault
-            // 
-            this.lblDefault.Location = new System.Drawing.Point(152, 100);
-            this.lblDefault.Name = "lblDefault";
-            this.lblDefault.Size = new System.Drawing.Size(21, 21);
-            this.lblDefault.TabIndex = 10;
-            // 
             // groupBox5
             // 
+            this.groupBox5.AutoSize = true;
+            this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox5.Controls.Add(this.label29);
             this.groupBox5.Controls.Add(this.cmbDefaultRank);
             this.groupBox5.Controls.Add(this.lblOpChat);
@@ -2921,7 +2754,7 @@ namespace MCForge.Gui
             this.groupBox5.Controls.Add(this.chkTpToHigherRanks);
             this.groupBox5.Location = new System.Drawing.Point(6, 392);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(308, 104);
+            this.groupBox5.Size = new System.Drawing.Size(327, 123);
             this.groupBox5.TabIndex = 45;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Ranks";
@@ -2958,7 +2791,7 @@ namespace MCForge.Gui
             this.chkAdminsJoinSilent.AutoSize = true;
             this.chkAdminsJoinSilent.Location = new System.Drawing.Point(168, 18);
             this.chkAdminsJoinSilent.Name = "chkAdminsJoinSilent";
-            this.chkAdminsJoinSilent.Size = new System.Drawing.Size(149, 21);
+            this.chkAdminsJoinSilent.Size = new System.Drawing.Size(136, 21);
             this.chkAdminsJoinSilent.TabIndex = 39;
             this.chkAdminsJoinSilent.Tag = "Players who have the adminchat rank join the game silently.";
             this.chkAdminsJoinSilent.Text = "Admins join silently";
@@ -2966,6 +2799,8 @@ namespace MCForge.Gui
             // 
             // groupBox4
             // 
+            this.groupBox4.AutoSize = true;
+            this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox4.Controls.Add(this.label27);
             this.groupBox4.Controls.Add(this.txtMain);
             this.groupBox4.Controls.Add(this.chkAutoload);
@@ -2974,7 +2809,7 @@ namespace MCForge.Gui
             this.groupBox4.Controls.Add(this.txtMaps);
             this.groupBox4.Location = new System.Drawing.Point(314, 388);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(162, 115);
+            this.groupBox4.Size = new System.Drawing.Size(178, 130);
             this.groupBox4.TabIndex = 44;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Level Settings";
@@ -3007,6 +2842,8 @@ namespace MCForge.Gui
             // 
             // groupBox2
             // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.label30);
             this.groupBox2.Controls.Add(this.txechx);
             this.groupBox2.Controls.Add(this.button3);
@@ -3019,7 +2856,7 @@ namespace MCForge.Gui
             this.groupBox2.Controls.Add(this.chkLogBeat);
             this.groupBox2.Location = new System.Drawing.Point(6, 271);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(363, 115);
+            this.groupBox2.Size = new System.Drawing.Size(364, 130);
             this.groupBox2.TabIndex = 42;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Advanced Configuration";
@@ -3100,12 +2937,14 @@ namespace MCForge.Gui
             // 
             // groupBox3
             // 
+            this.groupBox3.AutoSize = true;
+            this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox3.Controls.Add(this.ChkTunnels);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.txtDepth);
             this.groupBox3.Location = new System.Drawing.Point(230, 131);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 82);
+            this.groupBox3.Size = new System.Drawing.Size(123, 98);
             this.groupBox3.TabIndex = 43;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tunnel Prevention";
@@ -3131,6 +2970,8 @@ namespace MCForge.Gui
             // 
             // groupBox1
             // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtName);
             this.groupBox1.Controls.Add(this.label2);
@@ -3140,7 +2981,7 @@ namespace MCForge.Gui
             this.groupBox1.Controls.Add(this.ChkPort);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(410, 124);
+            this.groupBox1.Size = new System.Drawing.Size(397, 132);
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "General Configuration";
@@ -3181,6 +3022,208 @@ namespace MCForge.Gui
             this.ChkPort.Text = "Server Port Utilities";
             this.ChkPort.UseVisualStyleBackColor = true;
             this.ChkPort.Click += new System.EventHandler(this.ChkPort_Click);
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.AutoSize = true;
+            this.groupBox17.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox17.Controls.Add(this.usebeta);
+            this.groupBox17.Controls.Add(this.forceUpdateBtn);
+            this.groupBox17.Controls.Add(this.updateTimeNumeric);
+            this.groupBox17.Controls.Add(this.label71);
+            this.groupBox17.Controls.Add(this.notifyInGameUpdate);
+            this.groupBox17.Controls.Add(this.autoUpdate);
+            this.groupBox17.Controls.Add(this.chkUpdates);
+            this.groupBox17.Location = new System.Drawing.Point(370, 136);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(129, 265);
+            this.groupBox17.TabIndex = 44;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "Update Settings";
+            // 
+            // usebeta
+            // 
+            this.usebeta.Appearance = System.Windows.Forms.Appearance.Button;
+            this.usebeta.AutoSize = true;
+            this.usebeta.Location = new System.Drawing.Point(5, 180);
+            this.usebeta.Name = "usebeta";
+            this.usebeta.Size = new System.Drawing.Size(113, 27);
+            this.usebeta.TabIndex = 30;
+            this.usebeta.Text = "Use Beta Version";
+            this.usebeta.UseVisualStyleBackColor = true;
+            this.usebeta.CheckedChanged += new System.EventHandler(this.UsebetaCheckedChanged);
+            this.usebeta.Click += new System.EventHandler(this.UsebetaClick);
+            // 
+            // forceUpdateBtn
+            // 
+            this.forceUpdateBtn.AutoSize = true;
+            this.forceUpdateBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.forceUpdateBtn.Location = new System.Drawing.Point(5, 140);
+            this.forceUpdateBtn.Name = "forceUpdateBtn";
+            this.forceUpdateBtn.Size = new System.Drawing.Size(92, 27);
+            this.forceUpdateBtn.TabIndex = 6;
+            this.forceUpdateBtn.Text = "Force update";
+            this.forceUpdateBtn.UseVisualStyleBackColor = true;
+            this.forceUpdateBtn.Click += new System.EventHandler(this.forceUpdateBtn_Click);
+            // 
+            // updateTimeNumeric
+            // 
+            this.updateTimeNumeric.Location = new System.Drawing.Point(54, 218);
+            this.updateTimeNumeric.Maximum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.updateTimeNumeric.Name = "updateTimeNumeric";
+            this.updateTimeNumeric.Size = new System.Drawing.Size(39, 24);
+            this.updateTimeNumeric.TabIndex = 29;
+            this.updateTimeNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(5, 220);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(57, 17);
+            this.label71.TabIndex = 5;
+            this.label71.Text = "Seconds:";
+            // 
+            // notifyInGameUpdate
+            // 
+            this.notifyInGameUpdate.Appearance = System.Windows.Forms.Appearance.Button;
+            this.notifyInGameUpdate.AutoSize = true;
+            this.notifyInGameUpdate.Location = new System.Drawing.Point(5, 100);
+            this.notifyInGameUpdate.Name = "notifyInGameUpdate";
+            this.notifyInGameUpdate.Size = new System.Drawing.Size(104, 27);
+            this.notifyInGameUpdate.TabIndex = 7;
+            this.notifyInGameUpdate.Text = "Notify In-Game";
+            this.notifyInGameUpdate.UseVisualStyleBackColor = true;
+            // 
+            // autoUpdate
+            // 
+            this.autoUpdate.Appearance = System.Windows.Forms.Appearance.Button;
+            this.autoUpdate.AutoSize = true;
+            this.autoUpdate.Location = new System.Drawing.Point(5, 60);
+            this.autoUpdate.Name = "autoUpdate";
+            this.autoUpdate.Size = new System.Drawing.Size(90, 27);
+            this.autoUpdate.TabIndex = 6;
+            this.autoUpdate.Text = "Auto Update";
+            this.autoUpdate.UseVisualStyleBackColor = true;
+            this.autoUpdate.CheckedChanged += new System.EventHandler(this.AutoUpdateCheckedChanged);
+            // 
+            // chkUpdates
+            // 
+            this.chkUpdates.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkUpdates.AutoSize = true;
+            this.chkUpdates.Location = new System.Drawing.Point(5, 20);
+            this.chkUpdates.Name = "chkUpdates";
+            this.chkUpdates.Size = new System.Drawing.Size(118, 27);
+            this.chkUpdates.TabIndex = 4;
+            this.chkUpdates.Text = "Check for updates";
+            this.chkUpdates.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.AutoSize = true;
+            this.groupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox6.Controls.Add(this.label21);
+            this.groupBox6.Controls.Add(this.numPlayers);
+            this.groupBox6.Controls.Add(this.chkAgreeToRules);
+            this.groupBox6.Controls.Add(this.label35);
+            this.groupBox6.Controls.Add(this.numGuests);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.cmbDefaultColour);
+            this.groupBox6.Controls.Add(this.lblDefault);
+            this.groupBox6.Location = new System.Drawing.Point(6, 131);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(245, 149);
+            this.groupBox6.TabIndex = 46;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Players";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(12, 22);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(80, 17);
+            this.label21.TabIndex = 3;
+            this.label21.Text = "Max Players:";
+            // 
+            // numPlayers
+            // 
+            this.numPlayers.Location = new System.Drawing.Point(96, 20);
+            this.numPlayers.Maximum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.numPlayers.Name = "numPlayers";
+            this.numPlayers.Size = new System.Drawing.Size(60, 24);
+            this.numPlayers.TabIndex = 29;
+            this.numPlayers.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.numPlayers.ValueChanged += new System.EventHandler(this.numPlayers_ValueChanged);
+            // 
+            // chkAgreeToRules
+            // 
+            this.chkAgreeToRules.AutoSize = true;
+            this.chkAgreeToRules.Location = new System.Drawing.Point(15, 77);
+            this.chkAgreeToRules.Name = "chkAgreeToRules";
+            this.chkAgreeToRules.Size = new System.Drawing.Size(224, 21);
+            this.chkAgreeToRules.TabIndex = 32;
+            this.chkAgreeToRules.Tag = "Forces guests to use /agree on entry to the server";
+            this.chkAgreeToRules.Text = "Force guests to read rules on entry\r\n";
+            this.chkAgreeToRules.UseVisualStyleBackColor = true;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(12, 48);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(78, 17);
+            this.label35.TabIndex = 27;
+            this.label35.Text = "Max Guests:";
+            // 
+            // numGuests
+            // 
+            this.numGuests.Location = new System.Drawing.Point(96, 46);
+            this.numGuests.Maximum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.numGuests.Name = "numGuests";
+            this.numGuests.Size = new System.Drawing.Size(60, 24);
+            this.numGuests.TabIndex = 28;
+            this.numGuests.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 104);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(85, 17);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Default color:";
+            // 
+            // lblDefault
+            // 
+            this.lblDefault.Location = new System.Drawing.Point(152, 100);
+            this.lblDefault.Name = "lblDefault";
+            this.lblDefault.Size = new System.Drawing.Size(21, 21);
+            this.lblDefault.TabIndex = 10;
             // 
             // tabControl
             // 
@@ -4596,6 +4639,8 @@ namespace MCForge.Gui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(507, 585);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnDiscard);
@@ -4606,7 +4651,6 @@ namespace MCForge.Gui
             this.MaximizeBox = false;
             this.Name = "PropertyWindow";
             this.Text = "Properties";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PropertyWindow_FormClosing);
             this.Load += new System.EventHandler(this.PropertyWindow_Load);
             this.Disposed += new System.EventHandler(this.PropertyWindow_Unload);
             this.tabPage3.ResumeLayout(false);
@@ -4659,15 +4703,9 @@ namespace MCForge.Gui
             this.grpIRC.ResumeLayout(false);
             this.grpIRC.PerformLayout();
             this.tabPage1.ResumeLayout(false);
-            this.groupBox17.ResumeLayout(false);
-            this.groupBox17.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.updateTimeNumeric)).EndInit();
+            this.tabPage1.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPlayers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGuests)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -4679,6 +4717,13 @@ namespace MCForge.Gui
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updateTimeNumeric)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPlayers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGuests)).EndInit();
             this.tabControl.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -5098,5 +5143,6 @@ namespace MCForge.Gui
         private System.Windows.Forms.CheckBox TntWrsStreaksChck;
         private System.Windows.Forms.CheckBox txechx;
         private System.Windows.Forms.CheckBox chkIgnoreOmnibans;
+        private System.Windows.Forms.Button buttonEco;
     }
 }
