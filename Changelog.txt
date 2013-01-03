@@ -32,6 +32,8 @@ v5.5.10
 v5.5.9
 -New:
   -If textures are enabled, WoM users sees join/leave messages at the top right
+  -GlobalChat changed to irc.mcforge.net #GlobalChat
+  -GC data is gotten from remote server.
 -Fixes:
   -/womid now compatible with xWoM
   -Fixed bugs with textures

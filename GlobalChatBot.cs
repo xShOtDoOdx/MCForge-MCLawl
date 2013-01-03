@@ -53,10 +53,17 @@ namespace MCForge
                 Server.s.Log("[GlobalChat] The IRC dll was not found!");
                 return;
             }*/
-            using (WebClient wc = new WebClient()) {
-            	string data = wc.DownloadString("http://server.mcforge.net/gcdata");
-            	server = data.Split('&')[0];
-            	channel = data.Split('&')[1];
+            try {
+            	using (WebClient wc = new WebClient()) {
+            		string data = wc.DownloadString("http://server.mcforge.net/gcdata");
+            		server = data.Split('&')[0];
+            		channel = data.Split('&')[1];
+            	}
+            }
+            catch 
+            {
+            	server = "irc.mcforge.net";
+            	channel = "#GlobalChat";
             }
             this.nick = nick.Replace(" ", "");
             connection = new Connection(new ConnectionArgs(nick, server), false, false);
