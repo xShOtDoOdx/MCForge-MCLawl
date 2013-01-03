@@ -103,7 +103,7 @@ namespace MCForge.Commands
         }
         public override void Help(Player p)
         {
-            Player.SendMessage(p, "/unbanip <ip> - Un-bans an ip.  Also accepts a player name when you use @ before the name.");
+            Player.SendMessage(p, "/unbanip <ip/player> - Un-bans an ip.  Also accepts a player name when you use @ before the name.");
         }
     }
 }

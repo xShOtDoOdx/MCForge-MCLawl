@@ -38,11 +38,13 @@ namespace MCForge.Commands
             Player who = Player.Find(split[0]);
             Group newRank = Group.Find(split[1]);
             string msgGave = "";
-
+            string oldcolor = "";
             string oldgroupstr = "";
+
             if (who != null)
             {
                 oldgroupstr = who.group.name;
+                oldcolor = who.group.color;
             }
             else
             {
@@ -115,13 +117,15 @@ namespace MCForge.Commands
                 Player.GlobalChat(who, "&6" + msgGave, false);
 
                 who.group = newRank;
-                who.color = who.group.color;
+                if(who.color == "" || who.color == oldcolor )
+                    who.color = who.group.color;
+                who.SetPrefix();
+
                 Player.GlobalDie(who, false);
 
                 who.SendMessage("You are now ranked " + newRank.color + newRank.name + Server.DefaultColor + ", type /help for your new set of commands.");
                 who.SendUserType(Block.canPlace(who.group.Permission, Block.blackrock));
 
-                Boolean tryer = true;
                 string year = DateTime.Now.Year.ToString();
                 string month = DateTime.Now.Month.ToString();
                 string day = DateTime.Now.Day.ToString();
@@ -154,14 +158,8 @@ namespace MCForge.Commands
                 }
                 catch
                 {
-                    tryer = false;
-                }
-
-                if (!tryer)
-                {
                     Player.SendMessage(p, "&cAn error occurred!");
                 }
-
 
                 Player.GlobalSpawn(who, who.pos[0], who.pos[1], who.pos[2], who.rot[0], who.rot[1], false);
             }

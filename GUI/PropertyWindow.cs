@@ -22,6 +22,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using MCForge.Gui.Popups;
+using Microsoft.Win32;
 
 namespace MCForge.Gui {
     public partial class PropertyWindow : Form {
@@ -31,6 +32,18 @@ namespace MCForge.Gui {
 
         public PropertyWindow() {
             InitializeComponent();
+            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+            this.Font = SystemFonts.IconTitleFont;
+        }
+
+        private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
+            if (e.Category == UserPreferenceCategory.Window) {
+                this.Font = SystemFonts.IconTitleFont;
+            }
+        }
+
+        private void PropertyWindow_FormClosing(object sender, FormClosingEventArgs e) {
+            SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
         }
 
         private void PropertyWindow_Load(object sender, EventArgs e) {
@@ -2447,6 +2460,10 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         		if (d == DialogResult.Yes)
         			MCForge_.Gui.Program.UpdateCheck();
         	}
+        }
+
+        private void buttonEco_Click(object sender, EventArgs e) {
+            new GUI.Eco.EconomyWindow().ShowDialog();
         }
     }
 }

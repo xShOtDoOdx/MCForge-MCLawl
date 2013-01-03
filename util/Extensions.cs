@@ -152,5 +152,27 @@ namespace MCForge
                 return rk.GetValue("Content Type").ToString();
             return "application/octet-stream";
         }
+
+        public static void DeleteLine(string file, string line) {
+            var complete = from selectLine in File.ReadAllLines(file) where selectLine != line select selectLine;
+            File.WriteAllLines(file, complete.ToArray());
+        }
+
+        public static void DeleteLineWord(string file, string word) {
+                var complete = from selectLine in File.ReadAllLines(file) where !selectLine.Contains(word) select selectLine;
+                File.WriteAllLines(file, complete.ToArray());
+        }
+
+        public static void DeleteExactLineWord(string file, string word) {
+            var complete = from selectLine in File.ReadAllLines(file) where !selectLine.Equals(word) select selectLine;
+            File.WriteAllLines(file, complete.ToArray());
+        }
+
+        public static void UncapitalizeAll(string file) {
+            string[] complete = File.ReadAllLines(file);
+            for (int i = 0; i < complete.Length; i++)
+                complete[i] = complete[i].ToLower();
+            File.WriteAllLines(file, complete);
+        }
     }
 }

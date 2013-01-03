@@ -34,7 +34,7 @@ namespace MCForge.Commands {
             if (message.Split(' ').Length > 1)
                 message = message.Substring(message.IndexOf(' ') + 1);
             else
-                if (p == null && (!Server.devs.Contains(who.name) || Server.gcmodhasprotection(who.name))) message = "You were kicked by an IRC controller!";
+                if (p == null ) message = "You were kicked by an IRC controller!";
                 else if (p != null)
                     message = "You were kicked by " + p.name + "!";
 

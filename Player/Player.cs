@@ -40,7 +40,7 @@ namespace MCForge {
         public static byte number { get { return (byte)players.Count; } }
         static System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
         static MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-        public static List<Player> totalplayers = new List<Player>();
+        public static List<Player> totalplayers = new List<Player>(); //this isnt used anywhere? I suggest removing this..
         public static string lastMSG = "";
 
         public static bool storeHelp = false;
@@ -76,6 +76,7 @@ namespace MCForge {
         public bool painting = false;
         public bool muted = false;
         public bool jailed = false;
+        public bool agreed = false;
         public bool invincible = false;
         public string prefix = "";
         public string title = "";
@@ -299,6 +300,19 @@ namespace MCForge {
         public bool InGlobalChat { get; set; }
         public Dictionary<string, string> sounds = new Dictionary<string, string>();
 
+        public bool isDev, isMod, isGCMod; //is this player a dev/mod/gcmod?
+        public bool isStaff;
+        public bool isProtected;
+        public bool verifiedName;
+
+        public struct OfflinePlayer {
+            public string name, color, title, titleColor;
+            public int money;
+            //need moar? add moar! just make sure you adjust Player.FindOffline() method
+
+            public OfflinePlayer(string nm, string clr, string tl, string tlclr, int mon) { name = nm; color = clr; title = tl; titleColor = tlclr; money = mon; }
+        }
+
         public static string CheckPlayerStatus(Player p) {
             if ( p.hidden )
                 return "hidden";
@@ -389,6 +403,7 @@ namespace MCForge {
                         else {
                             Server.s.Log("Could not find Welcome.txt. Using default.");
                             File.WriteAllText("text/welcome.txt", "Welcome to my server!");
+                            SendMessage("Welcome to my server!");
                         }
                         extraTimer.Start();
                         loginTimer.Dispose();
@@ -696,19 +711,28 @@ namespace MCForge {
                 }
                 string verify = enc.GetString(message, 65, 32).Trim();
                 byte type = message[129];
+
+                //Forge Protection Check
+                isDev = Server.Devs.Contains(name.ToLower());
+                isMod = Server.Mods.Contains(name.ToLower());
+                isGCMod = Server.GCmods.Contains(name.ToLower());
+                isStaff = isDev || isMod || isGCMod;
+                isProtected = Server.forgeProtection == ForgeProtection.Mod && (isMod || isDev) ? true : Server.forgeProtection == ForgeProtection.Dev && isDev ? true : false;
+                verifiedName = Server.verify ? true : false;
+
                 try {
                     Server.TempBan tBan = Server.tempBans.Find(tB => tB.name.ToLower() == name.ToLower());
                     if ( tBan.allowedJoin < DateTime.Now ) {
                         Server.tempBans.Remove(tBan);
                     }
-                    else {
+                    else if (!isDev && !isMod) {
                         Kick("You're still banned (temporary ban)!");
                     }
                 }
                 catch { }
 
                 // Whitelist check.
-                if ( Server.useWhitelist && !Server.devs.Contains(name) ) {
+                if ( Server.useWhitelist) {
                     if ( Server.verify ) {
                         if ( Server.whiteList.Contains(name) ) {
                             onWhitelist = true;
@@ -725,9 +749,12 @@ namespace MCForge {
                         }
                         ipQuery.Dispose();
                     }
+                    onWhitelist = isDev || isMod;
+                    if (!onWhitelist) { Kick("This is a private server!"); return; } //i think someone forgot this?
                 }
 
-                if ( Server.PremiumPlayersOnly && !Server.devs.Contains(name) ) {
+                //premium check
+                if ( Server.PremiumPlayersOnly && !isDev && !isMod ) {
                     using ( WebClient Client = new WebClient() ) {
                         int tries = 0;
                         while ( tries++ < 3 ) {
@@ -771,44 +798,41 @@ namespace MCForge {
                         Server.s.Log("Failed to load global ignore list!");
                     }
                 }
-                totalplayers.Add(this);
+                totalplayers.Add(this); //why?
 
-
-
-                if ( Server.bannedIP.Contains(ip) ) {
-                    if ( Server.useWhitelist ) {
-                        if ( !onWhitelist ) {
+                // ban check
+                if (!isDev && !isMod) {
+                    if (Server.bannedIP.Contains(ip)) {
+                        if (Server.useWhitelist) {
+                            if (!onWhitelist) {
+                                Kick(Server.customBanMessage);
+                                return;
+                            }
+                        } else {
                             Kick(Server.customBanMessage);
                             return;
                         }
                     }
-                    else {
-                        Kick(Server.customBanMessage);
-                        return;
-                    }
-                }
-                //if (connections.Count >= 5) { Kick("Too many connections!"); return; }
-
-                if ( Server.omniban.CheckPlayer(this) ) { Kick(Server.omniban.kickMsg); return; }
-
-                if ( Group.findPlayerGroup(name) == Group.findPerm(LevelPermission.Banned) ) {
-                    if ( Server.useWhitelist ) {
-                        if ( !onWhitelist ) {
-                            Kick(Server.customBanMessage);
+                    if (Server.omniban.CheckPlayer(this)) { Kick(Server.omniban.kickMsg); return; } //deprecated
+                    if (Group.findPlayerGroup(name) == Group.findPerm(LevelPermission.Banned)) {
+                        if (Server.useWhitelist) {
+                            if (!onWhitelist) {
+                                Kick(Server.customBanMessage);
+                                return;
+                            }
+                        } else {
+                            if (Ban.Isbanned(name)) {
+                                string[] data = Ban.Getbandata(name);
+                                Kick("You were banned for \"" + data[1] + "\" by " + data[0]);
+                            } else
+                                Kick(Server.customBanMessage);
                             return;
                         }
                     }
-                    else {
-                		if (Ban.Isbanned(name)) {
-                			string[] data = Ban.Getbandata(name);
-                			Kick("You were banned for \"" + data[1] + "\" by " + data[0]);
-                		}
-                		else
-                        	Kick(Server.customBanMessage);
-                        return;
-                    }
                 }
-                if ( !Server.devs.Contains(name) && !VIP.Find(this) ) {
+
+                //server maxplayer check
+                if ( !isDev && !isMod && !VIP.Find(this) ) {
                     // Check to see how many guests we have
                     if ( Player.players.Count >= Server.players && !IPInPrivateRange(ip) ) { Kick("Server full!"); return; }
                     // Code for limiting no. of guests
@@ -823,6 +847,7 @@ namespace MCForge {
                         }
                     }
                 }
+
                 if ( version != Server.version ) { Kick("Wrong version!"); return; }
                 if ( name.Length > 16 || !ValidName(name) ) { Kick("Illegal name!"); return; }
 
@@ -899,6 +924,7 @@ namespace MCForge {
             if ( playerDb.Rows.Count == 0 ) {
                 this.prefix = "";
                 this.time = "0 0 0 1";
+                this.title = "";
                 this.titlecolor = "";
                 this.color = group.color;
                 this.money = 0;
@@ -910,12 +936,14 @@ namespace MCForge {
 
                 this.timeLogged = DateTime.Now;
                 SendMessage("Welcome " + name + "! This is your first visit.");
-
-                if ( Server.useMySQL )
+                string query = "INSERT INTO Economy (player, money, total, purchase, payment, salary, fine) VALUES ('" + name + "', " + money + ", 0, '%cNone', '%cNone', '%cNone', '%cNone')";
+                if (Server.useMySQL) {
                     MySQL.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
-                else
+                    MySQL.executeQuery(query);
+                } else {
                     SQLite.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
-
+                    SQLite.executeQuery(query);
+                }
             }
             else {
                 totalLogins = int.Parse(playerDb.Rows[0]["totalLogin"].ToString()) + 1;
@@ -939,10 +967,10 @@ namespace MCForge {
                 else {
                     color = group.color;
                 }
-                SetPrefix();
                 overallDeath = int.Parse(playerDb.Rows[0]["TotalDeaths"].ToString());
                 overallBlocks = long.Parse(playerDb.Rows[0]["totalBlocks"].ToString().Trim());
-                money = int.Parse(playerDb.Rows[0]["Money"].ToString());
+                //money = int.Parse(playerDb.Rows[0]["Money"].ToString());
+                money = Economy.RetrieveEcoStats(this.name).money;
                 totalKicked = int.Parse(playerDb.Rows[0]["totalKicked"].ToString());
                 SendMessage("Welcome back " + color + prefix + name + Server.DefaultColor + "! You've been here " + totalLogins + " times!");
                 if ( Server.muted.Contains(name) ) {
@@ -950,28 +978,24 @@ namespace MCForge {
                     GlobalMessage(name + " is still muted from the last time they went offline.");
                 }
             }
+            SetPrefix();
             playerDb.Dispose();
             if ( PlayerConnect != null )
                 PlayerConnect(this);
             OnPlayerConnectEvent.Call(this);
-            if ( Server.devs.Contains(name) ) {
-                color = "&9";
-                title = "Dev";
-                SetPrefix();
-            }
 
-            DonatorPlayers atribs = Donators.GetDonationAtribs(this);
+            DonatorPlayers atribs = Donators.GetDonationAtribs(this); //well there seem to be no donators yet, so for the time being this will stay null
             if ( atribs != null ) {
                 color = "&" + atribs.Color;
                 title = atribs.Title;
                 SetPrefix();
             }
 
-            if ( Server.server_owner != "" && Server.server_owner.ToLower().Contains(this.name.ToLower()) ) {
+            if ( Server.server_owner != "" && Server.server_owner.ToLower().Equals(this.name.ToLower()) ) {
                 if ( color == Group.standard.color ) {
                     color = "&c";
                 }
-                if ( prefix == "" ) {
+                if ( title == "" ) {
                     title = "Owner";
                 }
                 SetPrefix();
@@ -1012,18 +1036,48 @@ namespace MCForge {
             if ( !File.Exists("text/login/" + this.name + ".txt") ) {
                 File.WriteAllText("text/login/" + this.name + ".txt", "joined the server.");
             }
-            if ( Server.agreetorulesonentry == true ) {
-                if ( !File.Exists("ranks/agreed.txt") ) {
-                    File.WriteAllText("ranks/agreed.txt", "");
-                }
-                var agreed = File.ReadAllText("ranks/agreed.txt");
-                if ( this.group.Permission == LevelPermission.Guest ) {
-                    if ( !agreed.Contains(this.name.ToLower()) ) {
-                        SendMessage("&9You must read the &c/rules&9 and &c/agree&9 to them before you can build and use commands!");
-                        jailed = true;
+
+            //very very sloppy, yes I know.. but works for the time
+            bool gotoJail = false;
+            string gotoJailMap = "";
+            string gotoJailName = "";
+            try {
+                if (File.Exists("ranks/jailed.txt")) {
+                    using (StreamReader read = new StreamReader("ranks/jailed.txt")) {
+                        string line;
+                        while ((line = read.ReadLine()) != null) {
+                            if (line.Split()[0].ToLower() == this.name.ToLower()) {
+                                gotoJail = true;
+                                gotoJailMap = line.Split()[1];
+                                gotoJailName = line.Split()[0];
+                                break;
+                            }
+                        }
                     }
+                } else { File.Create("ranks/jailed.txt").Close(); }
+            } catch {
+                gotoJail = false;
+            }
+            if (gotoJail) {
+                try {
+                    Command.all.Find("goto").Use(this, gotoJailMap);
+                    Command.all.Find("jail").Use(null, gotoJailName);
+                } catch (Exception e) {
+                    Kick(e.ToString());
                 }
             }
+
+            if (Server.agreetorulesonentry) {
+                if (!File.Exists("ranks/agreed.txt"))
+                    File.WriteAllText("ranks/agreed.txt", "");
+                var agreedFile = File.ReadAllText("ranks/agreed.txt");
+                if (this.group.Permission == LevelPermission.Guest) {
+                    if (!agreedFile.Contains(this.name.ToLower()))
+                        SendMessage("&9You must read the &c/rules&9 and &c/agree&9 to them before you can build and use commands!");
+                    else agreed = true;
+                } else { agreed = true; }
+            } else { agreed = true; }
+
             string joinm = "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt");
             if ( this.group.Permission < Server.adminchatperm || Server.adminsjoinsilent == false ) {
             	if (( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) || this.group.Permission > LevelPermission.Guest) {
@@ -1070,8 +1124,10 @@ namespace MCForge {
             if ( Server.zombie.ZombieStatus() != 0 ) { Player.SendMessage(this, "There is a Zombie Survival game currently in-progress! Join it by typing /g " + Server.zombie.currentLevelName); }
         }
 
-        public void SetPrefix() {
+        public void SetPrefix() { //just change the color name if someone ever decides these titles need different colors O.o I just try to match them with the ranks on MCForge.net
+            string viptitle = isDev ? string.Format("[{0}Dev{1}]", c.Parse("gold"), color) : isMod ? string.Format("[{0}Mod{1}]", c.Parse("green"), color) : isGCMod ? string.Format("[{0}GCMod{1}]", c.Parse("purple"), color) : "";
             prefix = ( title == "" ) ? "" : ( titlecolor == "" ) ? "[" + title + "] " : "[" + titlecolor + title + color + "] ";
+            prefix = viptitle + prefix;
         }
 
         void HandleBlockchange(byte[] message) {
@@ -1128,7 +1184,7 @@ namespace MCForge {
 
             byte b = level.GetTile(x, y, z);
             if ( b == Block.Zero ) { return; }
-            if ( jailed ) { SendBlockchange(x, y, z, b); return; }
+            if ( jailed || !agreed ) { SendBlockchange(x, y, z, b); return; }
             if ( level.name.Contains("Museum " + Server.DefaultColor) && Blockchange == null ) {
                 return;
             }
@@ -1229,7 +1285,7 @@ namespace MCForge {
                 }
             }
 
-            if ( b == Block.griefer_stone && group.Permission <= Server.grieferStoneRank && !Server.devs.Contains(name) ) {
+            if ( b == Block.griefer_stone && group.Permission <= Server.grieferStoneRank && !isDev && !isMod) {
                 if ( grieferStoneWarn < 1 )
                     SendMessage("Do not grief! This is your first warning!");
                 else if ( grieferStoneWarn < 2 )
@@ -1914,7 +1970,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                         return;
                     }
                 }
-
+                
                 // Put this after vote collection so that people can vote even when chat is moderated
                 if ( Server.chatmod && !this.voice ) { this.SendMessage("Chat moderation is on, you cannot speak."); return; }
 
@@ -1989,7 +2045,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     if ( text[0] == '#' ) newtext = text.Remove(0, 1).Trim();
 
                     GlobalMessageOps("To Ops &f-" + color + name + "&f- " + newtext);
-                    if ( group.Permission < Server.opchatperm && !Server.devs.Contains(name) )
+                    if ( group.Permission < Server.opchatperm && !isStaff )
                         SendMessage("To Ops &f-" + color + name + "&f- " + newtext);
                     Server.s.Log("(OPs): " + name + ": " + newtext);
                     //Server.s.OpLog("(OPs): " + name + ": " + newtext);
@@ -2002,7 +2058,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     if ( text[0] == '+' ) newtext = text.Remove(0, 1).Trim();
 
                     GlobalMessageAdmins("To Admins &f-" + color + name + "&f- " + newtext); //to make it easy on remote
-                    if ( group.Permission < Server.adminchatperm && !Server.devs.Contains(name) )
+                    if ( group.Permission < Server.adminchatperm && !isStaff )
                         SendMessage("To Admins &f-" + color + name + "&f- " + newtext);
                     Server.s.Log("(Admins): " + name + ": " + newtext);
                     Server.IRC.Say(name + ": " + newtext, true);
@@ -2010,7 +2066,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                 }
 
                 if ( InGlobalChat ) {
-                    Command.all.Find("global").Use(this, text); //Didn't want to rewrite the whole command...................................
+                    Command.all.Find("global").Use(this, text); //Didn't want to rewrite the whole command... you lazy bastard :3
                     return;
                 }
 
@@ -2154,11 +2210,10 @@ return;
                 }
 
                 if ( cmd == String.Empty ) { SendMessage("No command entered."); return; }
-                if ( Server.agreetorulesonentry ) {
-                    if ( jailed ) {
+
+                if ( Server.agreetorulesonentry && !agreed ) {
                         SendMessage("You must read /rules then agree to them with /agree!");
                         return;
-                    }
                 }
                 if ( jailed ) {
                     SendMessage("You cannot use any commands while jailed.");
@@ -2234,8 +2289,21 @@ return;
                 catch { }
 
                 Command command = Command.all.Find(cmd);
+                Group old = null;
                 if ( command != null ) {
-                    if ( group.CanExecute(command) ) {
+                    //this part checks is MCForge staff are able to USE protection commands
+                    if (isProtected && Server.ProtectOver.Contains(cmd.ToLower())) {
+                        old = Group.findPerm(this.group.Permission);
+                        this.group = Group.findPerm(LevelPermission.Nobody);
+                    }
+
+                    if (Player.CommandProtected(cmd.ToLower(), message)) {
+                        SendMessage("Cannot use command, player has protection level: " + Server.forgeProtection);
+                        Server.s.CommandUsed(name + " used /" + cmd + " " + message);
+                        return;
+                    }
+
+                    if ( group.CanExecute(command)) {
                         if ( cmd != "repeat" ) lastCMD = cmd + " " + message;
                         if ( level.name.Contains("Museum " + Server.DefaultColor) ) {
                             if ( !command.museumUsable ) {
@@ -2286,12 +2354,12 @@ return;
                         this.commThread = new Thread(new ThreadStart(delegate {
                             try {
                                 command.Use(this, message);
-                            }
-                            catch ( Exception e ) {
+                            } catch (Exception e) {
                                 Server.ErrorLog(e);
                                 Player.SendMessage(this, "An error occured when using the command!");
                                 Player.SendMessage(this, e.GetType().ToString() + ": " + e.Message);
                             }
+                            finally { if (old != null) this.group = old; }
                         }));
                         commThread.Start();
                     }
@@ -3328,7 +3396,7 @@ changed |= 4;*/
         public static void GlobalMessageOps(string message) {
             try {
                 players.ForEach(delegate(Player p) {
-                    if ( p.group.Permission >= Server.opchatperm || Server.devs.Contains(p.name) ) { //START
+                    if ( p.group.Permission >= Server.opchatperm || p.isStaff ) { //START
                         Player.SendMessage(p, message);
                     }
                 });
@@ -3339,7 +3407,7 @@ changed |= 4;*/
         public static void GlobalMessageAdmins(string message) {
             try {
                 players.ForEach(delegate(Player p) {
-                    if ( p.group.Permission >= Server.adminchatperm || Server.devs.Contains(p.name) ) {
+                    if ( p.group.Permission >= Server.adminchatperm || p.isStaff ) {
                         Player.SendMessage(p, message);
                     }
                 });
@@ -3695,6 +3763,23 @@ catch { }*/
         public static string GetColor(string name) {
             return GetGroup(name).color;
         }
+        public static OfflinePlayer FindOffline(string name) {
+            OfflinePlayer offPlayer = new OfflinePlayer("", "", "", "", 0);
+            string query = "SELECT * FROM Players WHERE Name = '" + name + "'";
+            using (DataTable playerDB = Server.useMySQL ? MySQL.fillData(query) : SQLite.fillData(query)) {
+                if (playerDB.Rows.Count == 0)
+                    return offPlayer;
+                else {
+                    offPlayer.name = playerDB.Rows[0]["Name"].ToString().Trim();
+                    offPlayer.title = playerDB.Rows[0]["Title"].ToString().Trim();
+                    offPlayer.titleColor = c.Parse(playerDB.Rows[0]["title_color"].ToString().Trim());
+                    offPlayer.color = c.Parse(playerDB.Rows[0]["color"].ToString().Trim());
+                    offPlayer.money = int.Parse(playerDB.Rows[0]["Money"].ToString());
+                    if (offPlayer.color == "") { offPlayer.color = GetGroup(offPlayer.name).color; }
+                }
+            }
+            return offPlayer;
+        }
         #endregion
         #region == OTHER ==
         static byte FreeId() {
@@ -3817,6 +3902,78 @@ Next: continue;
                 return 0;
             }
         }
+
+        public static bool CommandProtected(string cmd, string message) {
+            string foundName = "";
+            Player who = null;
+            bool self = false;
+            if (Server.ProtectOver.Contains(cmd))
+                switch (cmd) {
+                    //case "demote":
+                    case "freeze":
+                    case "impersonate":
+                    //case "kick":
+                    case "kickban":
+                    case "mute":
+                    case "possess":
+                    //case "promote":
+                    case "sendcmd":
+                    case "tempban":
+                    case "uban":
+                    case "voice":
+                    case "xban":
+                    //case "unban":
+                    //case "xundo":
+                        if (message.Split().Length > 0) {
+                            who = Find(message.Split()[0]);
+                            foundName = who != null ? who.name : message.Split()[0];
+                        }
+                        break;
+                    /*case "banip": //this one is hard coded into CmdBanip.cs
+                        break;*/
+                    case "ban":
+                    case "joker":
+                        if (message.Split().Length > 0) {
+                            try {
+                                who = message.StartsWith("@") || message.StartsWith("#") ? Find(message.Split()[0].Substring(1)) : Find(message.Split()[0]);
+                            } catch (ArgumentOutOfRangeException e) { who = null; }
+                            foundName = who != null ? who.name : message.Split()[0];
+                        }
+                        break;
+                    case "lockdown":
+                        if (message.Split().Length > 1 && message.Split()[0].ToLower() == "player") {
+                            who = Find(message.Split()[1]);
+                            foundName = who != null ? who.name : message.Split()[1];
+                        }
+                        break;
+                    case "jail":
+                        if(message.Split().Length > 0 && message.Split()[0].ToLower() != "set") {
+                            who = Find(message.Split()[0]);
+                            foundName = who != null ? who.name : message.Split()[0];
+                        }
+                        break;
+                    case "ignore":
+                        List<string> badlist = new List<string>();
+                        badlist.Add("all"); badlist.Add("global"); badlist.Add("list");
+                        if (message.Split().Length > 0 && badlist.Contains(message.Split()[0].ToLower())) {
+                            who = Find(message.Split()[0]);
+                            foundName = who != null ? who.name : message.Split()[0];
+                        }
+                        badlist = null;
+                        break;
+                    default:
+                        break;
+                }
+            foundName = foundName.ToLower();
+            if (who != null && foundName == who.name.ToLower()) { self = true; }
+            try {
+                if (Server.forgeProtection == ForgeProtection.Mod)
+                    return (Server.Mods.Contains(foundName) || Server.Devs.Contains(foundName)) && !self;
+                if (Server.forgeProtection == ForgeProtection.Dev)
+                    return Server.Devs.Contains(foundName) && !self;
+            } catch { }
+            return false;
+        }
         #endregion
         #region == Host <> Network ==
         public static byte[] HTNO(ushort x) {
@@ -3878,6 +4035,8 @@ Next: continue;
         #endregion
 
         public static bool IPInPrivateRange(string ip) {
+            if (ip.StartsWith("127.0.0.") || ip.StartsWith("192.168.") || ip.StartsWith("10."))
+                return true;            
             //Too lazy to change usages
             return IsLocalIpAddress(ip);
         }
@@ -4035,12 +4194,9 @@ Next: continue;
             }
         }
         public bool EnoughMoney(int amount) {
-            if ( this.money >= amount ) {
+            if (this.money >= amount)
                 return true;
-            }
-            else {
-                return false;
-            }
+            return false;
         }
         public void ReviewTimer() {
             this.canusereview = false;

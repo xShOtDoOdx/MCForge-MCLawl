@@ -65,10 +65,12 @@ namespace MCForge.Commands
                 }
 
                 string devs = "";
+                string mods = "";
+                string gcmods = "";
                 int totalPlayers = 0;
                 foreach (Player pl in Player.players)
                 {
-                    if (!pl.hidden || p == null || p.group.Permission > LevelPermission.Operator || Server.devs.Contains(p.name))
+                    if (!pl.hidden || p == null || p.group.Permission > LevelPermission.Operator)
                     {
                         if (String.IsNullOrEmpty(message) || !Group.Exists(message) || Group.Find(message) == pl.group)
                         {
@@ -80,12 +82,25 @@ namespace MCForge.Commands
                                 foundName = pl.name + "-afk";
                             }
 
-                            if (Server.devs.Contains(pl.name))
+                            //copy pasting cuz im lazy and tired
+                            if (pl.isDev)
                             {
                                 if (pl.voice)
                                     devs += " " + "&f+" + Server.DefaultColor + foundName + " (" + pl.level.name + "),";
                                 else
                                     devs += " " + foundName + " (" + pl.level.name + "),";
+                            }
+                            if (pl.isMod) {
+                                if (pl.voice)
+                                    mods += " " + "&f+" + Server.DefaultColor + foundName + " (" + pl.level.name + "),";
+                                else
+                                    mods += " " + foundName + " (" + pl.level.name + "),";
+                            }
+                            if (pl.isGCMod) {
+                                if (pl.voice)
+                                    gcmods += " " + "&f+" + Server.DefaultColor + foundName + " (" + pl.level.name + "),";
+                                else
+                                    gcmods += " " + foundName + " (" + pl.level.name + "),";
                             }
 
                             if (pl.voice)
@@ -100,10 +115,18 @@ namespace MCForge.Commands
                         }
                     }
                 }
+
                 Player.SendMessage(p, "There are " + totalPlayers + " players online.");
+                //copy paste copy paste copy paste, such efficient code =3
                 if (devs.Length > 0)
                 {
-                    Player.SendMessage(p, ":&9Developers:" + Server.DefaultColor + devs.Trim(','));
+                    Player.SendMessage(p, ":&6Developers:" + Server.DefaultColor + devs.Trim(','));
+                }
+                if (mods.Length > 0) {
+                    Player.SendMessage(p, ":&2MCForge Moderators:" + Server.DefaultColor + mods.Trim(','));
+                }
+                if (gcmods.Length > 0) {
+                    Player.SendMessage(p, ":&5Global Chat Moderators:" + Server.DefaultColor + gcmods.Trim(','));
                 }
 
                 for (int i = playerList.Count - 1; i >= 0; i--)

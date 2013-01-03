@@ -94,9 +94,12 @@
     <Compile Include="Commands\CmdC4.cs" />
     <Compile Include="Commands\CmdGcaccept.cs" />
     <Compile Include="Commands\CmdGcbanlistupdate.cs" />
+    <Compile Include="Commands\CmdGcmods.cs" />
     <Compile Include="Commands\CmdGcrules.cs" />
     <Compile Include="Commands\CmdGifToCin.cs" />
+    <Compile Include="Commands\CmdMods.cs" />
     <Compile Include="Commands\CmdSearch.cs" />
+    <Compile Include="Commands\CmdStaff.cs" />
     <Compile Include="Commands\CmdTntWars.cs" />
     <Compile Include="Commands\CommandKeywords.cs" />
     <Compile Include="Donators.cs" />
@@ -105,6 +108,18 @@
     </Compile>
     <Compile Include="GUI\ColoredTextBox.Designer.cs">
       <DependentUpon>ColoredTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Eco\EcoLevelWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Eco\EcoLevelWindow.Designer.cs">
+      <DependentUpon>EcoLevelWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Eco\EconomyWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Eco\EconomyWindow.Designer.cs">
+      <DependentUpon>EconomyWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Games\CTF\Setup.cs" />
     <Compile Include="GUI\Games\TntWarsGame.cs" />
@@ -575,6 +590,12 @@
     <Compile Include="VIP.cs" />
     <Compile Include="Warp.cs" />
     <Compile Include="GUI\Games\ZombieGame.cs" />
+    <EmbeddedResource Include="GUI\Eco\EcoLevelWindow.resx">
+      <DependentUpon>EcoLevelWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Eco\EconomyWindow.resx">
+      <DependentUpon>EconomyWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\EditText.resx">
       <DependentUpon>EditText.cs</DependentUpon>
     </EmbeddedResource>

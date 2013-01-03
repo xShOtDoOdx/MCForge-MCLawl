@@ -20,6 +20,10 @@ using System;
 
 namespace MCForge.Commands
 {
+    /// <summary>
+    /// BUG: cannot unban while typing player names partially, code is not written optimal
+    /// TODO: Fix this bug
+    /// </summary>
     public class CmdUnban : Command
     {
         public override string name { get { return "unban"; } }

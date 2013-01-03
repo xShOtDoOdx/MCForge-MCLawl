@@ -80,22 +80,11 @@ namespace MCForge.Commands
                 {
                     Player who = Player.Find(param[1]);
 
-                    if (Server.devs.Contains(who.name))
-                    {
-                        Player.SendMessage(p, "You can't lockdown a dev!");
-                        return;
-                    }
-                    if (Server.gcmodhasprotection(who.name))
-                    {
-                        Player.SendMessage(p, "You can't lockdown a Global Chat Moderator!");
-                        return;
-                    }
                     if (who == null)
                     {
                         Player.SendMessage(p, "There is no player with such name online");
                         return;
                     }
-
 
                     if (!who.jailed)
                     {
@@ -120,7 +109,6 @@ namespace MCForge.Commands
                                     break;
                             }
                         }
-                        Player.GlobalDie(who, false);
                         who.jailed = true;
                         Player.GlobalMessage(who.color + who.name + Server.DefaultColor + " has been locked down!");
                         Player.GlobalMessageOps("Locked by: " + ((p == null) ? "Console" : p.name));

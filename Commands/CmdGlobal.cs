@@ -17,6 +17,8 @@ namespace MCForge.Commands
         //bla
         public override void Use(Player p, string message)
         {
+            if (p != null && (p.isGCMod || p.isMod || p.isDev) && !p.verifiedName) { Player.SendMessage(p, "You can't use GC, because the server hasn't verify-names on"); return; }
+
             if (String.IsNullOrEmpty(message)) { 
                 p.InGlobalChat = !p.InGlobalChat;
                 Player.SendMessage(p, p.InGlobalChat ? "%aGlobal Chat enabled" : "%cGlobal Chat Disabled");

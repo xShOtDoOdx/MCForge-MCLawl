@@ -16,12 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
+using System.Globalization;
 
-
-namespace MCForge.Commands
-{
-    public class CmdGive : Command
-    {
+namespace MCForge.Commands {
+    public class CmdGive : Command {
         public override string name { get { return "give"; } }
         public override string shortcut { get { return "gib"; } }
         public override string type { get { return "other"; } }
@@ -29,28 +27,69 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public CmdGive() { }
 
-        public override void Use(Player p, string message)
-        {
+        public override void Use(Player p, string message) {
             if (message.IndexOf(' ') == -1) { Help(p); return; }
             if (message.Split(' ').Length != 2) { Help(p); return; }
-
-            Player who = Player.Find(message.Split(' ')[0]);
-            if (who == null) { Player.SendMessage(p, "Could not find player entered"); return; }
-            if (who == p) { Player.SendMessage(p, "Sorry. Can't allow you to give " + Server.moneys + " to yourself"); return; }
+            
+            string user1 = "";
+            string user2 = "";
+            if (p == null) { user1 = "%f[ " + Server.DefaultColor + "Console%f]"; user2 = String.Format("{0}Console [&a{1}{0}]", Server.DefaultColor, Server.ZallState); }
+            else { user1 = p.color + p.name; user2 = p.color + p.prefix + p.name; }
 
             int amountGiven;
-            try { amountGiven = int.Parse(message.Split(' ')[1]); }
-            catch { Player.SendMessage(p, "Invalid amount"); return; }
+            try { amountGiven = int.Parse(message.Split(' ')[1]); } catch { Player.SendMessage(p, "%cInvalid amount"); return; }
+            if (amountGiven < 0) { Player.SendMessage(p, "%cCannot give negative %3" + Server.moneys); return; }
 
-            if (who.money + amountGiven > 16777215) { Player.SendMessage(p, "Players cannot have over 16777215 " + Server.moneys); return; }
-            if (amountGiven < 0) { Player.SendMessage(p, "Cannot give someone negative " + Server.moneys); return; }
+            Player who = Player.Find(message.Split(' ')[0]);
+            Economy.EcoStats ecos;
 
+            if (who == null) { //player is offline
+                //when the offline player will log in for the first time his money will be set to 0
+                //this doesn't matter because the player who used this command can give infinite amounts of money
+                //so we are not gonna bother to do an expensive database check if the offline player logged on before
+                ecos = Economy.RetrieveEcoStats(message.Split()[0]);
+                if (ReachedMax(p, ecos.money, amountGiven)) return;
+                ecos.money += amountGiven;
+                ecos.salary = "%f" + amountGiven + "%3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                Economy.UpdateEcoStats(ecos);
+                Player.GlobalMessage("%f" + ecos.playerName + Server.DefaultColor + "(offline) was given %f" + amountGiven + " %3" + Server.moneys + Server.DefaultColor + " by " + user2);
+                return;
+            }
+
+            if (who == p /*&& p.name != Server.server_owner*/) {
+                Player.SendMessage(p, "%cYou can't give yourself %3" + Server.moneys);
+                return;
+            }//I think owners should be able to give themselves money, for testing reasons..
+            //although questionable, because console could give money too
+            /* else if (who == p && p.name == Server.server_owner) {
+                if (ReachedMax(p, who.money, amountGiven)) return;
+                p.money += amountGiven;
+                ecos = Economy.RetrieveEcoStats(p.name);
+                ecos.money = p.money;
+                ecos.salary = "%f" + amountGiven + " %3 " + Server.moneys + " by " + p.color + p.name + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                Economy.UpdateEcoStats(ecos);
+                Player.SendMessage(p, "You gave yourself %f" + amountGiven + " %3" + Server.moneys);
+                return;
+            }*/
+
+            if (ReachedMax(p, who.money, amountGiven)) return;
             who.money += amountGiven;
-            Player.GlobalMessage(who.color + who.prefix + who.name + Server.DefaultColor + " was given " + amountGiven + " " + Server.moneys);
+            ecos = Economy.RetrieveEcoStats(who.name);
+            ecos.money = who.money;
+            ecos.salary = "%f" + amountGiven + "%3 " + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            Economy.UpdateEcoStats(ecos);
+            Player.GlobalMessage(who.color + who.prefix + who.name + Server.DefaultColor + " was given %f" + amountGiven + " %3" + Server.moneys + Server.DefaultColor + " by " + user2);
         }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/give [player] <amount> - Gives [player] <amount> " + Server.moneys);
+        public override void Help(Player p) {
+            Player.SendMessage(p, "%f/give [player] <amount>" + Server.DefaultColor + " - Gives [player] <amount> %3" + Server.moneys);
+        }
+
+        private bool ReachedMax(Player p, int current, int amount) {
+            if (current + amount > 16777215) {
+                Player.SendMessage(p, "%cPlayers cannot have over %316777215 %3" + Server.moneys);
+                return true;
+            }
+            return false;
         }
     }
 }
