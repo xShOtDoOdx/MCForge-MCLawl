@@ -19,7 +19,6 @@ v5.5.10
   -When player has a color and gets ranked, the color remains intact without a relog
   -Title + color fix after a rank
   -Title + titlecolor fix in general
-  -Devs and GCMods can't buy titles to prevent a NullReferenceException (temporary fix)
   -Server.properties allignment improvements
   -Fixed issue where Console couldn't use /give and /take
   -Fixed issues where Console tries to use /eco, /money and /take

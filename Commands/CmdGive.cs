@@ -44,9 +44,9 @@ namespace MCForge.Commands {
             Economy.EcoStats ecos;
 
             if (who == null) { //player is offline
-                //when the offline player will log in for the first time his money will be set to 0
-                //this doesn't matter because the player who used this command can give infinite amounts of money
-                //so we are not gonna bother to do an expensive database check if the offline player logged on before
+                Player.OfflinePlayer off = Player.FindOffline(message.Split()[0]);
+                if (off.name == "") { Player.SendMessage(p, "%cThe player %f" + message.Split()[0] + Server.DefaultColor + "(offline)%c does not exist or has never logged on to this server"); return; }
+                
                 ecos = Economy.RetrieveEcoStats(message.Split()[0]);
                 if (ReachedMax(p, ecos.money, amountGiven)) return;
                 ecos.money += amountGiven;

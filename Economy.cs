@@ -82,7 +82,7 @@ namespace MCForge {
                 try {
                     DataTable players = Server.useMySQL ? MySQL.fillData(queryP) : SQLite.fillData(queryP);
                     if (players.Rows.Count == eco.Rows.Count) { } //move along, nothing to do here
-                    else if (players.Rows.Count != eco.Rows.Count && eco.Rows.Count == 0) { //if first time, copy content from player to economy
+                    else if (eco.Rows.Count == 0) { //if first time, copy content from player to economy
                         string query = "INSERT INTO Economy (player, money) SELECT Players.Name, Players.Money FROM Players";
                         if (Server.useMySQL) MySQL.executeQuery(query); else SQLite.executeQuery(query);
                     } else {
