@@ -119,7 +119,7 @@ namespace MCForge {
                                     if (linear[2] == "true") { Settings.Colors = true; } else if (linear[2] == "false") { Settings.Colors = false; }
                                 }
                                 break;
-                            case "tcolor":
+                            case "titlecolor":
                                 if (linear[1] == "price") { Settings.TColorPrice = int.Parse(linear[2]); }
                                 if (linear[1] == "enabled") {
                                     if (linear[2] == "true") { Settings.TColors = true; } else if (linear[2] == "false") { Settings.TColors = false; }

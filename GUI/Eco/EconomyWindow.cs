@@ -173,6 +173,7 @@ namespace MCForge.GUI.Eco {
         }
 
         private void EconomyWindow_FormClosing(object sender, FormClosingEventArgs e) {
+            Dispose();
             Economy.Save();
         }
 
