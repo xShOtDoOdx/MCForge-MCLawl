@@ -106,7 +106,7 @@ namespace MCForge.GUI.Eco {
             level.x = comboBoxX.SelectedItem.ToString();
             level.y = comboBoxY.SelectedItem.ToString();
             level.z = comboBoxZ.SelectedItem.ToString();
-            level.type = comboBoxType.SelectedItem.ToString();
+            level.type = comboBoxType.SelectedItem.ToString().ToLower();
             Economy.Settings.LevelsList.Add(level);
             eco.UpdateLevels();
             eco.CheckLevelEnables();

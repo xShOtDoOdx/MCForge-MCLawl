@@ -75,12 +75,13 @@ namespace MCForge.Commands {
                     if (who.group.Permission > p.group.Permission && who != p) { Player.SendMessage(p, "Cannot undo a user of higher or equal rank"); return; }
                     if (who != p && (int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "Only an " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+ may undo other people's actions"); return; }
                 }
-
+                Level saveLevel = null;
                 for (CurrentPos = who.UndoBuffer.Count - 1; CurrentPos >= 0; --CurrentPos) 
                 {
                     try {
                         Pos = who.UndoBuffer[CurrentPos];
                         Level foundLevel = Level.FindExact(Pos.mapName);
+                        saveLevel = foundLevel;
                         b = foundLevel.GetTile(Pos.x, Pos.y, Pos.z);
                         if (Pos.timePlaced.AddSeconds(seconds) >= DateTime.Now) {
                             if (b == Pos.newtype || Block.Convert(b) == Block.water || Block.Convert(b) == Block.lava) {
@@ -112,6 +113,8 @@ namespace MCForge.Commands {
                     // Also notify console
                     Server.s.Log(who.name + "'s actions for the past " + seconds + " seconds were undone.");
                 }
+                // Don't forget to save the map;) in case someone unloads it without a manual blockchange:D
+                if(saveLevel != null) saveLevel.Save(true);
                 return;
             }
             else if (undoPhysics) {
@@ -159,6 +162,8 @@ namespace MCForge.Commands {
                 Player.GlobalMessage("Physics were undone &b" + seconds + Server.DefaultColor + " seconds");
                 // Also notify console
                 Player.SendMessage(null, "Physics were undone &b" + seconds + Server.DefaultColor + " seconds");
+                // Don't forget to save the map;) in case someone unloads it without a manual blockchange:D
+                p.level.Save(true);
             }
             else { // Here, who == null, meaning the user specified is offline
                 if (p != null) {
@@ -175,6 +180,8 @@ namespace MCForge.Commands {
                         Player.GlobalMessage(Server.FindColor(whoName) + whoName + Server.DefaultColor + "'s actions for the past &b" + seconds + Server.DefaultColor + " seconds were undone.");
                         // Also notify console
                         Server.s.Log(whoName + "'s actions for the past " + seconds + " seconds were undone.");
+                        // Don't forget to save the map;) in case someone unloads it without a manual blockchange:D
+                        p.level.Save(true);
                     }
                     else Player.SendMessage(p, "Could not find player specified.");
                 }
