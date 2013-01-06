@@ -214,7 +214,7 @@ namespace MCForge {
         public int[] copyoffset = new int[3] { 0, 0, 0 };
         public ushort[] copystart = new ushort[3] { 0, 0, 0 };
         
-        public bool mojangaccount {
+        public bool Mojangaccount {
         	get {
         		return truename.Contains('@');
         	}
@@ -849,7 +849,7 @@ namespace MCForge {
                 }
 
                 if ( version != Server.version ) { Kick("Wrong version!"); return; }
-                if ( name.Length > 16 || !ValidName(name) ) { Kick("Illegal name!"); return; }
+                if ( name.Length > 16 || !ValidName(name, this) ) { Kick("Illegal name!"); return; }
 
                 if ( Server.verify ) {
                     if ( verify == "--" || verify !=
@@ -3888,8 +3888,9 @@ Next: continue;
             }
             return lines;
         }
-        public static bool ValidName(string name) {
+        public static bool ValidName(string name, Player p = null) {
             string allowedchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890._";
+            if (p != null && p.Mojangaccount) allowedchars += "-";
             return name.All(ch => allowedchars.IndexOf(ch) != -1);
         }
 
