@@ -1086,7 +1086,7 @@ namespace MCForge.Gui
             this.txtIRCServer.Name = "txtIRCServer";
             this.txtIRCServer.Size = new System.Drawing.Size(123, 24);
             this.txtIRCServer.TabIndex = 15;
-            this.toolTip.SetToolTip(this.txtIRCServer, "The IRC server to be used.\nDefault = irc.mcforge.net\nAnother choice = irc.geekshed.net" +
+            this.toolTip.SetToolTip(this.txtIRCServer, "The IRC server to be used.\nDefault = irc.mcforge.net\nAnother choice = irc.geekshed.n" +
         "et");
             // 
             // txtChannel
