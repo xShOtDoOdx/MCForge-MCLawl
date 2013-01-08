@@ -274,7 +274,7 @@ namespace MCForge
         //        public static bool safemode = false; //Never used
         public static int ircPort = 6667;
         public static string ircNick = "ForgeBot";
-        public static string ircServer = "irc.mcforge.net";
+        public static string ircServer = "irc.esper.net";
         public static string ircChannel = "#changethis";
         public static string ircOpChannel = "#changethistoo";
         public static bool ircIdentify = false;
