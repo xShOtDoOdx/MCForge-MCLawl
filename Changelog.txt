@@ -22,6 +22,7 @@ v5.5.10
   -Server.properties allignment improvements
   -Fixed issue where Console couldn't use /give and /take
   -Fixed issues where Console tries to use /eco, /money and /take
+  -Mojang users can now login when they have '-' in their email address
   -Minor bug fixes
 -Removals:
   -/eco setup map edit dimensions [x] [y] [z]

@@ -73,9 +73,9 @@ namespace MCForge.Commands
                     catch { seed = parameters[5].GetHashCode(); }
                     useSeed = true;
                 }
-                if (!isGood(x)) { Player.SendMessage(p, x + " is not a good dimension! Use a power of 2 next time."); }
-                if (!isGood(y)) { Player.SendMessage(p, y + " is not a good dimension! Use a power of 2 next time."); }
-                if (!isGood(z)) { Player.SendMessage(p, z + " is not a good dimension! Use a power of 2 next time."); }
+                if (!isGood(x)) { Player.SendMessage(p, x + " is not a good dimension! Use a power of 2 next time."); return; }
+                if (!isGood(y)) { Player.SendMessage(p, y + " is not a good dimension! Use a power of 2 next time."); return; }
+                if (!isGood(z)) { Player.SendMessage(p, z + " is not a good dimension! Use a power of 2 next time."); return; }
 
                 if (!Player.ValidName(name)) { Player.SendMessage(p, "Invalid name!"); return; }
                 if (System.IO.File.Exists("levels/" + name + ".lvl")) { Player.SendMessage(p, "Level \"" + name + "\" already exists!"); return; }
