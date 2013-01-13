@@ -16,6 +16,7 @@
 	permissions and limitations under the Licenses.
 */
 using System;
+using System.IO;
 
 
 namespace MCForge.Commands {
@@ -36,14 +37,14 @@ namespace MCForge.Commands {
             if (message == "" || message.Split(' ').Length > 2) { Help(p); return; }
             Player who = Player.Find(message);
             if (Server.forgeProtection == ForgeProtection.Mod && who != null && who.isGCMod) {
-                Player.SendMessage(p, "Global Chat Moderators can't be muted");
+                Player.SendMessage(p, "%cGlobal Chat Moderators can't be muted");
                 return;
             }
             if (who == null) {
                 if (Server.muted.Contains(message)) {
                     Server.muted.Remove(message);
                     Player.GlobalMessage(message + Server.DefaultColor + " is not online but is now &bun-muted");
-                    Server.muted.Save("muted.txt");
+                    Extensions.DeleteLineWord("ranks/muted.txt", who.name.ToLower());
                     return;
                 }
             }
@@ -61,16 +62,20 @@ namespace MCForge.Commands {
             if (who.muted) {
                 who.muted = false;
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " has been &bun-muted", false);
-                Server.muted.Save("muted.txt");
+                Extensions.DeleteLineWord("ranks/muted.txt", who.name.ToLower());
             } else {
                 if (p != null) {
                     if (who != p) if (who.group.Permission >= p.group.Permission) { Player.SendMessage(p, "Cannot mute someone of a higher or equal rank."); return; }
                 }
                 who.muted = true;
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " has been &8muted", false);
-                Server.muted.Save("muted.txt");
+                using (StreamWriter writer = new StreamWriter("ranks/muted.txt", true)) {
+                    writer.WriteLine(who.name.ToLower());
+                }
+                Server.s.Log("SAVED: ranks/muted.txt");
             }
         }
+
         public override void Help(Player p) {
             Player.SendMessage(p, "/mute <player> - Mutes or unmutes the player.");
         }

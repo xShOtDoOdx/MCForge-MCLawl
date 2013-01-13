@@ -131,12 +131,6 @@ namespace MCForge {
                                         gots = 0;
                                         thisGroup = new Group();
 
-                                        if (value.ToLower() == "developer" || value.ToLower() == "dev" || value.ToLower() == "developers" || value.ToLower() == "devs")
-                                            Server.s.Log("You are not a MCForge Developer. Stop pretending you are.");
-                                        if (value.ToLower() == "moderator" || value.ToLower() == "mod" || value.ToLower() == "moderators" || value.ToLower() == "moders")
-                                            Server.s.Log("You are not a MCForge Moderator. Stop pretending you are.");
-                                        if (value.ToLower() == "gcmod" || value.ToLower() == "globalchatmod" || value.ToLower() == "gcmoderator" || value.ToLower() == "globalchatmoderator" || value.ToLower() == "gcmods")
-                                            Server.s.Log("You are not a MCForge Global Chat Moderator. Stop pretending you are.");
                                         if (value.ToLower() == "adv" || value.ToLower() == "op" || value.ToLower() == "super" || value.ToLower() == "nobody" || value.ToLower() == "noone")
                                             Server.s.Log("Cannot have a rank named \"" + value.ToLower() + "\", this rank is hard-coded.");
                                         else if (GroupList.Find(grp => grp.name == value.ToLower()) == null)

@@ -1,5 +1,15 @@
+v5.5.11
+-New:
+
+-Fixes:
+  -MySQL bug fixed, that the MCZallDB couldn't be found when starting server
+  -Muted players now remain muted after a relog
+  -Titlefix with using /whowas
+-Removals:
+  -Restriction to the rank name devs/mods/gcmods etc. removed
+
 v5.5.10
--New
+-New:
   -New interface for the /eco command and system
   -'/eco setup apply' added to apply the eco settings changed in Economy.properties (owner and console only)
   -/eco stats has now additional info: Total spent, Recent purchase, Recent payment, Recent Receivement, Recent fine
@@ -11,7 +21,7 @@ v5.5.10
   -MCForge Devs, Mods and GCMods now have an additional fixed title
   -Added GUI for Economy Settings under the Properties/Misc tab
   -Changed the tab Verification/spam to Security and added the option to change Protection Level in GUI
--Fixes
+-Fixes:
   -!!!Fixed /xundo!!!
   -/money and /eco stats without [player] shows personal stats
   -/eco setup rank [maxrank] can't be set to greater ranks than yourself

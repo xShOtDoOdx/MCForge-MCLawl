@@ -82,7 +82,7 @@ namespace MCForge.Commands
                                 foundName = pl.name + "-afk";
                             }
 
-                            //copy pasting cuz im lazy and tired
+
                             if (pl.isDev)
                             {
                                 if (pl.voice)
@@ -116,19 +116,20 @@ namespace MCForge.Commands
                     }
                 }
 
-                Player.SendMessage(p, "There are " + totalPlayers + " players online.");
-                //copy paste copy paste copy paste, such efficient code =3
+                Player.SendMessage(p, "There are %a" + totalPlayers + Server.DefaultColor + " players online.");
+                bool staff = devs.Length > 0 || mods.Length > 0 || gcmods.Length > 0;
+                if (staff) Player.SendMessage(p, "%cMCForge Staff Online:");
                 if (devs.Length > 0)
                 {
-                    Player.SendMessage(p, ":&6Developers:" + Server.DefaultColor + devs.Trim(','));
+                    Player.SendMessage(p, "#%9MCForge Devs:" + Server.DefaultColor + devs.Trim(','));
                 }
                 if (mods.Length > 0) {
-                    Player.SendMessage(p, ":&2MCForge Moderators:" + Server.DefaultColor + mods.Trim(','));
+                    Player.SendMessage(p, "#%2MCForge Mods:" + Server.DefaultColor + mods.Trim(','));
                 }
                 if (gcmods.Length > 0) {
-                    Player.SendMessage(p, ":&5Global Chat Moderators:" + Server.DefaultColor + gcmods.Trim(','));
+                    Player.SendMessage(p, "#%6MCForge GCMods:" + Server.DefaultColor + gcmods.Trim(','));
                 }
-
+                if (staff) Player.SendMessage(p, "%aNormal Players Online:");
                 for (int i = playerList.Count - 1; i >= 0; i--)
                 {
                     groups groups = playerList[i];

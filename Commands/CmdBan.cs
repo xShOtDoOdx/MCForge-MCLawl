@@ -99,7 +99,7 @@ namespace MCForge.Commands {
                         return;
                     }
                     if ((int)who.group.Permission >= CommandOtherPerms.GetPerm(this)) {
-                        Player.SendMessage(p, "You can't ban players ranked " + CommandOtherPerms.GetPerm(this) + " or higher!");
+                        Player.SendMessage(p, "You can't ban players ranked " + Group.findPermInt(CommandOtherPerms.GetPerm(this)).name + " or higher!");
                         return;
                     }
                     if (who.group.Permission == LevelPermission.Banned) {

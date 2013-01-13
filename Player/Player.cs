@@ -1119,6 +1119,21 @@ namespace MCForge {
                 SendMessage("Error loading waypoints!");
                 Server.ErrorLog(ex);
             }
+            try {
+                if (File.Exists("ranks/muted.txt")) {
+                    using (StreamReader read = new StreamReader("ranks/muted.txt")) {
+                        string line;
+                        while ((line = read.ReadLine()) != null) {
+                            if (line.ToLower() == this.name.ToLower()) {
+                                this.muted = true;
+                                Player.SendMessage(this, "!%cYou are still %8muted%c since your last login.");
+                                break;
+                            }
+                        }
+                    }
+                } else { File.Create("ranks/muted.txt").Close(); }
+            } catch { muted = false; }
+
             Server.s.Log(name + " [" + ip + "] has joined the server.");
 
             if ( Server.zombie.ZombieStatus() != 0 ) { Player.SendMessage(this, "There is a Zombie Survival game currently in-progress! Join it by typing /g " + Server.zombie.currentLevelName); }
