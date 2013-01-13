@@ -1140,8 +1140,8 @@ namespace MCForge {
         }
 
         public void SetPrefix() { //just change the color name if someone ever decides these titles need different colors O.o I just try to match them with the ranks on MCForge.net
-            string viptitle = isDev ? string.Format("[{0}Dev{1}]", c.Parse("blue"), color) : isMod ? string.Format("[{0}Mod{1}]", c.Parse("lime"), color) : isGCMod ? string.Format("[{0}GCMod{1}]", c.Parse("gold"), color) : "";
-            prefix = ( title == "" ) ? "" : ( titlecolor == "" ) ? "[" + title + "] " : "[" + titlecolor + title + color + "] ";
+            string viptitle = isDev ? string.Format("{1}[{0}Dev{1}]", c.Parse("blue"), color) : isMod ? string.Format("{1}[{0}Mod{1}]", c.Parse("lime"), color) : isGCMod ? string.Format("{1}[{0}GCMod{1}]", c.Parse("gold"), color) : "";
+            prefix = ( title == "" ) ? "" : ( titlecolor == "" ) ? color + "[" + title + "] " : color + "[" + titlecolor + title + color + "] ";
             prefix = viptitle + prefix;
         }
 
