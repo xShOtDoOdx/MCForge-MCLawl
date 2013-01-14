@@ -1346,20 +1346,16 @@ namespace MCForge
                                         level.worldChat = bool.Parse(value);
                                         break;
                                     case "perbuild":
-                                        if (PermissionFromName(value) != LevelPermission.Null)
-                                            level.permissionbuild = PermissionFromName(value);
+                                        level.permissionbuild = PermissionFromName(value);
                                         break;
                                     case "pervisit":
-                                        if (PermissionFromName(value) != LevelPermission.Null)
-                                            level.permissionvisit = PermissionFromName(value);
+                                        level.permissionvisit = PermissionFromName(value);
                                         break;
                                     case "perbuildmax":
-                                        if (PermissionFromName(value) != LevelPermission.Null)
-                                            level.perbuildmax = PermissionFromName(value);
+                                        level.perbuildmax = PermissionFromName(value);
                                         break;
                                     case "pervisitmax":
-                                        if (PermissionFromName(value) != LevelPermission.Null)
-                                            level.pervisitmax = PermissionFromName(value);
+                                        level.pervisitmax = PermissionFromName(value);
                                         break;
                                     case "guns":
                                         level.guns = bool.Parse(value);
@@ -1611,7 +1607,7 @@ namespace MCForge
         public static LevelPermission PermissionFromName(string name)
         {
             Group foundGroup = Group.Find(name);
-            return foundGroup != null ? foundGroup.Permission : LevelPermission.Null;
+            return foundGroup != null ? foundGroup.Permission : LevelPermission.Guest;
         }
 
         public static string PermissionToName(LevelPermission perm)
