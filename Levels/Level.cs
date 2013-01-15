@@ -1346,16 +1346,16 @@ namespace MCForge
                                         level.worldChat = bool.Parse(value);
                                         break;
                                     case "perbuild":
-                                        level.permissionbuild = PermissionFromName(value);
+                                        level.permissionbuild = PermissionFromName(value) != LevelPermission.Null ? PermissionFromName(value) : LevelPermission.Guest;
                                         break;
                                     case "pervisit":
-                                        level.permissionvisit = PermissionFromName(value);
+                                        level.permissionvisit = PermissionFromName(value) != LevelPermission.Null ? PermissionFromName(value) : LevelPermission.Guest;
                                         break;
                                     case "perbuildmax":
-                                        level.perbuildmax = PermissionFromName(value);
+                                        level.perbuildmax = PermissionFromName(value) != LevelPermission.Null ? PermissionFromName(value) : LevelPermission.Guest;
                                         break;
                                     case "pervisitmax":
-                                        level.pervisitmax = PermissionFromName(value);
+                                        level.pervisitmax = PermissionFromName(value) != LevelPermission.Null ? PermissionFromName(value) : LevelPermission.Guest;
                                         break;
                                     case "guns":
                                         level.guns = bool.Parse(value);
@@ -1607,7 +1607,7 @@ namespace MCForge
         public static LevelPermission PermissionFromName(string name)
         {
             Group foundGroup = Group.Find(name);
-            return foundGroup != null ? foundGroup.Permission : LevelPermission.Guest;
+            return foundGroup != null ? foundGroup.Permission : LevelPermission.Null;
         }
 
         public static string PermissionToName(LevelPermission perm)

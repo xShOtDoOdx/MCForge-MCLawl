@@ -13,6 +13,7 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
 using System;
+using System.Collections.Generic;
 
 
 namespace MCForge.Commands
@@ -47,9 +48,10 @@ namespace MCForge.Commands
                             Player.SendMessage(p, "Use &b/help games" + Server.DefaultColor + " for a list of game commands.");
                             Player.SendMessage(p, "Use &b/help other" + Server.DefaultColor + " for a list of other commands.");
                             Player.SendMessage(p, "Use &b/help colors" + Server.DefaultColor + " to view the color codes.");
-                            Player.SendMessage(p, "Use &b/help short" + Server.DefaultColor + " for a list of shortcuts.");
+                            Player.SendMessage(p, "Use &b/help shortcuts" + Server.DefaultColor + " for a list of shortcuts.");
                             Player.SendMessage(p, "Use &b/help old" + Server.DefaultColor + " to view the Old help menu.");
                             Player.SendMessage(p, "Use &b/help [command] or /help [block] " + Server.DefaultColor + "to view more info.");
+
                         } break;
                     case "ranks":
                         message = "";
@@ -73,7 +75,8 @@ namespace MCForge.Commands
                         Player.SendMessage(p, "Building commands you may use:");
                         Player.SendMessage(p, message.Remove(0, 2) + ".");
                         break;
-                    case "mod": case "moderation":
+                    case "mod":
+                    case "moderation":
                         message = "";
                         foreach (Command comm in Command.all.commands)
                         {
@@ -116,6 +119,7 @@ namespace MCForge.Commands
                         Player.SendMessage(p, message.Remove(0, 2) + ".");
                         break;
                     case "other":
+                    case "others":
                         message = "";
                         foreach (Command comm in Command.all.commands)
                         {
@@ -130,16 +134,33 @@ namespace MCForge.Commands
                         Player.SendMessage(p, message.Remove(0, 2) + ".");
                         break;
                     case "short":
+                    case "shortcut":
+                    case "shortcuts":
+                    case "short 1":
+                    case "shortcut 1":
+                    case "shortcuts 1":
+                    case "short 2":
+                    case "shortcut 2":
+                    case "shortcuts 2":
+                        bool list1 = true;
+                        try { if (message.Split()[1] == "2") list1 = false; } catch { }
                         message = "";
+                        List<string> shortcuts = new List<string>();
                         foreach (Command comm in Command.all.commands)
-                        {
                             if (p == null || p.group.commands.All().Contains(comm))
-                            {
-                                if (comm.shortcut != "") message += ", &b" + comm.shortcut + " " + Server.DefaultColor + "[" + comm.name + "]";
-                            }
+                                if (comm.shortcut != "") shortcuts.Add(", &b" + comm.shortcut + " " + Server.DefaultColor + "[" + comm.name + "]");
+                        int top = list1 ? shortcuts.Count / 2 : shortcuts.Count;
+                        for (int i = list1 ? 0 : shortcuts.Count / 2; i < top; i++)
+                            message += shortcuts[i];
+                        if (list1) {
+                            Player.SendMessage(p, "Available shortcuts (1):");
+                            Player.SendMessage(p, message.Remove(0, 2));
+                            Player.SendMessage(p, "%bType %f/help shortcuts 2%b to view the rest of the list ");
+                        } else {
+                            Player.SendMessage(p, "Available shortcuts (2):");
+                            Player.SendMessage(p, message.Remove(0, 2));
+                            Player.SendMessage(p, "%bType %f/help shortcuts 1%b to view the rest of the list ");
                         }
-                        Player.SendMessage(p, "Available shortcuts:");
-                        Player.SendMessage(p, message.Remove(0, 2) + ".");
                         break;
                     case "colours":
                     case "colors":
@@ -155,18 +176,17 @@ namespace MCForge.Commands
                             Player.SendMessage(p, "7 - &7Silver " + Server.DefaultColor + "| f - &fWhite");
                             break;
                     case "old":
+                    case "commands":
+                    case "command":
                         string commandsFound = "";
                         foreach (Command comm in Command.all.commands)
-                        {
                             if (p == null || p.group.commands.All().Contains(comm))
-                            {
                                 try { commandsFound += ", " + comm.name; } catch { }
-                            }
-                        }
                         Player.SendMessage(p, "Available commands:");
                         Player.SendMessage(p, commandsFound.Remove(0, 2));
                         Player.SendMessage(p, "Type \"/help <command>\" for more help.");
                         Player.SendMessage(p, "Type \"/help shortcuts\" for shortcuts.");
+                        if (!Server.oldHelp) Player.SendMessage(p, "%bIf you can't see all commands, type %f/help %band choose a help type.");
                         break;
                     default:
                         Command cmd = Command.all.Find(message);

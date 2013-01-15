@@ -114,7 +114,7 @@ namespace MCForge.Commands
                 newRank.playerList.Save();
 
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + "'s rank was set to " + newRank.color + newRank.name, false);
-                Player.GlobalChat(who, "&6" + msgGave, false);
+                Player.SendMessage(who, "&6" + msgGave, false);
 
                 who.group = newRank;
                 if(who.color == "" || who.color == oldcolor )

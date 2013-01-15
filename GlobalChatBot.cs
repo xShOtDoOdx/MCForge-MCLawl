@@ -82,6 +82,7 @@ namespace MCForge
         }
         public void Say(string message, Player p = null)
         {
+            message = RemoveWhitespace(message);
             if (p != null && p.muted)
             {
                 Player.SendMessage(p, "*Tears* You aren't allowed to talk to the nice people of global chat");
@@ -254,6 +255,8 @@ namespace MCForge
         {
             //string allowedchars = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./!@#$%^*()_+QWERTYUIOPASDFGHJKL:\"ZXCVBNM<>? ";
             //string msg = message;
+            message = RemoveWhitespace(message);
+
             if (message.Contains("^UGCS"))
             {
                 Server.UpdateGlobalSettings();
@@ -375,6 +378,14 @@ namespace MCForge
                 return false;
             try { return connection.Connected; }
             catch { return false; }
+        }
+
+        private string RemoveWhitespace(string message) {
+            string[] msg = message.Split(new char[] {' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            message = "";
+            foreach (string word in msg)
+                message = message + word + " ";
+            return message;
         }
     }
 }

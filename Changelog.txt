@@ -2,10 +2,10 @@ v5.5.11
 -New:
   -Rewrote /report with the option to clear all reports
 -Fixes:
-  -MySQL bug fixed, that the MCZallDB couldn't be found when starting server
+  -MySQL fixed bug that the MCZallDB couldn't be found when starting server
   -Muted players now remain muted after a relog
   -Titlefix with using /whowas
-  -Prefix coloring fix
+  -Prefix coloring fix with brackets
   -Fixed that players can't use /deletelvl on maps with perbuild rank higher than theirs
   -Whenever an invalid rank is set to the map's rank properties, it is auto-set to Permissionlevel 0 (Guest)
   -Minor bug fixes

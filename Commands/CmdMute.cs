@@ -53,6 +53,8 @@ namespace MCForge.Commands {
                 if (p.muted) {
                     p.muted = false;
                     Player.SendMessage(p, "You &bun-muted" + Server.DefaultColor + " yourself!");
+                    Extensions.DeleteLineWord("ranks/muted.txt", p.name.ToLower());
+                    return;
                 } else {
                     Player.SendMessage(p, "You cannot mute yourself!");
                 }

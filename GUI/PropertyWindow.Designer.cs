@@ -1086,8 +1086,8 @@ namespace MCForge.Gui
             this.txtIRCServer.Name = "txtIRCServer";
             this.txtIRCServer.Size = new System.Drawing.Size(123, 24);
             this.txtIRCServer.TabIndex = 15;
-            this.toolTip.SetToolTip(this.txtIRCServer, "The IRC server to be used.\nDefault = irc.mcforge.net\nAnother choice = irc.geekshed.n" +
-        "et");
+            this.toolTip.SetToolTip(this.txtIRCServer, "The IRC server to be used.\nDefault = irc.mcforge.net\nAnother choice = irc.geekshe" +
+        "d.net");
             // 
             // txtChannel
             // 
@@ -1674,6 +1674,7 @@ namespace MCForge.Gui
             // chkIgnoreOmnibans
             // 
             this.chkIgnoreOmnibans.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkIgnoreOmnibans.Enabled = false;
             this.chkIgnoreOmnibans.Location = new System.Drawing.Point(6, 58);
             this.chkIgnoreOmnibans.Name = "chkIgnoreOmnibans";
             this.chkIgnoreOmnibans.Size = new System.Drawing.Size(104, 48);
@@ -4317,6 +4318,8 @@ namespace MCForge.Gui
             this.comboBoxProtection.Name = "comboBoxProtection";
             this.comboBoxProtection.Size = new System.Drawing.Size(83, 25);
             this.comboBoxProtection.TabIndex = 1;
+            this.toolTip.SetToolTip(this.comboBoxProtection, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
+        "mands. When set to Dev, Developers can use protection commands.");
             // 
             // label91
             // 
@@ -4326,6 +4329,8 @@ namespace MCForge.Gui
             this.label91.Size = new System.Drawing.Size(99, 17);
             this.label91.TabIndex = 0;
             this.label91.Text = "Protection Level";
+            this.toolTip.SetToolTip(this.label91, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
+        "mands. When set to Dev, Developers can use protection commands.");
             // 
             // groupBox15
             // 

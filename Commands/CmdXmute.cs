@@ -56,7 +56,11 @@ namespace MCForge.Commands
 	                    Player.SendMessage(p, "You cannot xmute someone ranked higher than you!");
 						return;
 	                }
-					
+                    if (p == muter)
+                    {
+                        Player.SendMessage(p, "You cannot use xmute on yourself!");
+                        return;
+                    }
                     Command.all.Find("mute").Use(p, muter.name);
 					
 					int time = 120;

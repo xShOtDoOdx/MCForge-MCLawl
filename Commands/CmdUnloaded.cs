@@ -41,8 +41,12 @@ namespace MCForge.Commands
 
                 if (message != "")
                 {
-                    try { maxMaps = int.Parse(message) * 50; currentNum = maxMaps - 50; }
-                    catch { Help(p); return; }
+                    try {
+                        int n = int.Parse(message) * 50;
+                        if (n <= 0) { Help(p); return; }
+                        maxMaps = n * 50;
+                        currentNum = maxMaps - 50;
+                    } catch { Help(p); return; }
                 }
 
                 DirectoryInfo di = new DirectoryInfo("levels/");
