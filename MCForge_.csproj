@@ -344,7 +344,6 @@
     <Compile Include="Commands\CmdPUnload.cs" />
     <Compile Include="Commands\CommandOtherPerms.cs" />
     <Compile Include="GUI\Games\CTF\Auto_CTF.cs" />
-    <Compile Include="Edit.cs" />
     <Compile Include="GlobalChatBot.cs" />
     <Compile Include="GUI\Games\CountdownGame.cs" />
     <Compile Include="Economy.cs" />
