@@ -8,11 +8,18 @@ namespace MCForge
 {
     public static class Translate
     {
-
+        /// <summary>
+        /// Initializes translator to detect chat
+        /// </summary>
         public static void Init()
         {
             Player.PlayerChat += MessageTrans;
         }
+        /// <summary>
+        /// Translates a message and sends it to all players except the sender
+        /// </summary>
+        /// <param name="player">The sender ( will not receive translated message )</param>
+        /// <param name="message">The original message the sender sent</param>
         public static void MessageTrans(Player player, String message)
         {
             try
