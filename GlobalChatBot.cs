@@ -294,7 +294,7 @@ namespace MCForge
                     {
                         connection.Sender.PublicMessage(channel, "^NAME: " + Server.name);
                         connection.Sender.PublicMessage(channel, "^MOTD: " + Server.motd);
-                        connection.Sender.PublicMessage(channel, "^VERSION: " + Server.version);
+                        connection.Sender.PublicMessage(channel, "^VERSION: " + Server.VersionString);
                         connection.Sender.PublicMessage(channel, "^GLOBAL NAME: " + Server.GlobalChatNick);
                         connection.Sender.PublicMessage(channel, "^URL: " + Server.URL);
                         connection.Sender.PublicMessage(channel, "^PLAYERS: " + Player.players.Count + "/" + Server.players);

@@ -640,7 +640,7 @@ namespace MCForge
                 }
             }
 
-            Economy.Load(true);
+            Economy.LoadDatabase();
             UpdateStaffList();
             Log("MCForge Staff Protection Level: " + forgeProtection);
 
@@ -1016,6 +1016,7 @@ namespace MCForge
             GrpCommands.fillRanks();
             Block.SetBlocks();
             Awards.Load();
+            Economy.Load();
             Warp.LOAD();
             CommandOtherPerms.Load();
             ProfanityFilter.Init();

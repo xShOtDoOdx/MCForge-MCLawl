@@ -1361,7 +1361,7 @@ namespace MCForge.Commands
                                                     text[3] = text[4];
                                                 }
                                                 int numb = -1;
-                                                if (int.TryParse(text[2], out numb) == false)
+                                                if (int.TryParse(text[3], out numb) == false)
                                                 { Player.SendMessage(p, "TNT Wars Error: Invalid number '" + text[3] + "'"); return; }
                                                 if (numb <= -1) { Player.SendMessage(p, "TNT Wars Error: Invalid number '" + text[3] + "'"); return; }
                                                 else

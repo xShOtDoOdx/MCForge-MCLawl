@@ -2401,7 +2401,6 @@ return;
                         case "commands": cmd = "help"; message = "old"; break;
                         case "cmdhelp": cmd = "help"; break;
                         case "worlds":
-                        case "maps": cmd = "levels"; break;
                         case "mapsave": cmd = "save"; break;
                         case "mapload": cmd = "load"; break;
                         case "colour": cmd = "color"; break;
@@ -4039,10 +4038,11 @@ Next: continue;
         #endregion
 
         public static bool IPInPrivateRange(string ip) {
-            if (ip.StartsWith("127.0.0.") || ip.StartsWith("192.168.") || ip.StartsWith("10."))
-                return true;            
-            //Too lazy to change usages
-            return IsLocalIpAddress(ip);
+            //range of 172.16.0.0 - 172.31.255.255
+            if (ip.StartsWith("172.") && (int.Parse(ip.Split('.')[1]) >= 16 && int.Parse(ip.Split('.')[1]) <= 31))
+                return true;
+            return IPAddress.IsLoopback(IPAddress.Parse(ip)) || ip.StartsWith("192.168.") || ip.StartsWith("10.");
+            //return IsLocalIpAddress(ip);
         }
 
         public static bool IsLocalIpAddress(string host) {

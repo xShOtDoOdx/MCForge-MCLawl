@@ -42,7 +42,7 @@ namespace MCForge.Commands
                 if (message != "")
                 {
                     try {
-                        int n = int.Parse(message) * 50;
+                        int n = int.Parse(message);
                         if (n <= 0) { Help(p); return; }
                         maxMaps = n * 50;
                         currentNum = maxMaps - 50;
@@ -59,13 +59,15 @@ namespace MCForge.Commands
                     {
                         if (!levels.Contains(file.Name.Replace(".lvl", "").ToLower()))
                         {
-                            unloadedLevels += ", " + file.Name.Replace(".lvl", "");
+                            string level = file.Name.Replace(".lvl", "");
+                            string visit = GetLoadOnGoto(level) && p.group.Permission >= GetPerVisitPermission(level) ? "%aYes" : "%cNo";
+                            unloadedLevels += ", " + Group.findPerm(GetPerVisitPermission(level)).color + level + " &b[" + visit + "&b]";
                         }
                     }
                     if (unloadedLevels != "")
                     {
-                        Player.SendMessage(p, "Unloaded levels: ");
-                        Player.SendMessage(p, "&4" + unloadedLevels.Remove(0, 2));
+                        Player.SendMessage(p, "Unloaded levels [Accessible]: ");
+                        Player.SendMessage(p, unloadedLevels.Remove(0, 2));
                         if (fi.Length > 50) { Player.SendMessage(p, "For a more structured list, use /unloaded <1/2/3/..>"); }
                     }
                     else Player.SendMessage(p, "No maps are unloaded");
@@ -75,18 +77,20 @@ namespace MCForge.Commands
                     if (maxMaps > fi.Length) maxMaps = fi.Length;
                     if (currentNum > fi.Length) { Player.SendMessage(p, "No maps beyond number " + fi.Length); return; }
 
-                    Player.SendMessage(p, "Unloaded levels (" + currentNum + " to " + maxMaps + "):");
+                    Player.SendMessage(p, "Unloaded levels [Accessible] (" + currentNum + " to " + maxMaps + "):");
                     for (int i = currentNum; i < maxMaps; i++)
                     {
                         if (!levels.Contains(fi[i].Name.Replace(".lvl", "").ToLower()))
                         {
-                            unloadedLevels += ", " + fi[i].Name.Replace(".lvl", "");
+                            string level = fi[i].Name.Replace(".lvl", "");
+                            string visit = GetLoadOnGoto(level) && p.group.Permission >= GetPerVisitPermission(level) ? "%aYes" : "%cNo";
+                            unloadedLevels += ", " + Group.findPerm(GetPerVisitPermission(level)).color + level + " &b[" + visit + "&b]";
                         }
                     }
 
                     if (unloadedLevels != "")
                     {
-                        Player.SendMessage(p, "&4" + unloadedLevels.Remove(0, 2));
+                        Player.SendMessage(p, unloadedLevels.Remove(0, 2));
                     }
                     else Player.SendMessage(p, "No maps are unloaded");
                 }
@@ -94,10 +98,47 @@ namespace MCForge.Commands
             catch (Exception e) { Server.ErrorLog(e); Player.SendMessage(p, "An error occured"); }
             //Exception catching since it needs to be tested on Ocean Flatgrass
         }
+
+        private LevelPermission GetPerVisitPermission(string level) {
+            string location = "levels/level properties/" + level + ".properties";
+            LevelPermission lvlperm = LevelPermission.Guest;
+            try {
+                using (StreamReader reader = new StreamReader(location)) {
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        if (line.Split()[0].ToLower() == "perbuild") {
+                            lvlperm = Group.Find(line.Split()[2]).Permission;
+                            break;
+                        }
+                    }
+                }
+            } catch { return LevelPermission.Guest; }
+
+            return lvlperm;
+        }
+
+        private bool GetLoadOnGoto(string level) {
+            string location = "levels/level properties/" + level + ".properties";
+            bool loadOnGoto = false;
+            try {
+                using (StreamReader reader = new StreamReader(location)) {
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        if (line.Split()[0].ToLower() == "loadongoto") {
+                            loadOnGoto = bool.Parse(line.Split()[2]);
+                            break;
+                        }
+                    }
+                }
+            } catch { return false; }
+
+            return loadOnGoto;
+        }
+
         public override void Help(Player p)
         {
-            Player.SendMessage(p, "/unloaded - Lists all unloaded levels.");
-            Player.SendMessage(p, "/unloaded <1/2/3/..> - Shows a compact list.");
+            Player.SendMessage(p, "%f/unloaded " + Server.DefaultColor + "- Lists all unloaded levels and their accessible state.");
+            Player.SendMessage(p, "%f/unloaded <1/2/3/..> " + Server.DefaultColor + "- Shows a compact list.");
         }
     }
 }

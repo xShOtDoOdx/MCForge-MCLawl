@@ -73,8 +73,28 @@ namespace MCForge {
             }
         }
 
-        public static void Load(bool serverLoading = false) {
-            if (serverLoading) {
+        public static void LoadDatabase() {
+        retry:
+            if (Server.useMySQL) MySQL.executeQuery(createTable); else SQLite.executeQuery(createTable); //create database
+            string queryP = "SELECT * FROM Players"; string queryE = "SELECT * FROM Economy";
+            DataTable eco = Server.useMySQL ? MySQL.fillData(queryE) : SQLite.fillData(queryE);
+            try {
+                DataTable players = Server.useMySQL ? MySQL.fillData(queryP) : SQLite.fillData(queryP);
+                if (players.Rows.Count == eco.Rows.Count) { } //move along, nothing to do here
+                else if (eco.Rows.Count == 0) { //if first time, copy content from player to economy
+                    string query = "INSERT INTO Economy (player, money) SELECT Players.Name, Players.Money FROM Players";
+                    if (Server.useMySQL) MySQL.executeQuery(query); else SQLite.executeQuery(query);
+                } else {
+                    //this will only be needed when the server shuts down while it was copying content (or some other error)
+                    if (Server.useMySQL) MySQL.executeQuery("DROP TABLE Economy"); else SQLite.executeQuery("DROP TABLE Economy");
+                    goto retry;
+                }
+                players.Dispose(); eco.Dispose();
+            } catch { }
+        }
+
+        public static void Load(bool loadDatabase = false) {
+            /*if (loadDatabase) {
             retry:
                 if (Server.useMySQL) MySQL.executeQuery(createTable); else SQLite.executeQuery(createTable); //create database on server loading
                 string queryP = "SELECT * FROM Players"; string queryE = "SELECT * FROM Economy";
@@ -92,7 +112,8 @@ namespace MCForge {
                     }
                     players.Dispose(); eco.Dispose();
                 } catch { }
-            }
+                return;
+            }*/
 
             if (!File.Exists("properties/economy.properties")) { Server.s.Log("Economy properties don't exist, creating"); File.Create("properties/economy.properties").Close(); Save(); }
             using (StreamReader r = File.OpenText("properties/economy.properties")) {
