@@ -3701,7 +3701,7 @@ level.Unload();
         		int number = di.GetFiles("*.undo").Length;
         		File.Create("extra/undo/" + p.name.ToLower() + "/" + number + ".undo").Dispose();
         		using ( StreamWriter w = File.CreateText("extra/undo/" + p.name.ToLower() + "/" + number + ".undo") ) {
-        			foreach ( UndoPos uP in p.UndoBuffer ) {
+        			foreach ( UndoPos uP in p.UndoBuffer.ToList() ) {
         				w.Write(uP.mapName + " " +
         				        uP.x + " " + uP.y + " " + uP.z + " " +
         				        uP.timePlaced.ToString(CultureInfo.InvariantCulture).Replace(' ', '&') + " " +

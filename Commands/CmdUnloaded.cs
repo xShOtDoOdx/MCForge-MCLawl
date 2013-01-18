@@ -61,7 +61,7 @@ namespace MCForge.Commands
                         {
                             string level = file.Name.Replace(".lvl", "");
                             string visit = GetLoadOnGoto(level) && p.group.Permission >= GetPerVisitPermission(level) ? "%aYes" : "%cNo";
-                            unloadedLevels += ", " + Group.findPerm(GetPerVisitPermission(level)).color + level + " &b[" + visit + "&b]";
+                            unloadedLevels += ", " + Group.findPerm(GetPerBuildPermission(level)).color + level + " &b[" + visit + "&b]";
                         }
                     }
                     if (unloadedLevels != "")
@@ -84,7 +84,7 @@ namespace MCForge.Commands
                         {
                             string level = fi[i].Name.Replace(".lvl", "");
                             string visit = GetLoadOnGoto(level) && p.group.Permission >= GetPerVisitPermission(level) ? "%aYes" : "%cNo";
-                            unloadedLevels += ", " + Group.findPerm(GetPerVisitPermission(level)).color + level + " &b[" + visit + "&b]";
+                            unloadedLevels += ", " + Group.findPerm(GetPerBuildPermission(level)).color + level + " &b[" + visit + "&b]";
                         }
                     }
 
@@ -100,6 +100,24 @@ namespace MCForge.Commands
         }
 
         private LevelPermission GetPerVisitPermission(string level) {
+            string location = "levels/level properties/" + level + ".properties";
+            LevelPermission lvlperm = LevelPermission.Guest;
+            try {
+                using (StreamReader reader = new StreamReader(location)) {
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        if (line.Split()[0].ToLower() == "pervisit") {
+                            lvlperm = Group.Find(line.Split()[2]).Permission;
+                            break;
+                        }
+                    }
+                }
+            } catch { return LevelPermission.Guest; }
+
+            return lvlperm;
+        }
+
+        private LevelPermission GetPerBuildPermission(string level) {
             string location = "levels/level properties/" + level + ".properties";
             LevelPermission lvlperm = LevelPermission.Guest;
             try {

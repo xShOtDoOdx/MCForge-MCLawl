@@ -10,6 +10,12 @@ MCForge classic is a classic Minecraft server software based on MCLawl.  It has 
 
 The official website for MCForge is [mcforge.net][2]
 
+Contributors
+------------
+
+If you are pushing your commits OR if you are doing a pull request, PLEASE set autocrlf to TRUE in your Git.
+See [this][4] link for more info on setting autocrlf.
+
 Copyright/License
 -----------------
 
@@ -31,3 +37,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 [1]: http://wiki.mcforge.net/index.php?title=Development
 [2]: http://www.mcforge.net
 [3]: https://raw.github.com/MCForge/MCForge-MCLawl/master/LICENSE.txt
+[4]: https://help.github.com/articles/dealing-with-line-endings
