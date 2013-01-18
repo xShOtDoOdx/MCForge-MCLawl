@@ -13,8 +13,13 @@ The official website for MCForge is [mcforge.net][2]
 Contributors
 ------------
 
-If you are pushing your commits OR if you are doing a pull request, PLEASE set autocrlf to TRUE in your Git.
-See [this][4] link for more info on setting autocrlf.
+* If you are pushing your commits OR if you are doing a pull request, PLEASE set autocrlf to 'true' in your Git. Also make sure to NORMALIZE your entire local repo if it isn't already normalized. See [this link][4] for more info on setting autocrlf and re-normalizing your repo.  
+**!NOTE!** Commits that do not handle the line-endings correctly *WILL* be reverted.  
+  
+* Do not commit large blocks of changes and files. Try to split and group these into smaller related pieces and commit these one by one. If you are adding a new file that might have 100+ lines of code additions, then that's allowed, just don't add anything else unrelated to that commit!
+  
+* Please make sure you fetch and merge the latest commits into your local branch before pushing any commits where you might have changed files that would cause a conflict. This does **NOT** mean that you have to fetch and merge with *every* commitment or push. Just keep track of the latest commitments and see if someone else might have changed a file you've been working on.  
+A good habbit would be to *first* make some couple of commitments, then BEFORE pushing, do a fetch/merge and fix any conflicts (if there are any).
 
 Copyright/License
 -----------------
