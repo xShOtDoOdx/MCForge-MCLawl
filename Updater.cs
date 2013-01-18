@@ -29,6 +29,10 @@ namespace MCForge
 {
     public static class Updater
     {
+        /// <summary>
+        /// Loads updater properties from given file
+        /// </summary>
+        /// <param name="givenPath">File path relative to server to load properties from</param>
         public static void Load(string givenPath)
         {
             if (File.Exists(givenPath))

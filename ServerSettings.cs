@@ -24,7 +24,9 @@ using System.Net;
 namespace MCForge {
 	//derp idk just need to edit this so I can commit :/
 	public static class ServerSettings {
-
+        /// <summary>
+        /// The url MCForge downloads additional URL's from
+        /// </summary>
 		public const string UrlsUrl = "http://server.mcforge.net/urls.txt";
 
 		private static string _RevisionList = "http://www.mcforge.net/revs.txt";
@@ -55,17 +57,25 @@ namespace MCForge {
 			_HeartbeatAnnounce = lines[1];
 			_ArchivePath = lines[2];
 		}
-
+        /// <summary>
+        /// returns the MCForge archives url
+        /// </summary>
 		public static string ArchivePath {
 			get {
 				return _ArchivePath;
 			}
 		}
+        /// <summary>
+        /// returns the MCForge heartbeat announce URL
+        /// </summary>
 		public static string HeartbeatAnnounce {
 			get {
 				return _HeartbeatAnnounce;
 			}
 		}
+        /// <summary>
+        ///  returns the MCForge revision list URL
+        /// </summary>
 		public static string RevisionList {
 			get {
 				return _RevisionList;

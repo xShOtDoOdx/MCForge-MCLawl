@@ -63,6 +63,11 @@ namespace MCForge
 			}
 			File.AppendAllText("text/bans.txt", pl + " " + whol + " " + reasonl + " " + stealthstr + " " + datetimel + " " + oldrankl + "\r\n");
 		}
+        /// <summary>
+        /// Checks if there's a ban record found with the specified username
+        /// </summary>
+        /// <param name="who">the Player's username to check</param>
+        /// <returns>if the player is banned</returns>
 		public static bool Isbanned(string who)
 		{
 			who = who.ToLower();
@@ -72,6 +77,11 @@ namespace MCForge
 			}
 			return false;
 		}
+        /// <summary>
+        /// Gives info about the ban
+        /// </summary>
+        /// <param name="who">the username to check</param>
+        /// <returns>A string array with { banned by, ban reason, stealth ban, date and time, previous rank } or if not found {"","","","",""}</returns>
 		public static string[] Getbandata(string who)
 		{
 			who = who.ToLower();
@@ -90,6 +100,11 @@ namespace MCForge
 			string[] end = { bannedby, reason, timedate, oldrank, stealth };
 			return end;
 		}
+        /// <summary>
+        /// Unbans a user
+        /// </summary>
+        /// <param name="name">username to unban</param>
+        /// <returns>If the unban was successfull or not</returns>
 		public static bool Deleteban(string name)
 		{
 			name = name.ToLower();
@@ -105,6 +120,12 @@ namespace MCForge
 			File.WriteAllText("text/bans.txt", sb.ToString());
 			return success;
 		}
+        /// <summary>
+        /// Change the banreason for a specific player
+        /// </summary>
+        /// <param name="who">The username to edit the ban reason from</param>
+        /// <param name="reason">The new banreason</param>
+        /// <returns>empty string if succesfull, otherwise error message</returns>
 		public static string Editreason(string who, string reason)
 		{
 			who = who.ToLower();
