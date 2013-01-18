@@ -36,6 +36,10 @@ namespace MCForge
             list.Add(name);
             File.WriteAllLines(file, list.ToArray());
         }
+        /// <summary>
+        /// Adds a Player to VIP's
+        /// </summary>
+        /// <param name="p">the Player to add</param>
         public static void Add(Player p)
         {
             Add(p.name);
