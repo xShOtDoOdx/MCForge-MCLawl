@@ -981,7 +981,7 @@ namespace MCForge
                 try
                 {
                     using (WebClient web = new WebClient())
-                        IP = web.DownloadString("http://www.mcforge.net/serverdata/ip.php");
+                        IP = web.DownloadString("http://server.mcforge.net/ip.php");
                 }
                 catch { }
 #if DEBUG
