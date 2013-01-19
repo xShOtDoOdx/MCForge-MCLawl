@@ -26,7 +26,6 @@ using Microsoft.Win32;
 
 namespace MCForge.Gui {
     public partial class PropertyWindow : Form {
-        Form lavaMapBrowser;
         System.Timers.Timer lavaUpdateTimer;
         string lsLoadedMap = "";
 
@@ -47,7 +46,6 @@ namespace MCForge.Gui {
         }
 
         private void PropertyWindow_Load(object sender, EventArgs e) {
-            lavaMapBrowser = new LavaMapBrowser();
 
             Object[] colors = new Object[16];
             colors[0] = ( "black" ); colors[1] = ( "navy" );
@@ -185,7 +183,6 @@ namespace MCForge.Gui {
 
         private void PropertyWindow_Unload(object sender, EventArgs e) {
             lavaUpdateTimer.Dispose();
-            lavaMapBrowser.Dispose();
             Window.prevLoaded = false;
             TntWarsGame.GuiLoaded = null;
         }
@@ -1828,18 +1825,6 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         }
 
-        private void button2_Click(object sender, EventArgs e) {
-            try {
-                lavaMapBrowser.Show();
-                lavaMapBrowser.Focus();
-            }
-            catch ( ObjectDisposedException ) {
-                lavaMapBrowser = new LavaMapBrowser();
-                lavaMapBrowser.Show();
-                lavaMapBrowser.Focus();
-            }
-            catch ( Exception ex ) { Server.ErrorLog(ex); }
-        }
         private void button3_Click(object sender, EventArgs e) {
             new GUI.WoM().Show();
         }

@@ -147,6 +147,8 @@ namespace MCForge.Gui
             this.cmbAFKKickPerm = new System.Windows.Forms.ComboBox();
             this.chkGuestLimitNotify = new System.Windows.Forms.CheckBox();
             this.chkIgnoreOmnibans = new System.Windows.Forms.CheckBox();
+            this.comboBoxProtection = new System.Windows.Forms.ComboBox();
+            this.label91 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.btnBlHelp = new System.Windows.Forms.Button();
             this.txtBlRanks = new System.Windows.Forms.TextBox();
@@ -317,7 +319,6 @@ namespace MCForge.Gui
             this.label56 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.label54 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
             this.lsAddMap = new System.Windows.Forms.Button();
@@ -380,8 +381,6 @@ namespace MCForge.Gui
             this.chkZombieOnServerStart = new System.Windows.Forms.CheckBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.comboBoxProtection = new System.Windows.Forms.ComboBox();
-            this.label91 = new System.Windows.Forms.Label();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.numCountReset = new System.Windows.Forms.NumericUpDown();
             this.label69 = new System.Windows.Forms.Label();
@@ -1683,6 +1682,29 @@ namespace MCForge.Gui
             this.chkIgnoreOmnibans.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chkIgnoreOmnibans, "Not Recommended, it allows a very specific list of hackers to join your server.");
             this.chkIgnoreOmnibans.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxProtection
+            // 
+            this.comboBoxProtection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProtection.FormattingEnabled = true;
+            this.comboBoxProtection.Location = new System.Drawing.Point(115, 30);
+            this.comboBoxProtection.MaxDropDownItems = 3;
+            this.comboBoxProtection.Name = "comboBoxProtection";
+            this.comboBoxProtection.Size = new System.Drawing.Size(83, 25);
+            this.comboBoxProtection.TabIndex = 1;
+            this.toolTip.SetToolTip(this.comboBoxProtection, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
+        "mands. When set to Dev, Developers can use protection commands.");
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(10, 33);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(99, 17);
+            this.label91.TabIndex = 0;
+            this.label91.Text = "Protection Level";
+            this.toolTip.SetToolTip(this.label91, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
+        "mands. When set to Dev, Developers can use protection commands.");
             // 
             // tabPage5
             // 
@@ -3538,7 +3560,6 @@ namespace MCForge.Gui
             // 
             // groupBox20
             // 
-            this.groupBox20.Controls.Add(this.button2);
             this.groupBox20.Controls.Add(this.label54);
             this.groupBox20.Controls.Add(this.label53);
             this.groupBox20.Controls.Add(this.lsAddMap);
@@ -3551,16 +3572,6 @@ namespace MCForge.Gui
             this.groupBox20.TabIndex = 1;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Maps";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(102, 157);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Get Maps";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label54
             // 
@@ -4308,29 +4319,6 @@ namespace MCForge.Gui
             this.groupBox7.TabIndex = 2;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "MCForge Staff Protection";
-            // 
-            // comboBoxProtection
-            // 
-            this.comboBoxProtection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxProtection.FormattingEnabled = true;
-            this.comboBoxProtection.Location = new System.Drawing.Point(115, 30);
-            this.comboBoxProtection.MaxDropDownItems = 3;
-            this.comboBoxProtection.Name = "comboBoxProtection";
-            this.comboBoxProtection.Size = new System.Drawing.Size(83, 25);
-            this.comboBoxProtection.TabIndex = 1;
-            this.toolTip.SetToolTip(this.comboBoxProtection, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
-        "mands. When set to Dev, Developers can use protection commands.");
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(10, 33);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(99, 17);
-            this.label91.TabIndex = 0;
-            this.label91.Text = "Protection Level";
-            this.toolTip.SetToolTip(this.label91, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
-        "mands. When set to Dev, Developers can use protection commands.");
             // 
             // groupBox15
             // 
@@ -5091,7 +5079,6 @@ namespace MCForge.Gui
         private System.Windows.Forms.NumericUpDown numCountReset;
         private System.Windows.Forms.Label label69;
         private System.Windows.Forms.CheckBox chkWomDirect;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.NumericUpDown lsNudLives;
         private System.Windows.Forms.TextBox txtSQLPort;
         private System.Windows.Forms.Label label70;

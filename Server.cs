@@ -225,8 +225,6 @@ namespace MCForge
         public static string lastLevelVote1 = "";
         public static string lastLevelVote2 = "";
         public static bool bufferblocks = true;
-        public static string mcforgeUser = "";
-        public static string mcforgePass = "";
 
         // Lava Survival
         public static LavaSurvival lava;
@@ -602,6 +600,15 @@ namespace MCForge
                 }
                 Database.executeQuery(string.Format("CREATE TABLE if not exists Players (ID INTEGER {0}AUTO{1}INCREMENT NOT NULL, Name VARCHAR(20), IP CHAR(15), FirstLogin DATETIME, LastLogin DATETIME, totalLogin MEDIUMINT, Title CHAR(20), TotalDeaths SMALLINT, Money MEDIUMINT UNSIGNED, totalBlocks BIGINT, totalCuboided BIGINT, totalKicked MEDIUMINT, TimeSpent VARCHAR(20), color VARCHAR(6), title_color VARCHAR(6){2});", (useMySQL ? "" : "PRIMARY KEY "), (useMySQL ? "_" : ""), (Server.useMySQL ? ", PRIMARY KEY (ID)" : "")));
                 Database.executeQuery(string.Format("CREATE TABLE if not exists Playercmds (ID INTEGER {0}AUTO{1}INCREMENT NOT NULL, Time DATETIME, Name VARCHAR(20), Rank VARCHAR(20), Mapname VARCHAR(40), Cmd VARCHAR(40), Cmdmsg VARCHAR(40){2});", (useMySQL ? "" : "PRIMARY KEY "), (useMySQL ? "_" : ""), (Server.useMySQL ? ", PRIMARY KEY (ID)" : "")));
+/*
+                //since 5.5.11 we are cleaning up the table Playercmds
+                DataTable playercmds = Database.fillData("SELECT * FROM Playercmds"); DataTable opstats = Database.fillData("SELECT * FROM OPstats");
+                //if Playercmds exists copy_filter to OPstats and DROP Playercmds
+                if (playercmds.Rows.Count != 0) {
+                    //copy
+                    Database.fillData("DROP TABLE Playercmds");
+                }
+                playercmds.Dispose(); opstats.Dispose();*/
 
                 // Here, since SQLite is a NEW thing from 5.3.0.0, we do not have to check for existing tables in SQLite.
                 if (useMySQL)
@@ -842,14 +849,6 @@ namespace MCForge
                 catch (Exception e)
                 {
                     Server.ErrorLog(e);
-                }
-            });
-
-            ml.Queue(delegate
-            {
-                if (mcforgeUser != String.Empty && mcforgePass != String.Empty)
-                {
-                    new Thread(new ThreadStart(() => MCForgeAccount.Login())).Start();
                 }
             });
 
