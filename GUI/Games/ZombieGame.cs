@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Copyright 2010 MCLawl Team - 
     Created by Snowl (David D.) and Cazzar (Cayde D.)
 

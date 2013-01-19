@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Copyright 2010 MCLawl Team - Written by Valek (Modified for use with MCForge)
  
 	Dual-licensed under the	Educational Community License, Version 2.0 and

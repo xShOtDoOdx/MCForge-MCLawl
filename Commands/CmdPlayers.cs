@@ -82,7 +82,7 @@ namespace MCForge.Commands
                                 foundName = pl.name + "-afk";
                             }
 
-                            if (pl.muted) foundName += "[muted]";
+                            if (pl.muted) foundName += "[muted]";
 
 
                             if (pl.isDev)

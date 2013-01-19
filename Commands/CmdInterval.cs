@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 	Copyright 2011 MCDerp Team Based in Canada
 	MCDerp has been Licensed with the below license:
 	

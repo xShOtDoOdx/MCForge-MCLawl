@@ -1,4 +1,4 @@
-﻿/*
+/*
 	
  *  Written by BeMacized
  *  Assisted by RedNoodle

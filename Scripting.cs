@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Copyright 2010 MCLawl Team - Written by Valek (Modified by MCForge)
 
 	Edited for use with MCForge

@@ -1,4 +1,4 @@
-﻿namespace MCForge.GUI
+namespace MCForge.GUI
 {
     partial class Textures
     {

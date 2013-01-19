@@ -1,4 +1,4 @@
-﻿namespace MCForge.Gui
+namespace MCForge.Gui
 {
     partial class LavaMapSubmit
     {

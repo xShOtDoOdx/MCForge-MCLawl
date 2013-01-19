@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Copyright 2011 MCForge
 	
     Made originally by 501st_commander, in something called SharpDevelop. 

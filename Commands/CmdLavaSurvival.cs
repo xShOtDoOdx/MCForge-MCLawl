@@ -1,4 +1,4 @@
-﻿/*
+/*
 	Copyright 2011 MCForge
 	Created by Techjar (Jordan S.)
 		

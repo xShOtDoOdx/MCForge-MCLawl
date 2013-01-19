@@ -1,4 +1,4 @@
-﻿/*
+/*
    ______________________________________________________
 Can be included and resold as part of a larger work (sublicensable)
 Commercial use allowed under the following conditions :

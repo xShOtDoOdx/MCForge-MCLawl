@@ -1,4 +1,4 @@
-﻿//StormCom Object Generator
+//StormCom Object Generator
 //
 //Full use to all StormCom Server System codes (in regards to minecraft classic) have been granted to McForge without restriction.
 //
