@@ -2240,6 +2240,7 @@ return;
                         return;
                     }
                 }
+
                 if ( cmd.ToLower() == "care" ) { SendMessage("Dmitchell94 now loves you with all his heart."); return; }
                 if ( cmd.ToLower() == "facepalm" ) { SendMessage("Fenderrock87's bot army just simultaneously facepalm'd at your use of this command."); return; }
                 if ( cmd.ToLower() == "alpaca" ) { SendMessage("Leitrean's Alpaca Army just raped your woman and pillaged your villages!"); return; }
@@ -2294,7 +2295,7 @@ return;
                 Command command = Command.all.Find(cmd);
                 Group old = null;
                 if ( command != null ) {
-                    //this part checks is MCForge staff are able to USE protection commands
+                    //this part checks if MCForge staff are able to USE protection commands
                     if (isProtected && Server.ProtectOver.Contains(cmd.ToLower())) {
                         old = Group.findPerm(this.group.Permission);
                         this.group = Group.findPerm(LevelPermission.Nobody);
@@ -2323,37 +2324,17 @@ return;
                         if ( cmd.ToLower() != "setpass" || cmd.ToLower() != "pass" ) {
                             Server.s.CommandUsed(name + " used /" + cmd + " " + message);
                         }
-                        try {
-                            /*if (sendcommanddata)
-                            {
-                                new Thread(() =>
-                                {
-                                    using (WebClient wc = new WebClient())
-                                    {
-                                        try
-                                        {
-                                            wc.DownloadString("http://mcforge.bemacizedgaming.com/cmdusage.php?cmd=" + command.name);
-                                        }
-                                        catch
-                                        {
-                                            Server.s.Log("N");
-                                        }
-                                    }
-                                }).Start();
-                            }*/
-                            // Commands to not count into database. This line doesn't count "/review next" if no players are waiting for review.
-                            if ( !( cmd.ToLower() == "review" & message == "next" & Server.reviewlist.Count == 0 ) ) {
-                                if ( Server.useMySQL ) {
-                                    MySQL.executeQuery("INSERT INTO Playercmds (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
-                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + group.name + "', '" + level.name + "', '" + cmd + "', '" + message + "')");
-                                }
-                                else {
-                                    SQLite.executeQuery("INSERT INTO Playercmds (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
-                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + group.name + "', '" + level.name + "', '" + cmd + "', '" + message + "')");
-                                }
-                            }
-                        }
-                        catch { }
+
+                        try { //opstats patch (since 5.5.11)
+                            if (Server.opstats.Contains(cmd.ToLower()) || (cmd.ToLower() == "review" && message.ToLower() == "next" && Server.reviewlist.Count > 0))
+                                if (Server.useMySQL)
+                                    MySQL.executeQuery("INSERT INTO Opstats (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
+                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + cmd + "', '" + message + "')");
+                                else
+                                    SQLite.executeQuery("INSERT INTO Opstats (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
+                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + cmd + "', '" + message + "')");
+                        } catch { }
+
                         this.commThread = new Thread(new ThreadStart(delegate {
                             try {
                                 command.Use(this, message);

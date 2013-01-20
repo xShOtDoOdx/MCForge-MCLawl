@@ -129,8 +129,9 @@ namespace MCForge
         public static List<string> ProtectOver { get { return new List<string>(protectover); } }
 
         public static ForgeProtection forgeProtection = ForgeProtection.Off;
-        /*internal static readonly List<string> badtitles = new List<string>(new string[] {"dev", "mod", "gc", "global", "chat"});
-        public static List<string> BadTitles { get { return new List<string>(badtitles); } }*/
+
+        internal static readonly List<string> opstats = new List<string>(new string[] { "ban", "tempban", "kick", "warn", "mute", "freeze", "undo", "griefer", "demote", "promote" });
+        public static List<string> Opstats { get { return new List<string>(opstats); } }
 
         public static List<TempBan> tempBans = new List<TempBan>();
         public struct TempBan { public string name; public DateTime allowedJoin; }
@@ -158,8 +159,6 @@ namespace MCForge
         public static List<string> afkmessages = new List<string>();
         public static List<string> messages = new List<string>();
 
-        //public static List<string> gcmods = new List<string>();
-        //public static List<string> gcmodprotection = new List<string>();
         public static List<string> gcnamebans = new List<string>();
         public static List<string> gcipbans = new List<string>();
 
@@ -599,16 +598,19 @@ namespace MCForge
                     return;
                 }
                 Database.executeQuery(string.Format("CREATE TABLE if not exists Players (ID INTEGER {0}AUTO{1}INCREMENT NOT NULL, Name VARCHAR(20), IP CHAR(15), FirstLogin DATETIME, LastLogin DATETIME, totalLogin MEDIUMINT, Title CHAR(20), TotalDeaths SMALLINT, Money MEDIUMINT UNSIGNED, totalBlocks BIGINT, totalCuboided BIGINT, totalKicked MEDIUMINT, TimeSpent VARCHAR(20), color VARCHAR(6), title_color VARCHAR(6){2});", (useMySQL ? "" : "PRIMARY KEY "), (useMySQL ? "_" : ""), (Server.useMySQL ? ", PRIMARY KEY (ID)" : "")));
-                Database.executeQuery(string.Format("CREATE TABLE if not exists Playercmds (ID INTEGER {0}AUTO{1}INCREMENT NOT NULL, Time DATETIME, Name VARCHAR(20), Rank VARCHAR(20), Mapname VARCHAR(40), Cmd VARCHAR(40), Cmdmsg VARCHAR(40){2});", (useMySQL ? "" : "PRIMARY KEY "), (useMySQL ? "_" : ""), (Server.useMySQL ? ", PRIMARY KEY (ID)" : "")));
-/*
+                Database.executeQuery(string.Format("CREATE TABLE if not exists Opstats (ID INTEGER {0}AUTO{1}INCREMENT NOT NULL, Time DATETIME, Name VARCHAR(20), Cmd VARCHAR(40), Cmdmsg VARCHAR(40){2});", (useMySQL ? "" : "PRIMARY KEY "), (useMySQL ? "_" : ""), (Server.useMySQL ? ", PRIMARY KEY (ID)" : "")));
+
                 //since 5.5.11 we are cleaning up the table Playercmds
-                DataTable playercmds = Database.fillData("SELECT * FROM Playercmds"); DataTable opstats = Database.fillData("SELECT * FROM OPstats");
-                //if Playercmds exists copy_filter to OPstats and DROP Playercmds
+                string query = Server.useMySQL ? "SHOW TABLES LIKE 'Playercmds'" : "SELECT name FROM sqlite_master WHERE type='table' AND name='Playercmds';";
+                DataTable playercmds = Database.fillData(query); DataTable opstats = Database.fillData("SELECT * FROM Opstats");
+                //if Playercmds exists copy-filter to Ostats and remove Playercmds
                 if (playercmds.Rows.Count != 0) {
-                    //copy
+                    foreach (string cmd in Server.Opstats)
+                        Database.executeQuery(string.Format("INSERT INTO Opstats (Time, Name, Cmd, Cmdmsg) SELECT Time, Name, Cmd, Cmdmsg FROM Playercmds WHERE cmd = '{0}';", cmd));
+                    Database.executeQuery("INSERT INTO Opstats (Time, Name, Cmd, Cmdmsg) SELECT Time, Name, Cmd, Cmdmsg FROM Playercmds WHERE cmd = 'review' AND cmdmsg = 'next';");
                     Database.fillData("DROP TABLE Playercmds");
                 }
-                playercmds.Dispose(); opstats.Dispose();*/
+                playercmds.Dispose(); opstats.Dispose();
 
                 // Here, since SQLite is a NEW thing from 5.3.0.0, we do not have to check for existing tables in SQLite.
                 if (useMySQL)
