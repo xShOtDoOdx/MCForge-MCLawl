@@ -1692,8 +1692,9 @@ namespace MCForge.Gui
             this.comboBoxProtection.Name = "comboBoxProtection";
             this.comboBoxProtection.Size = new System.Drawing.Size(83, 25);
             this.comboBoxProtection.TabIndex = 1;
-            this.toolTip.SetToolTip(this.comboBoxProtection, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
-        "mands. When set to Dev, Developers can use protection commands.");
+            this.toolTip.SetToolTip(this.comboBoxProtection, "When set to Mod, MCForge Moderators AND Developers are protected. When set to Dev" +
+        ", MCForge Developers only are protected. When set to Off, MCforge staff are not " +
+        "protected.");
             // 
             // label91
             // 
@@ -1703,8 +1704,9 @@ namespace MCForge.Gui
             this.label91.Size = new System.Drawing.Size(99, 17);
             this.label91.TabIndex = 0;
             this.label91.Text = "Protection Level";
-            this.toolTip.SetToolTip(this.label91, "When set to Mod, MCForge Moderators AND Developers are able to use protection com" +
-        "mands. When set to Dev, Developers can use protection commands.");
+            this.toolTip.SetToolTip(this.label91, "When set to Mod, MCForge Moderators AND Developers are protected. When set to Dev" +
+        ", MCForge Developers only are protected. When set to Off, MCforge staff are not " +
+        "protected.");
             // 
             // tabPage5
             // 

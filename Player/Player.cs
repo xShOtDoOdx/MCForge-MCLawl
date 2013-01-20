@@ -2296,10 +2296,10 @@ return;
                 Group old = null;
                 if ( command != null ) {
                     //this part checks if MCForge staff are able to USE protection commands
-                    if (isProtected && Server.ProtectOver.Contains(cmd.ToLower())) {
+                    /*if (isProtected && Server.ProtectOver.Contains(cmd.ToLower())) {
                         old = Group.findPerm(this.group.Permission);
                         this.group = Group.findPerm(LevelPermission.Nobody);
-                    }
+                    }*/
 
                     if (Player.CommandProtected(cmd.ToLower(), message)) {
                         SendMessage("Cannot use command, player has protection level: " + Server.forgeProtection);

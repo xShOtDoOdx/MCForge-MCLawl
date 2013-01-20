@@ -1133,7 +1133,7 @@ namespace MCForge {
             w.WriteLine("#   spam-counter-reset-time\t\t= 2");
             w.WriteLine("#   bufferblocks\t\t\t= Should buffer blocks by default for maps?");
 			w.WriteLine();
-            w.WriteLine("#   mcforge-protection-level\t\t= Choose between: Dev/Mod/Off (default is Off). When set to Mod, MCForge Moderators AND Developers are able to use protection commands. When set to Dev, Developers can use protection commands. When set to Off, MCforge staff can't use protection commands.");
+            w.WriteLine("#   mcforge-protection-level\t\t= Choose between: Dev/Mod/Off (default is Off). When set to Mod, MCForge Moderators AND Developers are protected. When set to Dev, MCForge Developers only are protected. When set to Off, MCforge staff are not protected.");
             w.WriteLine();
 			w.WriteLine("# Server options");
 			w.WriteLine("server-name = " + Server.name);
