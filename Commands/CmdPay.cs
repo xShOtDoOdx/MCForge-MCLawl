@@ -61,7 +61,7 @@ namespace MCForge.Commands {
                 Economy.UpdateEcoStats(payer);
                 Economy.UpdateEcoStats(receiver);
 
-                Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " paid %f" + off.color + off.name + Server.DefaultColor + "(offline) %f" + amountPaid + " %3" + Server.moneys);
+                Player.GlobalMessage(p.prefix + p.name + Server.DefaultColor + " paid %f" + off.color + off.name + Server.DefaultColor + "(offline) %f" + amountPaid + " %3" + Server.moneys);
                 return;
             }
             if (who == p) { Player.SendMessage(p, "%cYou can't pay yourself %3" + Server.moneys); return; }
@@ -81,7 +81,7 @@ namespace MCForge.Commands {
 
             Economy.UpdateEcoStats(payer);
             Economy.UpdateEcoStats(receiver);
-            Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " paid " + who.color + who.prefix + who.name + " %f" + amountPaid + " %3" + Server.moneys);
+            Player.GlobalMessage(p.prefix + p.name + Server.DefaultColor + " paid " + who.prefix + who.name + " %f" + amountPaid + " %3" + Server.moneys);
         }
         public override void Help(Player p) {
             Player.SendMessage(p, "%f/pay [player] <amount> " + Server.DefaultColor + "- Pays <amount> " + Server.moneys + " to [player]");

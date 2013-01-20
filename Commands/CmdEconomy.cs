@@ -594,15 +594,20 @@ namespace MCForge.Commands {
 
                         case "ranks":
                         case "rank":
-                            if (!p.EnoughMoney(Economy.NextRank(p).price)) {
-                                Player.SendMessage(p, "%cYou don't have enough %3" + Server.moneys + "%c to buy the next rank");
+                            if (par2 != "" && par2 != null && !string.IsNullOrEmpty(par2) && par2 != string.Empty) {
+                                Player.SendMessage(p, "%cYou cannot provide a rank name, use %a/eco buy rank %cto buy the NEXT rank.");
                                 return;
                             }
+
                             LevelPermission maxrank = Group.Find(Economy.Settings.MaxRank).Permission;
                             if (p.group.Permission == maxrank || p.group.Permission >= maxrank) {
                                 Player.SendMessage(p, "%cYou cannot buy anymore ranks, because you passed the max buyable rank: " + Group.Find(Economy.Settings.MaxRank).color + Economy.Settings.MaxRank);
                                 return;
                             } else {
+                                if (!p.EnoughMoney(Economy.NextRank(p).price)) {
+                                    Player.SendMessage(p, "%cYou don't have enough %3" + Server.moneys + "%c to buy the next rank");
+                                    return;
+                                }
                                 Command.all.Find("promote").Use(null, p.name);
                                 p.money = p.money - Economy.FindRank(p.group.name).price;
                                 ecos.money = p.money;
@@ -718,7 +723,7 @@ namespace MCForge.Commands {
                             Player.SendMessage(p, "Buying titles: %f/eco buy title [title_name]");
                             Player.SendMessage(p, "Buying colors: %f/eco buy color [color]");
                             Player.SendMessage(p, "Buying titlecolors: %f/eco buy tcolor [color]");
-                            Player.SendMessage(p, "Buying ranks: %f/eco buy rank");
+                            Player.SendMessage(p, "Buying ranks: %f/eco buy the NEXT rank");
                             Player.SendMessage(p, "%7Check out the ranks and their prices with: %f/eco info rank");
                             Player.SendMessage(p, "Buy your own maps: %f/eco buy map [map_preset_name] [custom_map_name]");
                             Player.SendMessage(p, "%7Check out the map presets with: %f/eco info map");

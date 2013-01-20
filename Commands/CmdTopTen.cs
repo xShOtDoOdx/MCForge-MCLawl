@@ -61,12 +61,12 @@ namespace MCForge.Commands
             }
             if (String.Compare(message, "3", true) == 0)
             {
-                DataTable playerDb = Database.fillData("SELECT distinct name, money FROM Players order by money desc limit 10");
+                DataTable playerDb = Database.fillData("SELECT distinct player, money FROM Economy order by money desc limit 10");
 
                 Player.SendMessage(p, "TOP TEN AMOUNTS OF MONEY:");
                 for (int i = 0; i < playerDb.Rows.Count; i++)
                 {
-                    Player.SendMessage(p, (i + 1) + ") " + playerDb.Rows[i]["Name"] + " - [" + playerDb.Rows[i]["money"] + "]");
+                    Player.SendMessage(p, (i + 1) + ") " + playerDb.Rows[i]["player"] + " - [" + playerDb.Rows[i]["money"] + "]");
                 }
 
                 playerDb.Dispose();
