@@ -2293,7 +2293,7 @@ return;
                 catch { }
 
                 Command command = Command.all.Find(cmd);
-                Group old = null;
+                //Group old = null;
                 if ( command != null ) {
                     //this part checks if MCForge staff are able to USE protection commands
                     /*if (isProtected && Server.ProtectOver.Contains(cmd.ToLower())) {
@@ -2343,7 +2343,7 @@ return;
                                 Player.SendMessage(this, "An error occured when using the command!");
                                 Player.SendMessage(this, e.GetType().ToString() + ": " + e.Message);
                             }
-                            finally { if (old != null) this.group = old; }
+                            //finally { if (old != null) this.group = old; }
                         }));
                         commThread.Start();
                     }
