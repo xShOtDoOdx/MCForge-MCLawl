@@ -476,6 +476,25 @@ namespace MCForge
                         Log("Downloading sqlite3.dll failed, please try again later");
                     }
                 }
+                if (!File.Exists("Newtonsoft.Json.dll"))
+                {
+                	Log("Newtonsoft.Json.dll doesn't exist, Downloading");
+                	try
+                	{
+                		using (WebClient WEB = new WebClient())
+                		{
+                			WEB.DownloadFile("http://update.mcforge.net/oldf/Newtonsoft.Json.dll", "Newtonsoft.Json.dll");
+                		}
+                		if (File.Exists("Newtonsoft.Json.dll"))
+                		{
+                			Log("Newtonsoft.Json.dll download successful!");
+                		}
+                	}
+                	catch
+                	{
+                		Log("Download Newtonsoft.Json.dll failed, please try again later");
+                	}
+                }
             }
             UpdateGlobalSettings();
             if (!Directory.Exists("properties")) Directory.CreateDirectory("properties");
