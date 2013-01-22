@@ -1143,7 +1143,7 @@ namespace MCForge {
         }
 
         public void SetPrefix() { //just change the color name if someone ever decides these titles need different colors O.o I just try to match them with the ranks on MCForge.net
-            string viptitle = isDev ? string.Format("{1}[{0}Dev{1}]", c.Parse("blue"), color) : isMod ? string.Format("{1}[{0}Mod{1}]", c.Parse("lime"), color) : isGCMod ? string.Format("{1}[{0}GCMod{1}]", c.Parse("gold"), color) : "";
+            string viptitle = isDev ? string.Format("{1}[{0}Dev{1}] ", c.Parse("blue"), color) : isMod ? string.Format("{1}[{0}Mod{1}] ", c.Parse("lime"), color) : isGCMod ? string.Format("{1}[{0}GCMod{1}] ", c.Parse("gold"), color) : "";
             prefix = ( title == "" ) ? "" : ( titlecolor == "" ) ? color + "[" + title + "] " : color + "[" + titlecolor + title + color + "] ";
             prefix = viptitle + prefix;
         }
@@ -1900,14 +1900,16 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                         storedMessage = "";
                     }
                 }
-                if ( text.EndsWith(">") ) {
+                if (text.EndsWith(">"))
+                {
                     storedMessage += text.Replace(">", "|>|");
-                    SendMessage("Message appended!");
+                    SendMessage(c.teal + "Partial message: " + c.white + storedMessage.Replace("|>|", " ").Replace("|<|", ""));
                     return;
                 }
-                if ( text.EndsWith("<") ) {
+                if (text.EndsWith("<"))
+                {
                     storedMessage += text.Replace("<", "|<|");
-                    SendMessage("Message appended!");
+                    SendMessage(c.teal + "Partial message: " + c.white + storedMessage.Replace("|<|", "").Replace("|>|", " "));
                     return;
                 }
                 if ( Regex.IsMatch(text, "%[^a-fA-F0-9]") )//This causes all players to crash!
