@@ -31,21 +31,16 @@ namespace MCForge.Commands
             if (p != null && !Server.gcaccepted.Contains(p.name.ToLower())) { RulesMethod(p); return; }
             if (p != null)
             {
-                foreach (string line in Server.gcnamebans)
-                {
-                    if (line.Split('|')[0] == p.name)
-                    {
-                        Player.SendMessage(p, "You have been banned from the global chat by " + line.Split('|')[2] + " because of the following reason: " + line.Split('|')[1] + ". You can apply a ban appeal at www.mcforge.net. Keep yourself to the rules.");
-                        return;
-                    }
+                string reason;
+                if (Server.gcnamebans.TryGetValue(p.name.ToLower(), out reason)) {
+                    Player.SendMessage(p, "You are %cBANNED" + Server.DefaultColor + " from" + Server.GlobalChatColor + " Global Chat" + Server.DefaultColor + " by " + reason);
+                    Player.SendMessage(p, "You can apply a 'Ban Appeal' at %9www.mcforge.net");
+                    return;
                 }
-                foreach (string line in Server.gcipbans)
-                {
-                    if (line.Split('|')[0] == p.ip)
-                    {
-                        Player.SendMessage(p, "You have been ip banned from the global chat by " + line.Split('|')[2] + " because of the following reason: " + line.Split('|')[1] + ". You can apply a ban appeal at www.mcforge.net. Keep yourself to the rules.");
-                        return;
-                    }
+                if (Server.gcipbans.TryGetValue(p.exIP, out reason)) {
+                    Player.SendMessage(p, "Your IP is %cBANNED" + Server.DefaultColor + " from" + Server.GlobalChatColor + " Global Chat" + Server.DefaultColor + " by " + reason);
+                    Player.SendMessage(p, "You can apply a 'Ban Appeal' at %9www.mcforge.net");
+                    return;
                 }
             }            //Server.GlobalChat.Say((p != null ? p.name + ": " : "Console: ") + message, p);
             Server.GlobalChat.Say(p == null ? "Console: " + message : p.name + ": " + message, p);

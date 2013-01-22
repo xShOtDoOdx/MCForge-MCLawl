@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using MCForge.SQL;
 //using MySql.Data.MySqlClient;
 //using MySql.Data.Types;
-
+using Newtonsoft.Json.Linq;
 using MonoTorrent.Client;
 
 namespace MCForge
@@ -159,8 +159,8 @@ namespace MCForge
         public static List<string> afkmessages = new List<string>();
         public static List<string> messages = new List<string>();
 
-        public static List<string> gcnamebans = new List<string>();
-        public static List<string> gcipbans = new List<string>();
+        public static Dictionary<string, string> gcnamebans = new Dictionary<string, string>();
+        public static Dictionary<string, string> gcipbans = new Dictionary<string, string>();
 
         public static DateTime timeOnline;
         public static string IP;
@@ -1256,26 +1256,24 @@ namespace MCForge
             {
                 gcipbans.Clear();
                 gcnamebans.Clear();
-                using (var client = new WebClient())
-                {
-                    string result = client.DownloadString("http://gccp.nextbattle.net/mcforge/namebans.php");
-                    foreach (string line in result.Split('*'))
-                    {
-                        gcnamebans.Add(line);
-                    }
-                    gcnamebans.Remove("");
-                    result = client.DownloadString("http://gccp.nextbattle.net/mcforge/ipbans.php");
-                    foreach (string line in result.Split('*'))
-                    {
-                        gcipbans.Add(line);
-                    }
-                    gcipbans.Remove("");
+                JArray jason; //jason plz (troll)
+                using (var client = new WebClient()) {
+                    jason = JArray.Parse(client.DownloadString("http://server.mcforge.net/gcbanned.txt"));
                 }
-                Server.s.Log("Global settings updated!");
+                foreach (JObject ban in jason) {
+                    if((string)ban["banned_isIp"] == "0")
+                        gcnamebans.Add(((string)ban["banned_name"]).ToLower(), "'" + (string)ban["banned_by"] + "', because: %d" + (string)ban["banned_reason"]);
+                    else if((string)ban["banned_isIp"] == "1")
+                        gcipbans.Add((string)ban["banned_name"], "'" + (string)ban["banned_by"] + "', because: %d" + (string)ban["banned_reason"]);
+                }
+                s.Log("GlobalChat Banlist updated!");
             }
-            catch
+            catch (Exception e)
             {
-                Server.s.Log("Could not connect to the DevPanel Server!");
+                ErrorLog(e);
+                s.Log("Could not update GlobalChat Banlist!");
+                gcnamebans.Clear();
+                gcipbans.Clear();
             }
         }
         public void UpdateStaffList() {
@@ -1293,8 +1291,8 @@ namespace MCForge
                     }
                 }
             } catch (Exception e) {
-                Server.s.Log("Couldn't update MCForge staff list, turning MCForge Staff Protection Level off. . . ");
-                Server.ErrorLog(e);
+                ErrorLog(e);
+                s.Log("Couldn't update MCForge staff list, turning MCForge Staff Protection Level off. . . ");
                 forgeProtection = ForgeProtection.Off;
                 devs.Clear();
                 mods.Clear();

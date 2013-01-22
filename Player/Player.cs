@@ -70,6 +70,7 @@ namespace MCForge {
         public byte id;
         public int userID = -1;
         public string ip;
+        public string exIP; // external IP
         public string color;
         public Group group;
         public bool hidden = false;
@@ -354,6 +355,12 @@ namespace MCForge {
             try {
                 socket = s;
                 ip = socket.RemoteEndPoint.ToString().Split(':')[0];
+
+                if (IPInPrivateRange(ip))
+                    exIP = ResolveExternalIP(ip);
+                else
+                    exIP = ip;
+
                 Server.s.Log(ip + " connected to the server.");
 
                 for ( byte i = 0; i < 128; ++i ) bindings[i] = i;
@@ -4031,6 +4038,15 @@ Next: continue;
                 return true;
             return IPAddress.IsLoopback(IPAddress.Parse(ip)) || ip.StartsWith("192.168.") || ip.StartsWith("10.");
             //return IsLocalIpAddress(ip);
+        }
+
+        public string ResolveExternalIP(string ip) {
+            HTTPGet req = new HTTPGet();
+            req.Request("http://checkip.dyndns.org");
+            string[] a1 = req.ResponseBody.Split(':');
+            string a2 = a1[1].Substring(1);
+            string[] a3 = a2.Split('<');
+            return a3[0];
         }
 
         public static bool IsLocalIpAddress(string host) {
