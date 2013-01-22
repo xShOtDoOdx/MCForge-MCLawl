@@ -476,7 +476,7 @@ namespace MCForge
                         Log("Downloading sqlite3.dll failed, please try again later");
                     }
                 }
-                if (!File.Exists("Newtonsoft.Json"))
+                if (!File.Exists("Newtonsoft.Json.dll"))
                 {
                 	Log("Newtonsoft.Json.dll doesn't exist, Downloading");
                 	try
