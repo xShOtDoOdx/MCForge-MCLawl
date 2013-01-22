@@ -45,7 +45,7 @@ namespace MCForge.Commands {
 				Player.SendMessage(p, "Level name is not accepted");
 				return;
 			}
-
+            //safe against SQL injections because no user input is given here
 			if ( Server.useMySQL ) MySQL.executeQuery("TRUNCATE TABLE `Block" + l.name + "`"); else SQLite.executeQuery("DELETE FROM `Block" + l.name + "`");
 			Player.SendMessage(p, "Cleared &cALL" + Server.DefaultColor + " recorded block changes in: &d" + l.name);
 		}

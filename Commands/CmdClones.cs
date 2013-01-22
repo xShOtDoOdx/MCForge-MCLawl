@@ -55,7 +55,8 @@ namespace MCForge.Commands
 			{
 				Player.SendMessage(p, "Could not find player. Searching Player DB.");
 
-				DataTable FindIP = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name='" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name='" + message + "'");
+                Database.AddParams("@Name", message);
+				DataTable FindIP = Database.fillData("SELECT IP FROM Players WHERE Name=@Name");
 
 				if (FindIP.Rows.Count == 0) { Player.SendMessage(p, "Could not find any player by the name entered."); FindIP.Dispose(); return; }
 
@@ -66,8 +67,8 @@ namespace MCForge.Commands
 			{
 				message = who.ip;
 			}
-
-			DataTable Clones = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
+            Database.AddParams("@IP", message);
+			DataTable Clones = Database.fillData("SELECT Name FROM Players WHERE IP=@IP");
 
 			if (Clones.Rows.Count == 0) { Player.SendMessage(p, "Could not find any record of the player entered."); return; }
 

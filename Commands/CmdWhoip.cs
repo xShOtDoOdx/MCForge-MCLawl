@@ -39,7 +39,8 @@ namespace MCForge.Commands
             if (message == "") { Help(p); return; }
             if (message.IndexOf("'") != -1) { Player.SendMessage(p, "Cannot parse request."); return; }
 
-            DataTable playerDb = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
+            Database.AddParams("@IP", message);
+            DataTable playerDb = Database.fillData("SELECT Name FROM Players WHERE IP=@IP");
 
             if (playerDb.Rows.Count == 0) { Player.SendMessage(p, "Could not find anyone with this IP"); return; }
 

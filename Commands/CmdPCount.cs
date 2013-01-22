@@ -39,7 +39,7 @@ namespace MCForge.Commands
         {
             int bancount = Group.findPerm(LevelPermission.Banned).playerList.All().Count;
 
-            DataTable count = Server.useMySQL ? MySQL.fillData("SELECT COUNT(id) FROM Players") : SQLite.fillData("SELECT COUNT(id) FROM Players");
+            DataTable count = Database.fillData("SELECT COUNT(id) FROM Players");
             Player.SendMessage(p, "A total of " + count.Rows[0]["COUNT(id)"] + " unique players have visited this server.");
             Player.SendMessage(p, "Of these players, " + bancount + " have been banned.");
             count.Dispose();

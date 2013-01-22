@@ -50,7 +50,8 @@ namespace MCForge.Commands
                     int tryCounter = 0;
              rerun: try
                     {
-                        ip = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name = '" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name = '" + message + "'");
+                        Database.AddParams("@Name", message);
+                        ip = Database.fillData("SELECT IP FROM Players WHERE Name = @Name");
                     }
                     catch (Exception e)
                     {

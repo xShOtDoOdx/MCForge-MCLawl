@@ -32,16 +32,43 @@ namespace MCForge
         public static class MySQL //: Database //Extending for future improvement (Making it object oriented later)
         {
             private static string connStringFormat = "Data Source={0};Port={1};User ID={2};Password={3};Pooling={4}";
+            private static MySqlParameterCollection parameters = new MySqlCommand().Parameters;
 
             public static string connString { get { return String.Format(connStringFormat, Server.MySQLHost, Server.MySQLPort, Server.MySQLUsername, Server.MySQLPassword, Server.DatabasePooling); } }
+            [Obsolete("Preferably use Database.executeQuery instead")]
             public static void executeQuery(string queryString, bool createDB = false)
             {
                 Database.executeQuery(queryString, createDB);
             }
-
+            [Obsolete("Preferably use Database.executeQuery instead")]
             public static DataTable fillData(string queryString, bool skipError = false)
             {
                 return Database.fillData(queryString, skipError);
+            }
+
+            /// <summary>
+            /// Adds a parameter to the parameterized MySQL query.
+            /// Use this before executing the query.
+            /// </summary>
+            /// <param name="name">The name of the parameter</param>
+            /// <param name="param">The value of the parameter</param>
+            public static void AddParams(string name, object param) {
+                parameters.AddWithValue(name, param);
+            }
+            /// <summary>
+            /// Clears the parameters added with <see cref="MCForge.SQL.MySQL.AddParams(System.string, System.string)"/>
+            /// <seealso cref="MCForge.SQL.MySQL"/>
+            /// </summary>
+            public static void ClearParams() {
+                parameters.Clear();
+            }
+            private static void AddMySQLParameters(MySqlCommand command) {
+                foreach (MySqlParameter param in parameters)
+                    command.Parameters.Add(param);
+            }
+            private static void AddMySQLParameters(MySqlDataAdapter dAdapter) {
+                foreach (MySqlParameter param in parameters)
+                    dAdapter.SelectCommand.Parameters.Add(param);
             }
 
             internal static void execute(string queryString, bool createDB = false) {
@@ -51,6 +78,7 @@ namespace MCForge
                         conn.ChangeDatabase(Server.MySQLDatabaseName);
                     }
                     using (MySqlCommand cmd = new MySqlCommand(queryString, conn)) {
+                        AddMySQLParameters(cmd);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                     }
@@ -62,6 +90,7 @@ namespace MCForge
                     conn.Open();
                     conn.ChangeDatabase(Server.MySQLDatabaseName);
                     using (MySqlDataAdapter da = new MySqlDataAdapter(queryString, conn)) {
+                        AddMySQLParameters(da);
                         da.Fill(toReturn);
                     }
                     conn.Close();

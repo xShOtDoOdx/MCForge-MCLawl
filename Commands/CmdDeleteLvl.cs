@@ -78,7 +78,8 @@ namespace MCForge.Commands {
                     try { File.Delete("levels/level properties/" + message + ".properties"); } catch { }
                     try { File.Delete("levels/level properties/" + message); } catch { }
 
-                    if (Server.useMySQL) MySQL.executeQuery("DROP TABLE `Block" + message + "`, `Portals" + message + "`, `Messages" + message + "`, `Zone" + message + "`"); else SQLite.executeQuery("DROP TABLE Block" + message + ", Portals" + message + ", Messages" + message + " Zone" + message + "");
+                    //safe against SQL injections because the levelname (message) is first being checked if it exists
+                    Database.executeQuery("DROP TABLE Block" + message + ", Portals" + message + ", Messages" + message + " Zone" + message + "");
 
                     Player.GlobalMessage("Level " + message + " was deleted.");
                 } else {

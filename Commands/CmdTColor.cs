@@ -49,7 +49,8 @@ namespace MCForge.Commands
             {
                 who.titlecolor = "";
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " had their title color removed.", false);
-                Database.executeQuery("UPDATE Players SET title_color = '' WHERE Name = '" + who.name + "'");
+                Database.AddParams("@Name", who.name);
+                Database.executeQuery("UPDATE Players SET title_color = '' WHERE Name = @Name");
                 who.SetPrefix();
                 return;
             }
@@ -60,7 +61,9 @@ namespace MCForge.Commands
                 else if (color == who.titlecolor) { Player.SendMessage(p, who.name + " already has that title color."); return; }
                 else
                 {
-                    Database.executeQuery("UPDATE Players SET title_color = '" + c.Name(color) + "' WHERE Name = '" + who.name + "'");
+                    Database.AddParams("@Color", c.Name(color));
+                    Database.AddParams("@Name", who.name);
+                    Database.executeQuery("UPDATE Players SET title_color = @Color WHERE Name = @Name");
                     Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " had their title color changed to " + color + c.Name(color) + Server.DefaultColor + ".", false);
                     who.titlecolor = color;
                     who.SetPrefix();

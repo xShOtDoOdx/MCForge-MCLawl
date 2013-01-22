@@ -94,6 +94,8 @@ namespace MCForge.Commands
                 }
                 catch { }
 
+                //safe against SQL injections because foundLevel is being checked and,
+                //newName is being split and partly checked on illegal characters reserved for Windows.
                 if (Server.useMySQL)
                     Database.executeQuery(String.Format("RENAME TABLE `Block{0}` TO `Block{1}`, " +
                                                                      "`Portals{0}` TO `Portals{1}`, " +

@@ -1130,7 +1130,8 @@ namespace MCForge
             return Load(givenName, 0);
         }
 
-        public static Level Load(string givenName, byte phys)
+        //givenName is safe against SQL injections, it gets checked in CmdLoad.cs
+        public static Level Load(string givenName, byte phys) 
         {
             if (LevelLoad != null)
                 LevelLoad(givenName);
@@ -1257,7 +1258,6 @@ namespace MCForge
                                                       foundDB.Rows[i]["EntryZ"]);
                             }
                         }
-
                         foundDB = Database.fillData("SELECT * FROM `Messages" + givenName + "`");
 
                         for (int i = 0; i < foundDB.Rows.Count; ++i)
@@ -1267,6 +1267,7 @@ namespace MCForge
                                                         ushort.Parse(foundDB.Rows[i]["Y"].ToString()),
                                                         ushort.Parse(foundDB.Rows[i]["Z"].ToString()))))
                             {
+                                //givenName is safe against SQL injections, it gets checked in CmdLoad.cs
                                 Database.executeQuery("DELETE FROM `Messages" + givenName + "` WHERE X=" +
                                                       foundDB.Rows[i]["X"] + " AND Y=" + foundDB.Rows[i]["Y"] +
                                                       " AND Z=" + foundDB.Rows[i]["Z"]);

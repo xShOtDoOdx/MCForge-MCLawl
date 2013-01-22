@@ -47,7 +47,8 @@ namespace MCForge.Commands {
                 who.title = "";
                 who.SetPrefix();
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " had their title removed.", false);
-                query = "UPDATE Players SET Title = '' WHERE Name = '" + who.name + "'";
+                query = "UPDATE Players SET Title = '' WHERE Name = @Name";
+                Database.AddParams("@Name", who.name);
                 Database.executeQuery(query);
                 return;
             }
@@ -84,9 +85,12 @@ namespace MCForge.Commands {
             }
 
             if (newTitle == "") {
-                query = "UPDATE Players SET Title = '' WHERE Name = '" + who.name + "'";
+                query = "UPDATE Players SET Title = '' WHERE Name = @Name";
+                Database.AddParams("@Name", who.name);
             } else {
-                query = "UPDATE Players SET Title = '" + newTitle.Replace("'", "\'") + "' WHERE Name = '" + who.name + "'";
+                query = "UPDATE Players SET Title = @Title WHERE Name = @Name";
+                Database.AddParams("@Title", newTitle);
+                Database.AddParams("@Name", who.name);
             }
             Database.executeQuery(query);
             who.title = newTitle;

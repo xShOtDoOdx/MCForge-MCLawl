@@ -129,17 +129,16 @@ namespace MCForge.Commands {
             		}          		
             	}
             }
-
-            DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z) : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
-            Messages.Dispose();
-
+            //safe against SQL injections because no user input is given here
+            DataTable Messages = Database.fillData("SELECT * FROM `Messages" + p.level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
+            Database.AddParams("@Message", cpos.message);
             if ( Messages.Rows.Count == 0 ) {
-                if ( Server.useMySQL ) MySQL.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')"); else SQLite.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')");
+                Database.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", @Message)");
             }
             else {
-                if ( Server.useMySQL ) MySQL.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z); else SQLite.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
+                Database.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message=@Message WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
             }
-
+            Messages.Dispose();
             Player.SendMessage(p, "Message block placed.");
             p.level.Blockchange(p, x, y, z, cpos.type);
             p.SendBlockchange(x, y, z, cpos.type);
@@ -152,8 +151,8 @@ namespace MCForge.Commands {
         public void showMBs(Player p) {
         	try {
         		p.showMBs = !p.showMBs;
-
-        		using ( DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "`") : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "`") ) {
+                //safe against SQL injections because no user input is given here
+        		using ( DataTable Messages = Database.fillData("SELECT * FROM `Messages" + p.level.name + "`") ) {
         			int i;
 
         			if ( p.showMBs ) {

@@ -44,6 +44,11 @@ namespace MCForge.Commands {
             if ( p != null ) fromname = p.name;
             else fromname = "Console";
 
+            if (!Player.ValidName(whoTo)) {
+                Player.SendMessage(p, "%cIllegal name!");
+                return;
+            }
+
             message = message.Substring(message.IndexOf(' ') + 1);
 
             if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
@@ -60,10 +65,14 @@ namespace MCForge.Commands {
 
             //DB
             if ( message.Length > 255 && Server.useMySQL ) { Player.SendMessage(p, "Message was too long. The text below has been trimmed."); Player.SendMessage(p, message.Substring(256)); message = message.Remove(256); }
+            //safe against SQL injections because whoTo is checked for illegal characters
             Database.executeQuery("CREATE TABLE if not exists `Inbox" + whoTo + "` (PlayerFrom CHAR(20), TimeSent DATETIME, Contents VARCHAR(255));");
             if ( !Server.useMySQL )
                 Server.s.Log(message.Replace("'", "\\'"));
-            Database.executeQuery("INSERT INTO `Inbox" + whoTo + "` (PlayerFrom, TimeSent, Contents) VALUES ('" + fromname + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + message.Replace("'", ( Server.useMySQL ? "\\'" : "''" )) + "')");
+            Database.AddParams("@From", fromname);
+            Database.AddParams("@Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            Database.AddParams("@Content", message);
+            Database.executeQuery("INSERT INTO `Inbox" + whoTo + "` (PlayerFrom, TimeSent, Contents) VALUES (@From, @Time, @Content)");
             //DB
 
             Player.SendMessage(p, "Message sent to &5" + whoTo + ".");

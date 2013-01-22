@@ -418,7 +418,8 @@ namespace MCForge {
 
                     try {
                         if ( !Group.Find("Nobody").commands.Contains("inbox") && !Group.Find("Nobody").commands.Contains("send") ) {
-                            DataTable Inbox = MySQL.fillData("SELECT * FROM `Inbox" + name + "`", true);
+                            //safe against SQL injections because no user input is given here
+                            DataTable Inbox = Database.fillData("SELECT * FROM `Inbox" + name + "`", true);
 
                             SendMessage("&cYou have &f" + Inbox.Rows.Count + Server.DefaultColor + " &cmessages in /inbox");
                             Inbox.Dispose();
@@ -493,6 +494,7 @@ namespace MCForge {
 
 
         public void save() {
+            //safe against SQL injects because no user input is provided
             string commandString =
                 "UPDATE Players SET IP='" + ip + "'" +
                 ", LastLogin='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
@@ -740,7 +742,8 @@ namespace MCForge {
                     }
                     else {
                         // Verify Names is off. Gotta check the hard way.
-                        DataTable ipQuery = Server.useMySQL ? MySQL.fillData(String.Format("SELECT Name FROM Players WHERE IP = '{0}'", ip)) : SQLite.fillData("SELECT Name FROM Players WHERE IP = '" + ip + "'");
+                        Database.AddParams("@IP", ip);
+                        DataTable ipQuery = Database.fillData("SELECT Name FROM Players WHERE IP = @IP");
 
                         if ( ipQuery.Rows.Count > 0 ) {
                             if ( ipQuery.Rows.Contains(name) && Server.whiteList.Contains(name) ) {
@@ -917,8 +920,8 @@ namespace MCForge {
             }
             //OpenClassic Client Check
             SendBlockchange(0, 0, 0, 0);
-            
-            DataTable playerDb = Server.useMySQL ? MySQL.fillData("SELECT * FROM Players WHERE Name='" + name + "'") : SQLite.fillData("SELECT * FROM Players WHERE Name='" + name + "'");
+            Database.AddParams("@Name", name);
+            DataTable playerDb = Database.fillData("SELECT * FROM Players WHERE Name=@Name");
 
 
             if ( playerDb.Rows.Count == 0 ) {
@@ -1366,7 +1369,8 @@ namespace MCForge {
 
         public void HandlePortal(Player p, ushort x, ushort y, ushort z, byte b) {
             try {
-                DataTable Portals = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Portals" + level.name + "` WHERE EntryX=" + (int)x + " AND EntryY=" + (int)y + " AND EntryZ=" + (int)z) : SQLite.fillData("SELECT * FROM `Portals" + level.name + "` WHERE EntryX=" + (int)x + " AND EntryY=" + (int)y + " AND EntryZ=" + (int)z);
+                //safe against SQL injections because no user input is given here
+                DataTable Portals = Database.fillData("SELECT * FROM `Portals" + level.name + "` WHERE EntryX=" + (int)x + " AND EntryY=" + (int)y + " AND EntryZ=" + (int)z);
 
                 int LastPortal = Portals.Rows.Count - 1;
                 if ( LastPortal > -1 ) {
@@ -1397,7 +1401,8 @@ namespace MCForge {
 
         public void HandleMsgBlock(Player p, ushort x, ushort y, ushort z, byte b) {
             try {
-                DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z) : SQLite.fillData("SELECT * FROM `Messages" + level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
+                //safe against SQL injections because no user input is given here
+                DataTable Messages = Database.fillData("SELECT * FROM `Messages" + level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
 
                 int LastMsg = Messages.Rows.Count - 1;
                 if ( LastMsg > -1 ) {
@@ -2326,13 +2331,13 @@ return;
                         }
 
                         try { //opstats patch (since 5.5.11)
-                            if (Server.opstats.Contains(cmd.ToLower()) || (cmd.ToLower() == "review" && message.ToLower() == "next" && Server.reviewlist.Count > 0))
-                                if (Server.useMySQL)
-                                    MySQL.executeQuery("INSERT INTO Opstats (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
-                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + cmd + "', '" + message + "')");
-                                else
-                                    SQLite.executeQuery("INSERT INTO Opstats (Time, Name, Rank, Mapname, Cmd, Cmdmsg)" +
-                                    " VALUES ('" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + name + "', '" + cmd + "', '" + message + "')");
+                            if (Server.opstats.Contains(cmd.ToLower()) || (cmd.ToLower() == "review" && message.ToLower() == "next" && Server.reviewlist.Count > 0)) {
+                                Database.AddParams("@Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                Database.AddParams("@Name", name);
+                                Database.AddParams("@Cmd", cmd);
+                                Database.AddParams("@Cmdmsg", message);
+                                Database.executeQuery("INSERT INTO Opstats (Time, Name, Cmd, Cmdmsg) VALUES (@Time, @Name, @Cmd, @Cmdmsg)");
+                            }
                         } catch { }
 
                         this.commThread = new Thread(new ThreadStart(delegate {
@@ -3748,8 +3753,8 @@ catch { }*/
         }
         public static OfflinePlayer FindOffline(string name) {
             OfflinePlayer offPlayer = new OfflinePlayer("", "", "", "", 0);
-            string query = "SELECT * FROM Players WHERE Name = '" + name + "'";
-            using (DataTable playerDB = Server.useMySQL ? MySQL.fillData(query) : SQLite.fillData(query)) {
+            Database.AddParams("@Name", name);
+            using (DataTable playerDB = Database.fillData("SELECT * FROM Players WHERE Name = @Name")) {
                 if (playerDB.Rows.Count == 0)
                     return offPlayer;
                 else {
@@ -3872,7 +3877,7 @@ Next: continue;
             return lines;
         }
         public static bool ValidName(string name, Player p = null) {
-            string allowedchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890._";
+            string allowedchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._";
             if (p != null && p.Mojangaccount) allowedchars += "-";
             return name.All(ch => allowedchars.IndexOf(ch) != -1);
         }

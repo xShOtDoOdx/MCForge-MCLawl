@@ -57,7 +57,8 @@ namespace MCForge.Commands {
                     DataTable ip;
                     int tryCounter = 0;
                 rerun: try {
-                        ip = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name = '" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name = '" + message + "'");
+                        Database.AddParams("@Name", message);
+                        ip = Database.fillData("SELECT IP FROM Players WHERE Name = @Name");
                     } catch (Exception e) {
                         tryCounter++;
                         if (tryCounter < 10)
@@ -102,7 +103,8 @@ namespace MCForge.Commands {
             // First get names of active ops+ with that ip
             List<string> opNamesWithThatIP = (from pl in Player.players where (pl.ip == message && pl.@group.Permission >= LevelPermission.Operator) select pl.name).ToList();
             // Next, add names from the database
-            DataTable dbnames = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP = '" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP = '" + message + "'");
+            Database.AddParams("@IP", message);
+            DataTable dbnames = Database.fillData("SELECT Name FROM Players WHERE IP = @IP");
 
             foreach (DataRow row in dbnames.Rows) {
                 opNamesWithThatIP.Add(row[0].ToString());

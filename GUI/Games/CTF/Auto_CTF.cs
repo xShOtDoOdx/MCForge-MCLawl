@@ -465,11 +465,12 @@ namespace MCForge
             cache.ForEach(delegate(Data d)
             {
                 string commandString =
-               "UPDATE CTF SET Points='" + d.points + "'" +
-               ", Captures=" + d.cap +
-               ", tags=" + d.tag +
-               "' WHERE Name='" + d.p.name + "'";
+               "UPDATE CTF SET Points=@Points, Captures=@Captures, tags=@Tags WHERE Name=@Name";
                 d.hasflag = false;
+                Database.AddParams("@Points", d.points);
+                Database.AddParams("@Captures", d.cap);
+                Database.AddParams("@Tags", d.tag);
+                Database.AddParams("@Name", d.p.name);
                 Database.executeQuery(commandString);
             });
             nextmap = Vote();

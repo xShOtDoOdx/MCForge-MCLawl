@@ -38,17 +38,8 @@ namespace MCForge.Commands
 
 		public override void Use(Player p, string message)
 		{
-			if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
-				if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
-					Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
-					MatchCollection mc = rg.Matches(message.ToLower());
-					if (mc.Count > 0) {
-						Match ma = mc[0];
-						GroupCollection gc = ma.Groups;
-						message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
-					}
-				}
-			}
+            if(message == "") { Help(p); return; }
+
 			Player pl = Player.Find(message);
 			if (pl != null && !pl.hidden)
 			{
@@ -56,7 +47,8 @@ namespace MCForge.Commands
 				return;
 			}
 
-			using (DataTable playerDb = Database.fillData("SELECT * FROM Players WHERE Name='" + message + "'"))
+            Database.AddParams("@Name", message);
+			using (DataTable playerDb = Database.fillData("SELECT * FROM Players WHERE Name=@Name"))
 			{
 				if (playerDb.Rows != null && playerDb.Rows.Count > 0)
 					Player.SendMessage(p, message + " was last seen: " + playerDb.Rows[0]["LastLogin"]);

@@ -75,18 +75,16 @@ namespace MCForge {
 
         public static void LoadDatabase() {
         retry:
-            if (Server.useMySQL) MySQL.executeQuery(createTable); else SQLite.executeQuery(createTable); //create database
-            string queryP = "SELECT * FROM Players"; string queryE = "SELECT * FROM Economy";
-            DataTable eco = Server.useMySQL ? MySQL.fillData(queryE) : SQLite.fillData(queryE);
+            Database.executeQuery(createTable); //create database
+            DataTable eco = Database.fillData("SELECT * FROM Economy");
             try {
-                DataTable players = Server.useMySQL ? MySQL.fillData(queryP) : SQLite.fillData(queryP);
+                DataTable players = Database.fillData("SELECT * FROM Players");
                 if (players.Rows.Count == eco.Rows.Count) { } //move along, nothing to do here
                 else if (eco.Rows.Count == 0) { //if first time, copy content from player to economy
-                    string query = "INSERT INTO Economy (player, money) SELECT Players.Name, Players.Money FROM Players";
-                    if (Server.useMySQL) MySQL.executeQuery(query); else SQLite.executeQuery(query);
+                    Database.executeQuery("INSERT INTO Economy (player, money) SELECT Players.Name, Players.Money FROM Players");
                 } else {
                     //this will only be needed when the server shuts down while it was copying content (or some other error)
-                    if (Server.useMySQL) MySQL.executeQuery("DROP TABLE Economy"); else SQLite.executeQuery("DROP TABLE Economy");
+                    Database.executeQuery("DROP TABLE Economy");
                     goto retry;
                 }
                 players.Dispose(); eco.Dispose();
@@ -302,8 +300,8 @@ namespace MCForge {
         public static EcoStats RetrieveEcoStats(string playername) {
             EcoStats es;
             es.playerName = playername;
-            string query = "SELECT * FROM Economy WHERE player = '" + playername + "'";
-            using (DataTable eco = Server.useMySQL ? MySQL.fillData(query) : SQLite.fillData(query)) {
+            Database.AddParams("@Name", playername);
+            using (DataTable eco = Database.fillData("SELECT * FROM Economy WHERE player=@Name")) {
                 if (eco.Rows.Count == 1) {
                     es.money = int.Parse(eco.Rows[0]["money"].ToString());
                     es.totalSpent = int.Parse(eco.Rows[0]["total"].ToString());
@@ -324,9 +322,14 @@ namespace MCForge {
         }
 
         public static void UpdateEcoStats(EcoStats es) {
-            string query1 = String.Format("REPLACE INTO Economy (player, money, total, purchase, payment, salary, fine) VALUES ('{0}', {1}, {2}, '{3}', '{4}', '{5}', '{6}')", es.playerName, es.money, es.totalSpent, es.purchase, es.payment, es.salary, es.fine);
-            string query2 = String.Format("INSERT OR REPLACE INTO Economy (player, money, total, purchase, payment, salary, fine) VALUES ('{0}', {1}, {2}, '{3}', '{4}', '{5}', '{6}')", es.playerName, es.money, es.totalSpent, es.purchase, es.payment, es.salary, es.fine);
-            if (Server.useMySQL) MySQL.executeQuery(query1); else SQLite.executeQuery(query2);
+            Database.AddParams("@Name", es.playerName);
+            Database.AddParams("@Money", es.money);
+            Database.AddParams("@Total", es.totalSpent);
+            Database.AddParams("@Purchase", es.purchase);
+            Database.AddParams("@Payment", es.payment);
+            Database.AddParams("@Salary", es.salary);
+            Database.AddParams("@Fine", es.fine);
+            Database.executeQuery(string.Format("{0} Economy (player, money, total, purchase, payment, salary, fine) VALUES (@Name, @Money, @Total, @Purchase, @Payment, @Salary, @Fine)", (Server.useMySQL ? "REPLACE INTO" : "INSERT OR REPLACE INTO")));
         }
     }
 }

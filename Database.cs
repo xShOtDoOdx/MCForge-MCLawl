@@ -195,6 +195,19 @@ namespace MCForge {
                 return tableNames;
             }// end:CopyDatabase()
 
+            /// <summary>
+            /// Adds a parameter to the parameterized SQL query.
+            /// Use this before executing the query.
+            /// </summary>
+            /// <param name="name">The name of the parameter</param>
+            /// <param name="param">The value of the parameter</param>
+            public static void AddParams(string name, object param) {
+                if (Server.useMySQL)
+                    MySQL.AddParams(name, param);
+                else
+                    SQLite.AddParams(name, param);
+            }
+
             public static void executeQuery(string queryString, bool createDB = false) {
                 int totalCount = 0;
             retry: try {
@@ -217,6 +230,12 @@ namespace MCForge {
                         throw e;
                     }
                 }
+                finally {
+                    if (Server.useMySQL)
+                        MySQL.ClearParams();
+                    else
+                        SQLite.ClearParams();
+                }
             }
 
             public static DataTable fillData(string queryString, bool skipError = false) {
@@ -237,6 +256,12 @@ namespace MCForge {
                             }
                         } else
                             goto retry;
+                    }
+                    finally {
+                        if (Server.useMySQL)
+                            MySQL.ClearParams();
+                        else
+                            SQLite.ClearParams();
                     }
                     return toReturn;
                 }

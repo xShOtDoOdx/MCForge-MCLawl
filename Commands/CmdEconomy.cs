@@ -384,6 +384,7 @@ namespace MCForge.Commands {
                                             Player.SendMessage(p, "%aSuccessfully created your map: '%f" + p.name + "_" + par3 + "%a'");
                                             Player.SendMessage(p, "%aYour balance is now %f" + p.money.ToString() + " %3" + Server.moneys);
                                             try {
+                                                //safe against SQL injections, but will be replaced soon by a new feature
                                                 //DB
                                                 if (Server.useMySQL) MySQL.executeQuery("INSERT INTO `Zone" + level.name + "` (SmallX, SmallY, SmallZ, BigX, BigY, BigZ, Owner) VALUES (0,0,0," + (level.width - 1) + "," + (level.depth - 1) + "," + (level.height - 1) + ",'" + p.name + "')"); else SQLite.executeQuery("INSERT INTO `Zone" + level.name + "` (SmallX, SmallY, SmallZ, BigX, BigY, BigZ, Owner) VALUES (0,0,0," + (level.width - 1) + "," + (level.depth - 1) + "," + (level.height - 1) + ",'" + p.name + "')"); //CHECK!!!!
                                                 //DB

@@ -38,10 +38,12 @@ namespace MCForge.Commands
         {
             try
             {
+                //safe against SQL injections because no user input is given here
                 if (Server.useMySQL) MySQL.executeQuery("CREATE TABLE if not exists `Inbox" + p.name + "` (PlayerFrom CHAR(20), TimeSent DATETIME, Contents VARCHAR(255));"); else SQLite.executeQuery("CREATE TABLE if not exists `Inbox" + p.name + "` (PlayerFrom TEXT, TimeSent DATETIME, Contents TEXT);");
                 if (message == "")
                 {
-                    DataTable Inbox = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent") : SQLite.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
+                    //safe against SQL injections because no user input is given here
+                    DataTable Inbox = Database.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
 
                     if (Inbox.Rows.Count == 0) { Player.SendMessage(p, "No messages found."); Inbox.Dispose(); return; }
 
@@ -65,8 +67,8 @@ namespace MCForge.Commands
 
                         if (FoundRecord < 0) { Player.SendMessage(p, "Cannot delete records below 0"); return; }
                     }
-
-                    DataTable Inbox = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent") : SQLite.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
+                    //safe against SQL injections because no user input is given here
+                    DataTable Inbox = Database.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
 
                     if (Inbox.Rows.Count - 1 < FoundRecord || Inbox.Rows.Count == 0)
                     {
@@ -74,12 +76,15 @@ namespace MCForge.Commands
                     }
 
                     string queryString;
+                    //safe against SQL injections because no user input is given here
                     if (FoundRecord == -1)
-                        queryString = Server.useMySQL ? "TRUNCATE TABLE `Inbox" + p.name + "`" : "DELETE FROM `Inbox" + p.name + "`"; 
-                    else
-                        queryString = "DELETE FROM `Inbox" + p.name + "` WHERE PlayerFrom='" + Inbox.Rows[FoundRecord]["PlayerFrom"] + "' AND TimeSent='" + Convert.ToDateTime(Inbox.Rows[FoundRecord]["TimeSent"]).ToString("yyyy-MM-dd HH:mm:ss") + "'";
-
-                    if (Server.useMySQL) MySQL.executeQuery(queryString); else SQLite.executeQuery(queryString);
+                        queryString = Server.useMySQL ? "TRUNCATE TABLE `Inbox" + p.name + "`" : "DELETE FROM `Inbox" + p.name + "`";
+                    else {
+                        Database.AddParams("@From", Inbox.Rows[FoundRecord]["PlayerFrom"]);
+                        Database.AddParams("@Time", Convert.ToDateTime(Inbox.Rows[FoundRecord]["TimeSent"]).ToString("yyyy-MM-dd HH:mm:ss"));
+                        queryString = "DELETE FROM `Inbox" + p.name + "` WHERE PlayerFrom=@FROM AND TimeSent=@Time";
+                    }
+                    Database.executeQuery(queryString);
 
                     if (FoundRecord == -1)
                         Player.SendMessage(p, "Deleted all messages.");
@@ -100,7 +105,8 @@ namespace MCForge.Commands
 
                     if (FoundRecord < 0) { Player.SendMessage(p, "Cannot read records below 0"); return; }
 
-                    DataTable Inbox = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent") : SQLite.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
+                    //safe against SQL injections because no user input is given here
+                    DataTable Inbox = Database.fillData("SELECT * FROM `Inbox" + p.name + "` ORDER BY TimeSent");
 
                     if (Inbox.Rows.Count - 1 < FoundRecord || Inbox.Rows.Count == 0)
                     {
