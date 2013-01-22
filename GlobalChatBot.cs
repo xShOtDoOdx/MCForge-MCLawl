@@ -82,7 +82,9 @@ namespace MCForge
         }
         public void Say(string message, Player p = null)
         {
-            message = RemoveWhitespace(message);
+            RemoveVariables(ref message);
+            RemoveWhitespace(ref message);
+
             if (p != null && p.muted)
             {
                 Player.SendMessage(p, "*Tears* You aren't allowed to talk to the nice people of global chat");
@@ -255,7 +257,8 @@ namespace MCForge
         {
             //string allowedchars = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./!@#$%^*()_+QWERTYUIOPASDFGHJKL:\"ZXCVBNM<>? ";
             //string msg = message;
-            message = RemoveWhitespace(message);
+            RemoveVariables(ref message);
+            RemoveWhitespace(ref message);
 
             if (message.Contains("^UGCS"))
             {
@@ -277,8 +280,8 @@ namespace MCForge
             }
             if (message.Contains("^SENDRULES "))
             { //^GETPLAYERINFO NICK PLAYER
-                if (Server.Devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
-                else { Player.GlobalMessage("NOTATEST"); }
+                //if (Server.Devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
+                //else { Player.GlobalMessage("NOTATEST"); }
                 string[] split = message.Split(' ');
                 if (split.Length < 2) { return; }
                 if (Server.GlobalChatNick != split[1]) { return; }
@@ -380,12 +383,17 @@ namespace MCForge
             catch { return false; }
         }
 
-        private string RemoveWhitespace(string message) {
+        private void RemoveWhitespace(ref string message) {
             string[] msg = message.Split(new char[] {' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             message = "";
             foreach (string word in msg)
                 message = message + word + " ";
-            return message;
+        }
+        private void RemoveVariables(ref string message) {
+            string[] msg = message.Split('$');
+            message = "";
+            foreach (string part in msg)
+                message = message + part;
         }
     }
 }
