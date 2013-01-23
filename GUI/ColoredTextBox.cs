@@ -143,7 +143,7 @@ namespace MCForge.Gui.Components {
         /// <param name="text">The text to log.</param>
         public void AppendLog(string text, Color foreColor) {
             if ( InvokeRequired ) {
-                Invoke((MethodInvoker)delegate { AppendLog(text, foreColor); });
+                Invoke((MethodInvoker)( () => AppendLog ( text, foreColor ) ));
                 return;
             }
 
@@ -200,7 +200,7 @@ namespace MCForge.Gui.Components {
         /// <param name="bgColor">Color of the background.</param>
         private void Append(string text, Color foreColor, Color bgColor) {
             if ( InvokeRequired ) {
-                Invoke((MethodInvoker)delegate { Append(text, foreColor, bgColor); });
+                Invoke((MethodInvoker)( () => Append ( text, foreColor, bgColor ) ));
                 return;
             }
 
@@ -327,10 +327,7 @@ namespace MCForge.Gui.Components {
 
             int stateId;
             if ( this.Enabled )
-                if ( this.ReadOnly )
-                    stateId = Natives.ETS_READONLY;
-                else
-                    stateId = Natives.ETS_NORMAL;
+                stateId = this.ReadOnly ? Natives.ETS_READONLY : Natives.ETS_NORMAL;
             else
                 stateId = Natives.ETS_DISABLED;
 
