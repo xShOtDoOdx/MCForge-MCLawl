@@ -575,6 +575,7 @@
     <Compile Include="Util\Hasher.cs" />
     <Compile Include="Util\ICryptoService.cs" />
     <Compile Include="Util\MathHelper.cs" />
+    <Compile Include="Util\MCForgeScripter.cs" />
     <Compile Include="Util\SCOGenerator.cs" />
     <Compile Include="Util\Serializer.cs" />
     <Compile Include="VIP.cs" />
