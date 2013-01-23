@@ -1473,17 +1473,20 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             try {
                 if ( !Directory.Exists("extra/images") )
                     Directory.CreateDirectory("extra/images");
-                if ( !File.Exists("extra/images/mcpony.png") )
-                    using ( WebClient WEB = new WebClient() ) {
+                if ( !File.Exists( "extra/images/mcpony.png" ) ) {
+                    using ( WebClient WEB = new WebClient () ) {
                         WEB.DownloadFileAsync ( new Uri ( "http://mcforge.net/uploads/images/mcpony.png" ), "extra/images/mcpony.png" );
                         WEB.DownloadFileCompleted += ( ea, args ) => {
-                            if ( File.Exists( "extra/images/mcpony.png" ) ) {
-                                Image img = Image.FromFile ( "extra/images/mcpony.png" );
-                                pictureBox1.Image = img;
-                            }
-                        };
+                                                         if ( File.Exists ( "extra/images/mcpony.png" ) ) {
+                                                             Image img = Image.FromFile ( "extra/images/mcpony.png" );
+                                                             pictureBox1.Image = img;
+                                                         }
+                                                     };
                     }
-                
+                } else {
+                    Image img = Image.FromFile( "extra/images/mcpony.png" );
+                    pictureBox1.Image = img;
+                }
             }
             catch { }
         }
