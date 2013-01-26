@@ -31,6 +31,7 @@ namespace MCForge.Commands
 
         public override void Use(Player p, string message)
         {
+            if (!Server.useWhitelist) { Player.SendMessage(p, "Whitelist is not enabled."); return; }
             if (message == "") { Help(p); return; }
             int pos = message.IndexOf(' ');
             if (pos != -1)
