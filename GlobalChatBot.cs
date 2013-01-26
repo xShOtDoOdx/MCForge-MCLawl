@@ -250,7 +250,22 @@ namespace MCForge
 
         void Listener_OnError(ReplyCode code, string message)
         {
-            //Server.s.Log("IRC Error: " + message);
+            switch (code)
+            {
+                case ReplyCode.ERR_BANNEDFROMCHAN:
+                    Server.s.Log("Your server is banned from the Global Chat Channel. Please appeal at mcforge.net");
+                    break;
+                case ReplyCode.ERR_INVITEONLYCHAN:
+                    Server.s.Log("Cannot join Global Chat. (Channel is invite only (+i))");
+                    break;
+                case ReplyCode.ERR_YOUREBANNEDCREEP:
+                    {
+                        if (Server.irc) { if (Server.ircServer == server) return; }
+                        Server.s.Log(message);
+                        Server.s.Log("This means your server is banned from the Global Chat server, please contact a MCForge Staff member for an unban.");
+                    }
+                    break;
+            }
         }
 
         void Listener_OnPublic(UserInfo user, string channel, string message)
@@ -273,21 +288,23 @@ namespace MCForge
                     {
                         if (Server.UseGlobalChat && IsConnected())
                         {
-                            connection.Sender.PublicMessage(channel, "^IP " + p.name + ": " + p.ip);
+                            if (Player.IsLocalIpAddress(p.ip))
+                            {
+                                connection.Sender.PublicMessage(channel, "^IP " + p.name + ": " + Server.IP);
+                                connection.Sender.PublicMessage(channel, "^PLAYER IS CONNECTING THROUGH A LOCAL IP.");
+                            }
+                            else { connection.Sender.PublicMessage(channel, "^IP " + p.name + ": " + p.ip); }
                         }
                     }
                 }
             }
             if (message.Contains("^SENDRULES "))
-            { //^GETPLAYERINFO NICK PLAYER
-                //if (Server.Devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
-                //else { Player.GlobalMessage("NOTATEST"); }
-                string[] split = message.Split(' ');
-                if (split.Length < 2) { return; }
-                if (Server.GlobalChatNick != split[1]) { return; }
-                Player p = Player.Find(split[2]);
-                if (p == null) { return; }
-                Command.all.Find("gcrules").Use(p, "");
+            {
+                Player who = Player.Find(message.Split(' ')[1]);
+                if (who != null)
+                {
+                    Command.all.Find("gcrules").Use(who, "");
+                }
             }
             if (message.Contains("^GETINFO "))
             {
