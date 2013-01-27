@@ -859,7 +859,7 @@ namespace MCForge {
                 }
 
                 if ( version != Server.version ) { Kick("Wrong version!"); return; }
-                if ( name.Length > 16 || !ValidName(name, this) ) { Kick("Illegal name!"); return; }
+                if ( truename.Length > 16 || !ValidName(name, this) ) { Kick("Illegal name!"); return; }
 
                 if ( Server.verify ) {
                     if ( verify == "--" || verify !=
