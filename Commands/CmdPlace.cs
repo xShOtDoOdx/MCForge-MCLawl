@@ -16,10 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
 namespace MCForge.Commands
 {
-    class CmdPlace : Command
+    public sealed class CmdPlace : Command
     {
         public override string name { get { return "place"; } }
         public override string shortcut { get { return "pl"; } }

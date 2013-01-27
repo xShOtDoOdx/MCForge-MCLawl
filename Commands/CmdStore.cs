@@ -17,14 +17,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdStore : Command
+    public sealed class CmdStore : Command
     {
         public override string name { get { return "store"; } }
         public override string shortcut { get { return ""; } }

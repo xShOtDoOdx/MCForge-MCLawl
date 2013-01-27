@@ -15,12 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
-
-
-namespace MCForge.Commands {
-    public class CmdMods : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdMods : Command
+    {
         public override string name { get { return "mods"; } }
         public override string shortcut { get { return "mod"; } }
         public override string type { get { return "information"; } }
@@ -28,11 +26,13 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public CmdMods() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             if (message != "") { Help(p); return; }
             string modlist = "";
             string tempmods;
-            foreach (string mod in Server.Mods) {
+            foreach (string mod in Server.Mods)
+            {
                 tempmods = mod.Substring(0, 1);
                 tempmods = tempmods.ToUpper() + mod.Remove(0, 1);
                 modlist += tempmods + ", ";
@@ -41,7 +41,8 @@ namespace MCForge.Commands {
             Player.SendMessage(p, "&9MCForge Moderation Team: " + Server.DefaultColor + modlist + "&e.");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/mods - Displays the list of MCForge moderators.");
         }
     }

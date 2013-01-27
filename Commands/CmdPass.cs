@@ -17,20 +17,13 @@
 	permissions and limitations under the Licenses.
  
 */
-
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Net;
-using System.Security.Authentication;
-using System.Text;
-using System.Threading;
 using MCForge.Util;
-
-
-namespace MCForge.Commands {
-    public class CmdPass : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdPass : Command
+    {
         public override string name { get { return "pass"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -39,55 +32,66 @@ namespace MCForge.Commands {
 
         public CmdPass() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
 
-            if ( p.group.Permission < Server.verifyadminsrank ) {
+            if (p.group.Permission < Server.verifyadminsrank)
+            {
                 Player.SendMessage(p, "You do not have the &crequired rank to use this command!");
                 return;
             }
 
-            if ( !Server.verifyadmins ) {
+            if (!Server.verifyadmins)
+            {
                 Player.SendMessage(p, "Verification of admins is &cdisabled!");
                 return;
             }
 
-            if ( !p.adminpen ) {
+            if (!p.adminpen)
+            {
                 Player.SendMessage(p, "You have &calready verified.");
                 return;
             }
 
-            if ( p.passtries >= 3 ) {
+            if (p.passtries >= 3)
+            {
                 p.Kick("Did you really think you could keep on guessing?");
                 return;
             }
 
-            if ( String.IsNullOrEmpty(message.Trim()) ) {
+            if (String.IsNullOrEmpty(message.Trim()))
+            {
                 Help(p);
                 return;
             }
 
             int number = message.Split(' ').Length;
 
-            if ( number > 1 ) {
+            if (number > 1)
+            {
                 Player.SendMessage(p, "Your password must be &cone " + Server.DefaultColor + "word!");
                 return;
             }
 
-            if ( !Directory.Exists("extra/passwords") ) {
+            if (!Directory.Exists("extra/passwords"))
+            {
                 Player.SendMessage(p, "You have not &cset a password, " + Server.DefaultColor + "use &a/setpass [Password] &cto set one!");
                 return;
             }
 
             DirectoryInfo di = new DirectoryInfo("extra/passwords/");
             FileInfo[] fi = di.GetFiles("*.dat");
-            if ( !File.Exists("extra/passwords/" + p.name + ".dat") ) {
+            if (!File.Exists("extra/passwords/" + p.name + ".dat"))
+            {
                 Player.SendMessage(p, "You have not &cset a password, " + Server.DefaultColor + "use &a/setpass [Password] &cto set one!");
                 return;
             }
 
-            if ( PasswordHasher.MatchesPass(p.name, message) ) {
+            if (PasswordHasher.MatchesPass(p.name, message))
+            {
                 Player.SendMessage(p, "Thank you, " + p.color + p.name + Server.DefaultColor + "! You have now &averified " + Server.DefaultColor + "and have &aaccess to admin commands and features!");
-                if ( p.adminpen ) {
+                if (p.adminpen)
+                {
                     p.adminpen = false;
                 }
                 return;
@@ -98,7 +102,8 @@ namespace MCForge.Commands {
             Player.SendMessage(p, "Forgot your password? " + Server.DefaultColor + "Contact the owner so they can reset it!");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/pass [Password] - If you are an admin, use this command to verify");
             Player.SendMessage(p, "your login. You will need to use this to be given access to commands");
             Player.SendMessage(p, "Note: If you do not have a password, use /setpass [Password]");

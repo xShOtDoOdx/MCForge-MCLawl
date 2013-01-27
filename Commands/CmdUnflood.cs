@@ -15,11 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
+using System;
 namespace MCForge.Commands
 {
-    using System;
-    public class CmdUnflood : Command
+    public sealed class CmdUnflood : Command
     {
         public override string name { get { return "unflood"; } }
         public override string shortcut { get { return ""; } }

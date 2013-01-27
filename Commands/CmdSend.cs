@@ -16,16 +16,12 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Data;
-using MCForge.SQL;
 using System.Text.RegularExpressions;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
-namespace MCForge.Commands {
-    public class CmdSend : Command {
+using MCForge.SQL;
+namespace MCForge.Commands
+{
+    public sealed class CmdSend : Command
+    {
         public override string name { get { return "send"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -33,41 +29,46 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
         public CmdSend() { }
 
-        public override void Use(Player p, string message) {
-            if ( message == "" || message.IndexOf(' ') == -1 ) { Help(p); return; }
+        public override void Use(Player p, string message)
+        {
+            if (message == "" || message.IndexOf(' ') == -1) { Help(p); return; }
 
             Player who = Player.Find(message.Split(' ')[0]);
 
             string whoTo, fromname;
-            if ( who != null ) whoTo = who.name;
+            if (who != null) whoTo = who.name;
             else whoTo = message.Split(' ')[0];
-            if ( p != null ) fromname = p.name;
+            if (p != null) fromname = p.name;
             else fromname = "Console";
 
-            if (!Player.ValidName(whoTo)) {
+            if (!Player.ValidName(whoTo))
+            {
                 Player.SendMessage(p, "%cIllegal name!");
                 return;
             }
 
             message = message.Substring(message.IndexOf(' ') + 1);
 
-            if ( !Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])") ) {
-            	if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
-            		Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
-            		MatchCollection mc = rg.Matches(message.ToLower());
-            		if (mc.Count > 0) {
-            			Match ma = mc[0];
-            			GroupCollection gc = ma.Groups;
-            			message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
-            		}          		
-            	}
+            if (!Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])"))
+            {
+                if (Regex.IsMatch(message.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*"))
+                {
+                    Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
+                    MatchCollection mc = rg.Matches(message.ToLower());
+                    if (mc.Count > 0)
+                    {
+                        Match ma = mc[0];
+                        GroupCollection gc = ma.Groups;
+                        message.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
+                    }
+                }
             }
 
             //DB
-            if ( message.Length > 255 && Server.useMySQL ) { Player.SendMessage(p, "Message was too long. The text below has been trimmed."); Player.SendMessage(p, message.Substring(256)); message = message.Remove(256); }
+            if (message.Length > 255 && Server.useMySQL) { Player.SendMessage(p, "Message was too long. The text below has been trimmed."); Player.SendMessage(p, message.Substring(256)); message = message.Remove(256); }
             //safe against SQL injections because whoTo is checked for illegal characters
             Database.executeQuery("CREATE TABLE if not exists `Inbox" + whoTo + "` (PlayerFrom CHAR(20), TimeSent DATETIME, Contents VARCHAR(255));");
-            if ( !Server.useMySQL )
+            if (!Server.useMySQL)
                 Server.s.Log(message.Replace("'", "\\'"));
             Database.AddParams("@From", fromname);
             Database.AddParams("@Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -76,9 +77,10 @@ namespace MCForge.Commands {
             //DB
 
             Player.SendMessage(p, "Message sent to &5" + whoTo + ".");
-            if ( who != null ) who.SendMessage("Message recieved from &5" + fromname + Server.DefaultColor + ".");
+            if (who != null) who.SendMessage("Message recieved from &5" + fromname + Server.DefaultColor + ".");
         }
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/send [name] <message> - Sends <message> to [name].");
         }
     }

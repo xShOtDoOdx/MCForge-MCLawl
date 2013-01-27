@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands
 {
-	public class CmdDraw : Command
+	public sealed class CmdDraw : Command
 	{
 		public override string name { get { return "draw"; } }
 		public override string shortcut { get { return ""; } }
@@ -298,7 +296,7 @@ namespace MCForge.Commands
 
 					p.SendMessage("Place a block");
 					p.ClearBlockchange();
-					p.Blockchange += new Player.BlockchangeEventHandler(BlockchangeValcano);
+					p.Blockchange += new Player.BlockchangeEventHandler(BlockchangeVolcano);
 
 					return;
 				}
@@ -423,7 +421,7 @@ namespace MCForge.Commands
 		}
 		#endregion
 		#region Special Blockchanges
-		public void BlockchangeValcano(Player p, ushort x, ushort y, ushort z, byte type)
+		public void BlockchangeVolcano(Player p, ushort x, ushort y, ushort z, byte type)
 		{
 			int height = p.BcVar[0];
 			int radius = p.BcVar[1];
@@ -431,7 +429,7 @@ namespace MCForge.Commands
 			byte b = p.level.GetTile(x, y, z);
 			p.SendBlockchange(x, y, z, b);
 			p.ClearBlockchange();
-			Util.SCOGenerator.Valcano(p, x, y, z, height, radius);
+			Util.SCOGenerator.Volcano(p, x, y, z, height, radius);
 		}
 		#endregion
 	}

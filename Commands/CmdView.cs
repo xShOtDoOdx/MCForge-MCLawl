@@ -16,15 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdView : Command
+    public sealed class CmdView : Command
     {
         public override string name { get { return "view"; } }
         public override string shortcut { get { return ""; } }

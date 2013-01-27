@@ -1,5 +1,5 @@
 /*
- * Written By Jack1312
+    Written By Jack1312
 
 	Copyright 2011 MCForge
 		
@@ -17,13 +17,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdLogoutMessage : Command
+    public sealed class CmdLogoutMessage : Command
     {
         public override string name { get { return "logoutmessage"; } }
         public override string shortcut { get { return ""; } }
@@ -34,7 +31,7 @@ namespace MCForge.Commands
         public override void Help(Player p)
         {
             Player.SendMessage(p, "/logoutmessage [Player] [Message] - Customize your logout message.");
-            if(Server.mono == true)
+            if (Server.mono == true)
             {
                 Player.SendMessage(p, "Please note that if the player is offline, the name is case sensitive.");
             }
@@ -50,53 +47,53 @@ namespace MCForge.Commands
                 int pos = message.IndexOf(' ');
                 string t = message.Substring(0, pos);
                 string s = message.Substring(pos + 1);
-                 Player target = Player.Find(t);
-                 if (target != null)
-                 {
-                     if (!File.Exists("text/logout/" + target.name + ".txt"))
-                     {
-                         Player.SendMessage(p, "The player you specified does not exist!");
-                         return;
-                     }
-                     else
-                     {
-                         File.WriteAllText("text/logout/" + target.name + ".txt", s);
-                     }
-                     Player.SendMessage(p, "The logout message of " + target.name + " has been changed to:");
-                     Player.SendMessage(p, s);
-                     if (p != null)
-                     {
-                         Server.s.Log(p.name + " changed " + target.name + "'s logout message to:");
-                     }
-                     else
-                     {
-                         Server.s.Log("The Console changed " + target.name + "'s logout message to:");
-                     }
-                     Server.s.Log(s);
-                 }
-                 else
-                 {
-                     if (!File.Exists("text/logout/" + t + ".txt"))
-                     {
-                         Player.SendMessage(p, "The player you specified does not exist!");
-                         return;
-                     }
-                     else
-                     {
-                         File.WriteAllText("text/logout/" + t + ".txt", s);
-                     }
-                     Player.SendMessage(p, "The logout message of " + t + " has been changed to:");
-                     Player.SendMessage(p, s);
-                     if (p != null)
-                     {
-                         Server.s.Log(p.name + " changed " + t + "'s logout message to:");
-                     }
-                     else
-                     {
-                         Server.s.Log("The Console changed " + t + "'s logout message to:");
-                     }
-                     Server.s.Log(s);
-                 }
+                Player target = Player.Find(t);
+                if (target != null)
+                {
+                    if (!File.Exists("text/logout/" + target.name + ".txt"))
+                    {
+                        Player.SendMessage(p, "The player you specified does not exist!");
+                        return;
+                    }
+                    else
+                    {
+                        File.WriteAllText("text/logout/" + target.name + ".txt", s);
+                    }
+                    Player.SendMessage(p, "The logout message of " + target.name + " has been changed to:");
+                    Player.SendMessage(p, s);
+                    if (p != null)
+                    {
+                        Server.s.Log(p.name + " changed " + target.name + "'s logout message to:");
+                    }
+                    else
+                    {
+                        Server.s.Log("The Console changed " + target.name + "'s logout message to:");
+                    }
+                    Server.s.Log(s);
+                }
+                else
+                {
+                    if (!File.Exists("text/logout/" + t + ".txt"))
+                    {
+                        Player.SendMessage(p, "The player you specified does not exist!");
+                        return;
+                    }
+                    else
+                    {
+                        File.WriteAllText("text/logout/" + t + ".txt", s);
+                    }
+                    Player.SendMessage(p, "The logout message of " + t + " has been changed to:");
+                    Player.SendMessage(p, s);
+                    if (p != null)
+                    {
+                        Server.s.Log(p.name + " changed " + t + "'s logout message to:");
+                    }
+                    else
+                    {
+                        Server.s.Log("The Console changed " + t + "'s logout message to:");
+                    }
+                    Server.s.Log(s);
+                }
             }
             /*
             if (number == 1)

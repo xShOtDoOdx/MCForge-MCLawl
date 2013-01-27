@@ -19,17 +19,10 @@
 */
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Net.Mail;
-using System.Net.NetworkInformation;
-using System.Net;
-
-
-namespace MCForge.Commands {
-    public class CmdReport : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdReport : Command
+    {
         public override string name { get { return "report"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -37,56 +30,71 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
         public CmdReport() { }
 
-        public override void Use(Player p, string message) {
-            if (p == null) {
+        public override void Use(Player p, string message)
+        {
+            if (p == null)
+            {
                 Player.SendMessage(p, "This command can not be used in console!");
                 return;
             }
-            if (message == "") {
+            if (message == "")
+            {
                 Help(p);
                 return;
             }
             int length = message.Split(' ').Length;
-            try {
-                switch (message.Split()[0]) {
+            try
+            {
+                switch (message.Split()[0])
+                {
                     case "list":
-                        if (length == 1 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
+                        if (length == 1 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
+                        {
                             if (!Directory.Exists("extra/reported"))
                                 Directory.CreateDirectory("extra/reported");
                             bool foundone = false;
                             FileInfo[] fi = new DirectoryInfo("extra/reported").GetFiles("*.txt");
                             Player.SendMessage(p, "The following players have been reported:");
-                            foreach (FileInfo file in fi) {
+                            foreach (FileInfo file in fi)
+                            {
                                 foundone = true;
                                 var parsed = file.Name.Replace(".txt", "");
                                 Player.SendMessage(p, "- %c" + parsed);
                             }
-                            if (foundone) {
+                            if (foundone)
+                            {
                                 Player.SendMessage(p, "Use %f/report check [Player] " + Server.DefaultColor + "to view report info.");
                                 Player.SendMessage(p, "Use %f/report delete [Player] " + Server.DefaultColor + "to delete a report");
-                            } else
+                            }
+                            else
                                 Player.SendMessage(p, "%cNo reports were found!");
-                        } else
+                        }
+                        else
                             Player.SendMessage(p, "%cYou cannot use 'list' as a report name!");
                         break;
                     case "view":
                     case "read":
                     case "check":
-                        if (message.Split().Length == 2 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
-                            if (!File.Exists("extra/reported/" + message.Split()[1] + ".txt")) {
+                        if (message.Split().Length == 2 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
+                        {
+                            if (!File.Exists("extra/reported/" + message.Split()[1] + ".txt"))
+                            {
                                 Player.SendMessage(p, "%cThe player you specified has not been reported!");
                                 return;
                             }
                             var readtext = File.ReadAllText("extra/reported/" + message.Split()[1] + ".txt");
                             Player.SendMessage(p, readtext);
-                        } else
+                        }
+                        else
                             Player.SendMessage(p, "%cYou cannot use 'check' as a report name! ");
                         break;
                     case "delete":
                     case "remove":
-                        if (message.Split().Length == 2 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
+                        if (message.Split().Length == 2 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
+                        {
                             string msg = message.Split()[1];
-                            if (!File.Exists("extra/reported/" + msg + ".txt")) {
+                            if (!File.Exists("extra/reported/" + msg + ".txt"))
+                            {
                                 Player.SendMessage(p, "%cThe player you specified has not been reported!");
                                 return;
                             }
@@ -98,15 +106,18 @@ namespace MCForge.Commands {
                             Player.SendMessage(p, "%a" + msg + "'s report has been deleted.");
                             Player.GlobalMessageOps(p.prefix + p.color + p.name + Server.DefaultColor + " deleted " + msg + "'s report.");
                             Server.s.Log(msg + "'s report has been deleted by " + p.name);
-                        } else
+                        }
+                        else
                             Player.SendMessage(p, "%cYou cannot use 'delete' as a report name! ");
                         break;
                     case "clear":
-                        if (length == 1 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
+                        if (length == 1 && (int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
+                        {
                             if (!Directory.Exists("extra/reported"))
                                 Directory.CreateDirectory("extra/reported");
                             FileInfo[] fi = new DirectoryInfo("extra/reported").GetFiles("*.txt");
-                            foreach (FileInfo file in fi) {
+                            foreach (FileInfo file in fi)
+                            {
                                 if (File.Exists("extra/reportedbackups/" + file.Name))
                                     File.Delete("extra/reportedbackups/" + file.Name);
                                 file.MoveTo("extra/reportedbackups/" + file.Name);
@@ -114,22 +125,27 @@ namespace MCForge.Commands {
                             Player.SendMessage(p, "%aYou have cleared all reports!");
                             Player.GlobalMessageOps(p.prefix + p.name + "%c cleared ALL reports!");
                             Server.s.Log(p.name + " cleared ALL reports!");
-                        } else
+                        }
+                        else
                             Player.SendMessage(p, "%cYou cannot use 'clear' as a report name! ");
                         break;
                     default:
                         string msg1 = "";
                         string msg2 = "";
-                        try {
+                        try
+                        {
                             msg1 = message.Substring(0, message.IndexOf(' ')).ToLower();
                             msg2 = message.Substring(message.IndexOf(' ') + 1).ToLower();
-                        } catch { return; }
-                        if (File.Exists("extra/reported/" + msg1 + ".txt")) {
+                        }
+                        catch { return; }
+                        if (File.Exists("extra/reported/" + msg1 + ".txt"))
+                        {
                             File.WriteAllText("extra/reported/" + msg1 + "(2).txt", msg2 + " - Reported by " + p.name + "." + " DateTime: " + DateTime.Now);
                             Player.SendMessage(p, "%aYour report has been sent, it should be viewed when an operator is online!");
                             break;
                         }
-                        if (File.Exists("extra/reported/" + msg1 + "(2).txt")) {
+                        if (File.Exists("extra/reported/" + msg1 + "(2).txt"))
+                        {
                             Player.SendMessage(p, "%cThe player you've reported has already been reported 2 times! Please wait patiently untill an OP+ has reviewed the reports!");
                             break;
                         }
@@ -140,14 +156,17 @@ namespace MCForge.Commands {
                         Player.GlobalMessageOps(p.prefix + p.name + Server.DefaultColor + " has made a report, view it with %f/report list ");
                         break;
                 }
-            } catch (Exception e) { Server.ErrorLog(e); }
+            }
+            catch (Exception e) { Server.ErrorLog(e); }
         }
 
 
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "%f/report [Player] [Reason] " + Server.DefaultColor + "- Reports the specified player for the reason");
-            if ((int)p.group.Permission >= CommandOtherPerms.GetPerm(this)) {
+            if ((int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
+            {
                 Player.SendMessage(p, "%f/report list " + Server.DefaultColor + "- Checks the reported list!");
                 Player.SendMessage(p, "%f/report check [Player] " + Server.DefaultColor + "- View the report on the specified player");
                 Player.SendMessage(p, "%f/report delete [Player] " + Server.DefaultColor + "- Delete the report on the specified player");

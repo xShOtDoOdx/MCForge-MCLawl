@@ -14,11 +14,9 @@ permissions and limitations under the Licenses.
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdHelp : Command
+    public sealed class CmdHelp : Command
     {
         public override string name { get { return "help"; } }
         public override string shortcut { get { return ""; } }

@@ -13,6 +13,7 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -22,6 +23,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using MCForge.Gui.Popups;
+using MCForge.Util;
 using Microsoft.Win32;
 
 namespace MCForge.Gui {
@@ -177,6 +179,14 @@ namespace MCForge.Gui {
             catch { }
             try { reviewlist_update(); }
             catch ( Exception ex ) { Server.ErrorLog(ex); }
+
+            //Sigh. I wish there were SOME event to help me.
+            foreach(var command in Command.all.commands) {
+                if ( Command.core.commands.Contains( command ) )
+                    continue;
+
+                lstCommands.Items.Add ( command.name );
+            }
         }
 
         public static bool EditTextOpen = false;
@@ -1213,12 +1223,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
 
         private void CrtCustCmd_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text != null ) {
-                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
+            if ( txtCommandName.Text != null ) {
+                if ( File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".cs") ) {
                     MessageBox.Show("Sorry, That command already exists!!");
                 }
                 else {
-                    Command.all.Find("cmdcreate").Use(null, CustCmdtxtBox.Text);
+                    Command.all.Find("cmdcreate").Use(null, txtCommandName.Text);
                     MessageBox.Show("Command Created!!");
                 }
             }
@@ -1228,12 +1238,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void CompileCustCmd_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text != null ) {
-                if ( File.Exists("extra/commands/dll/Cmd" + CustCmdtxtBox.Text + ".dll") ) {
+            if ( txtCommandName.Text != null ) {
+                if ( File.Exists("extra/commands/dll/Cmd" + txtCommandName.Text + ".dll") ) {
                     MessageBox.Show("Sorry, That command already exists!!");
                 }
                 else {
-                    Command.all.Find("compile").Use(null, CustCmdtxtBox.Text);
+                    Command.all.Find("compile").Use(null, txtCommandName.Text);
                     MessageBox.Show("Command Compiled!!");
                 }
             }
@@ -1242,45 +1252,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             }
         }
 
-        private void LoadCustCmd_Click(object sender, EventArgs e) {
-            Command.all.Find("cmdload").Use(null, CustCmdtxtBox.Text);
-        }
 
-        private void LoadIntoTxtBox_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text != null ) {
-                if ( !File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
-                    MessageBox.Show("Sorry, That command doesn't exist yet - click Create Custom Command Above to create it.");
-                }
-                else {
-                    CustCmdTxtBox2.Text = null;
-                    CustCmdTxtBox2.Text = File.ReadAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs");
-                }
-            }
-            else {
-                MessageBox.Show("You didnt specify a name for the command to be loaded!!");
-            }
-        }
-
-        private void SaveCustCmd_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text != null ) {
-                File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", null);
-                File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", CustCmdTxtBox2.Text);
-                CustCmdTxtBox2.Text = null;
-                MessageBox.Show("Saved Succesfully!!");
-            }
-            else {
-                MessageBox.Show("You didnt specify a name for the command to be saved as!!");
-            }
-        }
-
-        private void ClrCustCmdTxtBox_Click(object sender, EventArgs e) {
-            CustCmdTxtBox2.Text = null;
-            MessageBox.Show("Text Box Cleared!!");
-        }
-
-        private void CancelCustCmdTxtBox_Click(object sender, EventArgs e) {
-            CustCmdTxtBox2.Text = null;
-        }
 
         private void numPlayers_ValueChanged(object sender, EventArgs e) {
             // Ensure that number of guests is never more than number of players
@@ -1291,7 +1263,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void editTxtsBt_Click_1(object sender, EventArgs e) {
-            if ( EditTextOpen == true ) {
+            if ( EditTextOpen ) {
                 return;
             }
             PropertyForm = new EditText();
@@ -1299,237 +1271,130 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnCreate_Click(object sender, EventArgs e) {
+            if(String.IsNullOrEmpty(txtCommandName.Text.Trim())) {
+                MessageBox.Show ( "Command must have a name" );
+                return;
+            }
+
             if ( radioButton1.Checked ) {
-                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
+                if ( File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".vb") || File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".cs") ) {
                     MessageBox.Show("Command already exists", "", MessageBoxButtons.OK);
                 }
                 else {
-                    Command.all.Find("cmdcreate").Use(null, CustCmdtxtBox.Text.ToLower() + " vb");
-                    MessageBox.Show("New Command Created: " + CustCmdtxtBox.Text.ToLower() + " Created.");
+                    Command.all.Find("cmdcreate").Use(null, txtCommandName.Text.ToLower() + " vb");
+                    MessageBox.Show("New Command Created: " + txtCommandName.Text.ToLower() + " Created.");
                 }
             }
             else {
 
 
 
-                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") ) {
+                if ( File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".cs") || File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".vb") ) {
                     MessageBox.Show("Command already exists", "", MessageBoxButtons.OK);
                 }
                 else {
-                    Command.all.Find("cmdcreate").Use(null, CustCmdtxtBox.Text.ToLower());
-                    MessageBox.Show("New Command Created: " + CustCmdtxtBox.Text.ToLower() + " Created.");
+                    Command.all.Find("cmdcreate").Use(null, txtCommandName.Text.ToLower());
+                    MessageBox.Show("New Command Created: " + txtCommandName.Text.ToLower() + " Created.");
                 }
             }
         }
 
-        private void btnCompile_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text == "" || CustCmdtxtBox.Text.IndexOf(' ') != -1 ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
-            bool success = false;
-            if ( radioButton1.Checked ) {
-                try {
-                    success = ScriptingVB.Compile(CustCmdtxtBox.Text);
-                }
-                catch ( Exception y ) {
-                    Server.ErrorLog(y);
-                    MessageBox.Show("An exception was thrown during compilation.", "");
-                    return;
-                }
-                if ( success ) {
-                    MessageBox.Show("Compiled successfully.", "");
-                }
-                else {
-                    MessageBox.Show("Compilation error.  Please check compile.log for more information.", "Error");
-                }
-            }
-            else {
-                try {
-                    success = Scripting.Compile(CustCmdtxtBox.Text);
-                }
-                catch ( Exception y ) {
-                    Server.ErrorLog(y);
-                    MessageBox.Show("An exception was thrown during compilation.", "");
-                    return;
-                }
-                if ( success ) {
-                    MessageBox.Show("Compiled successfully.", "");
-                }
-                else {
-                    MessageBox.Show("Compilation error.  Please check compile.log for more information.", "Error");
-                }
-            }
+       
 
-        }
+        private void btnLoad_Click(object sender, EventArgs e) {
+            Command[] commands = null;
 
-        private void btnIntextbox_Click(object sender, EventArgs e) {
-            try {
-                string filepath;
+            using(FileDialog fileDialog = new OpenFileDialog()) {
 
-                if ( CustCmdtxtBox.Text == null ) {
-                    filepath = null;
-                    MessageBox.Show("No Command entered");
-                }
-                else {
-                    if ( !radioButton1.Checked ) {
+                fileDialog.Filter = "Accepted File Types (*.cs, *.vb, *.dll)|*.cs;*.vb;*.dll|C# Source (*.cs)|*.cs|Visual Basic Source (*.vb)|*.vb|.NET Assemblies (*.dll)|*.dll";
 
-                        filepath = "extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs";
-                        StreamReader reader = new StreamReader(filepath);
-                        if ( File.Exists(filepath) ) {
-                            try {
-                                CustCmdTxtBox2.Text = "";
+                if ( fileDialog.ShowDialog() == DialogResult.OK ) {
 
-                                string line;
-                                while ( ( line = reader.ReadLine() ) != null ) {
-                                    CustCmdTxtBox2.Text = CustCmdTxtBox2.Text + line + Environment.NewLine;
-                                }
+                    string fileName = fileDialog.FileName;
 
-                            }
-
-                            catch ( Exception y ) {
-                                MessageBox.Show(y.Message);
-                            }
-                            finally {
-                                if ( reader != null )
-                                    reader.Close();
-                            }
-                        }
-                        else {
-                            MessageBox.Show("command doesnt exist");
-                        }
+                    if ( fileName.EndsWith ( ".dll" ) ) {
+                        commands = MCForgeScripter.FromAssemblyFile ( fileName );
                     }
                     else {
 
-                        filepath = "extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb";
-                        StreamReader reader = new StreamReader(filepath);
-                        if ( File.Exists(filepath) ) {
-                            try {
-                                CustCmdTxtBox2.Text = "";
+                        ScriptLanguage language = fileName.EndsWith ( ".cs" ) ? ScriptLanguage.CSharp : ScriptLanguage.VB;
 
-                                string line;
-                                while ( ( line = reader.ReadLine() ) != null ) {
-                                    CustCmdTxtBox2.Text = CustCmdTxtBox2.Text + line + Environment.NewLine;
+                        if ( File.Exists ( fileName ) ) {
+                            var result = MCForgeScripter.Compile ( File.ReadAllText ( fileName ), language );
+
+                            if ( result == null ) {
+                                MessageBox.Show ( "Error compiling files" );
+                                return;
+                            }
+
+                            if ( result.CompilerErrors != null ) {
+                                foreach ( CompilerError err in result.CompilerErrors ) {
+                                    Server.s.ErrorCase( "Error #" + err.ErrorNumber );
+                                    Server.s.ErrorCase( "Message: " + err.ErrorText );
+                                    Server.s.ErrorCase( "Line: " + err.Line );
+
+                                    Server.s.ErrorCase( "=================================" );
                                 }
-
+                                MessageBox.Show ( "Error compiling from source. Check logs for error" );
+                                return;
                             }
 
-                            catch ( Exception y ) {
-                                MessageBox.Show(y.Message);
-                            }
-                            finally {
-                                if ( reader != null )
-                                    reader.Close();
-                            }
-                        }
-                        else {
-                            MessageBox.Show("command doesnt exist");
+                            commands = result.Commands;
                         }
                     }
-
                 }
             }
 
-            catch ( Exception y ) {
-                MessageBox.Show(y.Message);
-            }
-
-        }
-
-        private void btnLoad_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text == "" ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
-            if ( Command.all.Contains(CustCmdtxtBox.Text) ) {
-                MessageBox.Show("Command is already loaded", "");
+            if ( commands == null ) {
+                MessageBox.Show( "Error compiling files" );
                 return;
             }
-            if ( radioButton1.Checked ) {
-                string message;
 
-                message = "Cmd" + CustCmdtxtBox.Text;
-                string error = ScriptingVB.Load(message);
-                if ( error != null ) {
-                    MessageBox.Show(error, "error");
-                    return;
-                }
-                GrpCommands.fillRanks();
-                MessageBox.Show("Command was successfully loaded.", "");
-            }
-            else {
-                string message;
+            for ( int i = 0; i < commands.Length; i++ ) {
+                Command command = commands[ i ];
 
-                message = "Cmd" + CustCmdtxtBox.Text; ;
-                string error = Scripting.Load(message);
-                if ( error != null ) {
-                    MessageBox.Show(error, "error");
-                    return;
+                if(lstCommands.Items.Contains(command.name)) {
+                    MessageBox.Show ( "Command " + command.name + " already exists. As a result, it was not loaded" );
+                    continue;
                 }
-                GrpCommands.fillRanks();
-                MessageBox.Show("Command was successfully loaded.", "");
+
+                lstCommands.Items.Add ( command.name );
+                Command.all.Add(command);
+                Server.s.Log("Added " + command.name + " to commands");
             }
+            
+            GrpCommands.fillRanks();
         }
 
         private void btnUnload_Click(object sender, EventArgs e) {
-            if ( CustCmdtxtBox.Text == "" ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
-            if ( Command.core.Contains(CustCmdtxtBox.Text) ) {
-                MessageBox.Show(CustCmdtxtBox.Text + " is a core command, you cannot unload it!", "Error");
-                return;
-            }
-            Command foundCmd = Command.all.Find(CustCmdtxtBox.Text);
+            Command foundCmd = Command.all.Find(lstCommands.SelectedItem.ToString());
             if ( foundCmd == null ) {
-                MessageBox.Show(CustCmdtxtBox.Text + " is not a valid or loaded command.", "");
+                MessageBox.Show(txtCommandName.Text + " is not a valid or loaded command.", "");
                 return;
             }
+
+            lstCommands.Items.Remove( foundCmd.name );
             Command.all.Remove(foundCmd);
             GrpCommands.fillRanks();
             MessageBox.Show("Command was successfully unloaded.", "");
         }
 
-        private void btnSavecmd_Click(object sender, EventArgs e) {
-            if ( CustCmdTxtBox2.Text != null ) {
-                if ( radioButton1.Checked ) {
-                    try {
-
-                        File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb", null);
-                        File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb", CustCmdTxtBox2.Text);
-
-                        CustCmdTxtBox2.Text = null;
-                        MessageBox.Show("Saved Successfully, as a VB file");
-                    }
-                    catch ( Exception y ) {
-                        MessageBox.Show(y.Message);
-
-                    }
-                }
-                else {
-                    try {
-
-                        File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", null);
-                        File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", CustCmdTxtBox2.Text);
-                        CustCmdTxtBox2.Text = null;
-                        MessageBox.Show("Saved Successfully, as a C# File");
-                    }
-                    catch ( Exception y ) {
-                        MessageBox.Show(y.Message);
-                    }
-                }
-            }
-            else {
-                MessageBox.Show("You didnt specify a name for the command to be saved as!!");
-            }
-        }
 
         private void btnDiscardcmd_Click(object sender, EventArgs e) {
             switch ( MessageBox.Show("Are you sure you want to discard this whole file?", "Discard?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ) {
                 case DialogResult.Yes:
                     if ( radioButton1.Checked ) {
 
-                        if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") ) {
-                            File.Delete("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb");
+                        if ( File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".vb") ) {
+                            File.Delete("extra/commands/source/Cmd" + txtCommandName.Text + ".vb");
                         }
-                        else { MessageBox.Show("File: " + CustCmdtxtBox.Text + ".vb Doesnt Exist."); }
+                        else { MessageBox.Show("File: " + txtCommandName.Text + ".vb Doesnt Exist."); }
                     }
                     else {
-                        if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
-                            File.Delete("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs");
+                        if ( File.Exists("extra/commands/source/Cmd" + txtCommandName.Text + ".cs") ) {
+                            File.Delete("extra/commands/source/Cmd" + txtCommandName.Text + ".cs");
                         }
-                        else { MessageBox.Show("File: " + CustCmdtxtBox.Text + ".cs Doesnt Exist."); }
+                        else { MessageBox.Show("File: " + txtCommandName.Text + ".cs Doesnt Exist."); }
                     }
                     break;
 
@@ -1608,12 +1473,20 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             try {
                 if ( !Directory.Exists("extra/images") )
                     Directory.CreateDirectory("extra/images");
-                if ( !File.Exists("extra/images/mcpony.png") )
-                    using ( WebClient WEB = new WebClient() )
-                        WEB.DownloadFile("http://mcforge.net/uploads/images/mcpony.png", "extra/images/mcpony.png");
-
-                Image img = Image.FromFile("extra/images/mcpony.png");
-                pictureBox1.Image = img;
+                if ( !File.Exists( "extra/images/mcpony.png" ) ) {
+                    using ( WebClient WEB = new WebClient () ) {
+                        WEB.DownloadFileAsync ( new Uri ( "http://mcforge.net/uploads/images/mcpony.png" ), "extra/images/mcpony.png" );
+                        WEB.DownloadFileCompleted += ( ea, args ) => {
+                                                         if ( File.Exists ( "extra/images/mcpony.png" ) ) {
+                                                             Image img = Image.FromFile ( "extra/images/mcpony.png" );
+                                                             pictureBox1.Image = img;
+                                                         }
+                                                     };
+                    }
+                } else {
+                    Image img = Image.FromFile( "extra/images/mcpony.png" );
+                    pictureBox1.Image = img;
+                }
             }
             catch { }
         }
@@ -2456,6 +2329,11 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         private void buttonEco_Click(object sender, EventArgs e) {
             new GUI.Eco.EconomyWindow().ShowDialog();
+        }
+
+        
+        private void lstCommands_SelectedIndexChanged ( object sender, EventArgs e ) {
+            btnUnload.Enabled = lstCommands.SelectedIndex != -1;
         }
     }
 }

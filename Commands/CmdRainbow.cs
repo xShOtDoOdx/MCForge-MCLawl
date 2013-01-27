@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdRainbow : Command
+    public sealed class CmdRainbow : Command
     {
         public override string name { get { return "rainbow"; } }
         public override string shortcut { get { return ""; } }

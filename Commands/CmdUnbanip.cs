@@ -17,19 +17,11 @@
 */
 using System;
 using System.Data;
-using System.Text.RegularExpressions;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdUnbanip : Command
+    public sealed class CmdUnbanip : Command
     {
-        //Regex never used, and they always take a while to compile.
-        //Regex regex = new Regex(@"^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\." +
-        //                        "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$");
         public override string name { get { return "unbanip"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }

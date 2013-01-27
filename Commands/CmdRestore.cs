@@ -15,16 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    class CmdRestore : Command
+    public sealed class CmdRestore : Command
     {
         public override string name { get { return "restore"; } }
         public override string shortcut { get { return ""; } }

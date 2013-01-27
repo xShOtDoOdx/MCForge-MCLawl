@@ -17,16 +17,10 @@
 */
 using System;
 using System.IO;
-using System.Data;
-using System.Collections.Generic;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdRenameLvl : Command
+    public sealed class CmdRenameLvl : Command
     {
         public override string name { get { return "renamelvl"; } }
         public override string shortcut { get { return ""; } }

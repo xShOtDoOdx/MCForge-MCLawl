@@ -23,8 +23,7 @@ using System.Linq;
 
 namespace MCForge
 {
-
-    public class LevelCollection : List<Level>, ITypedList
+    public sealed class LevelCollection : List<Level>, ITypedList
     {
         protected ILevelViewBuilder _viewBuilder;
 

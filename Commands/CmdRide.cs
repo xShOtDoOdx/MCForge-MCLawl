@@ -15,14 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdRide : Command
+    public sealed class CmdRide : Command
     {
         public override string name { get { return "ride"; } }
         public override string shortcut { get { return ""; } }

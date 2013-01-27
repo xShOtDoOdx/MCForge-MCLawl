@@ -16,12 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Data;
-using MCForge.SQL;
 using System.Globalization;
-
-namespace MCForge.Commands {
-    public class CmdTake : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdTake : Command
+    {
         public override string name { get { return "take"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -29,7 +28,8 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public CmdTake() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             if (message.IndexOf(' ') == -1) { Help(p); return; }
             if (message.Split(' ').Length != 2) { Help(p); return; }
 
@@ -39,8 +39,11 @@ namespace MCForge.Commands {
 
             int amountTaken = 0;
             bool all = false;
-            try { amountTaken = int.Parse(message.Split(' ')[1]); } catch {
-                if (message.Split()[1].ToLower() != "all") {
+            try { amountTaken = int.Parse(message.Split(' ')[1]); }
+            catch
+            {
+                if (message.Split()[1].ToLower() != "all")
+                {
                     Player.SendMessage(p, "%cInvalid amount");
                     return;
                 }
@@ -51,14 +54,17 @@ namespace MCForge.Commands {
 
             Player who = Player.Find(message.Split()[0]);
             Economy.EcoStats ecos;
-            if (who == null) { //player is offline
+            if (who == null)
+            { //player is offline
                 Player.OfflinePlayer off = Player.FindOffline(message.Split()[0]);
                 if (off.name == "") { Player.SendMessage(p, "%cThe player %f" + message.Split()[0] + Server.DefaultColor + "(offline)%c does not exist or has never logged on to this server"); return; }
                 ecos = Economy.RetrieveEcoStats(message.Split()[0]);
-                if (all || ecos.money - amountTaken < 0) {
+                if (all || ecos.money - amountTaken < 0)
+                {
                     amountTaken = ecos.money;
                     ecos.money = 0;
-                } else
+                }
+                else
                     ecos.money -= amountTaken;
                 ecos.fine = "%f" + amountTaken + " %3" + Server.moneys + " by " + user1 + "%3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 Economy.UpdateEcoStats(ecos);
@@ -66,16 +72,20 @@ namespace MCForge.Commands {
                 return;
             }
             ecos = Economy.RetrieveEcoStats(who.name);
-            if (who == p) {
+            if (who == p)
+            {
                 Player.SendMessage(p, "%cYou can't take %3" + Server.moneys + "%c from yourself");
                 return;
             }
 
-            if (all || ecos.money - amountTaken < 0) {
+            if (all || ecos.money - amountTaken < 0)
+            {
                 amountTaken = who.money;
                 who.money = 0;
                 ecos.money = 0;
-            } else {
+            }
+            else
+            {
                 who.money -= amountTaken;
                 ecos.money = who.money;
             }
@@ -83,7 +93,8 @@ namespace MCForge.Commands {
             Economy.UpdateEcoStats(ecos);
             Player.GlobalMessage(user2 + Server.DefaultColor + " took %f" + amountTaken + " %3" + Server.moneys + Server.DefaultColor + " from " + who.prefix + who.name);
         }
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "&f/take [player] <amount> " + Server.DefaultColor + "- Takes <amount> of " + Server.moneys + " from [player]");
             Player.SendMessage(p, "&f/take [player] all " + Server.DefaultColor + "- Takes all the " + Server.moneys + " from [player]");
         }

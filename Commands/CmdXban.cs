@@ -15,53 +15,59 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
-	public class CmdXban : Command {
+    public sealed class CmdXban : Command
+    {
+        public override string name { get { return "xban"; } }
+        public override string shortcut { get { return ""; } }
+        public override string type { get { return "mod"; } }
+        public override bool museumUsable { get { return false; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+        public CmdXban() { }
+        public override void Use(Player p, string message)
+        {
 
-		public override string name { get { return "xban"; } }
-		public override string shortcut { get { return ""; } }
-		public override string type { get { return "mod"; } }
-		public override bool museumUsable { get { return false; } }
-		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-		public CmdXban() { }
-		public override void Use(Player p, string message) {
+            if (message == "") { Help(p); return; }
 
-			if (message == "") { Help(p); return; }
+            Player who = Player.Find(message.Split(' ')[0]);
+            string msg = message.Split(' ')[0];
+            if (p != null)
+            {
+                p.ignorePermission = true;
+            }
+            try
+            {
+                if (who != null)
+                {
+                    Command.all.Find("xundo").Use(p, msg);
+                    Command.all.Find("ban").Use(p, msg);
+                    Command.all.Find("banip").Use(p, "@" + msg);
+                    Command.all.Find("kick").Use(p, message);
+                    Command.all.Find("xundo").Use(p, msg);
 
-			Player who = Player.Find(message.Split(' ')[0]);
-			string msg = message.Split(' ')[0];
-			if (p != null) {
-				p.ignorePermission = true;
-			}
-			try {
-			if (who != null) {
-				Command.all.Find("xundo").Use(p, msg);
-				Command.all.Find("ban").Use(p, msg);
-				Command.all.Find("banip").Use(p, "@" + msg);
-				Command.all.Find("kick").Use(p, message);
-				Command.all.Find("xundo").Use(p, msg);
+                }
+                else
+                {
+                    Command.all.Find("ban").Use(p, msg);
+                    Command.all.Find("banip").Use(p, "@" + msg);
+                    Command.all.Find("xundo").Use(p, msg);
+                }
 
-			} else {
-				Command.all.Find("ban").Use(p, msg);
-				Command.all.Find("banip").Use(p, "@" + msg);
-				Command.all.Find("xundo").Use(p, msg);
-			}
-
-			} finally {
-				if (p != null) p.ignorePermission = false;
-			}
-
+            }
+            finally
+            {
+                if (p != null) p.ignorePermission = false;
+            }
 
 
-		}
+
+        }
 
 
-		public override void Help(Player p) {
-			Player.SendMessage(p, "/xban [name] [message]- Bans, banips, undoes, and kicks [name] with [message], if specified.");
-		}
-	}
+        public override void Help(Player p)
+        {
+            Player.SendMessage(p, "/xban [name] [message]- Bans, banips, undoes, and kicks [name] with [message], if specified.");
+        }
+    }
 }

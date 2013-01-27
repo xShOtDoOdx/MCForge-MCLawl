@@ -16,15 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Data;
-using System.Collections.Generic;
-using System.Threading;
 using System.Linq;
-
-
+using System.Threading;
 namespace MCForge.Commands
 {
-	public class CmdTntWars : Command
+	public sealed class CmdTntWars : Command
 	{
 		public override string name { get { return "tntwars"; } }
 		public override string shortcut { get { return "tw"; } }

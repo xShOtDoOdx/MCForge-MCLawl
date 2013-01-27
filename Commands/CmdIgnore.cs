@@ -1,6 +1,5 @@
 /*
- 
-        Written by Jack1312
+    Written by Jack1312
   
 	Copyright 2011 MCForge
 		
@@ -18,15 +17,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdIgnore : Command
+    public sealed class CmdIgnore : Command
     {
         public override string name { get { return "ignore"; } }
         public override string shortcut { get { return ""; } }

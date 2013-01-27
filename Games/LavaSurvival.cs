@@ -16,15 +16,15 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Timers;
-using System.Text;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Timers;
 
 namespace MCForge
 {
-    public class LavaSurvival
+    public sealed class LavaSurvival
     {
         // Private variables
         private string propsPath = "properties/lavasurvival/";

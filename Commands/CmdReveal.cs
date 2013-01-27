@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-	public class CmdReveal : Command
+	public sealed class CmdReveal : Command
 	{
 		public override string name { get { return "reveal"; } }
 		public override string shortcut { get { return ""; } }

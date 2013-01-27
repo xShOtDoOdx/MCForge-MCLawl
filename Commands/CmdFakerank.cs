@@ -15,12 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
-   public class CmdFakeRank : Command
+   public sealed class CmdFakeRank : Command
    {
       public override string name { get { return "fakerank"; } }
       public override string shortcut { get { return "frk"; } } 

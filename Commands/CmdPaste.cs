@@ -16,13 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdPaste : Command
+    public sealed class CmdPaste : Command
     {
         public override string name { get { return "paste"; } }
         public override string shortcut { get { return "v"; } }

@@ -1,7 +1,5 @@
 /*
- 
-        Written by Jack1312
-  
+    Written by Jack1312
 	Copyright 2011 MCForge
 		
 	Dual-licensed under the	Educational Community License, Version 2.0 and
@@ -20,13 +18,9 @@
 */
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdAllowGuns : Command
+    public sealed class CmdAllowGuns : Command
     {
         public override string name { get { return "allowguns"; } }
         public override string shortcut { get { return "ag"; } }

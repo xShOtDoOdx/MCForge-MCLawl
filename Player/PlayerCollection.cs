@@ -17,13 +17,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
-
 namespace MCForge
 {
-
-    public class PlayerCollection : List<Player>, ITypedList
+    public sealed class PlayerCollection : List<Player>, ITypedList
     {
         protected IPlayerViewBuilder _viewBuilder;
 

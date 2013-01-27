@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdBotRemove : Command
+    public sealed class CmdBotRemove : Command
     {
         public override string name { get { return "botremove"; } }
         public override string shortcut { get { return ""; } }

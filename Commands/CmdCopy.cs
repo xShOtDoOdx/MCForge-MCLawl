@@ -18,12 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-
-
 namespace MCForge.Commands
 {
-    public class CmdCopy : Command
+    public sealed class CmdCopy : Command
     {
         public override string name { get { return "copy"; } }
         public override string shortcut { get { return "c"; } }

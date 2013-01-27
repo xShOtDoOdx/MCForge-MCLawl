@@ -15,14 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdHost : Command
+    public sealed class CmdHost : Command
     {
         public override string name { get { return "host"; } }
         public override string shortcut { get { return "zall"; } }

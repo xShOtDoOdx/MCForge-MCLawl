@@ -17,12 +17,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 using System;
 using System.CodeDom.Compiler;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace MCForge
@@ -136,7 +134,7 @@ namespace MCForge
                     return true;
                 case 1:
                     CompilerError error = results.Errors[0];
-                    bool exists = (File.Exists("logs/errors/compiler.log")) ? true : false;
+                    bool exists = (File.Exists("logs/errors/compiler.log"));
                     StringBuilder sb = new StringBuilder();
                     if (exists)
                     {
@@ -152,7 +150,7 @@ namespace MCForge
                     sw.Dispose();
                     return false;
                 default:
-                    exists = (File.Exists("logs/errors/compiler.log")) ? true : false;
+                    exists = (File.Exists("logs/errors/compiler.log"));
                     sb = new StringBuilder();
                     bool start = true;
                     if(exists)

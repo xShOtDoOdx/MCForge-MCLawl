@@ -16,16 +16,13 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
 
 namespace MCForge.Commands
 {
-    public class CmdAbout : Command
+    public sealed class CmdAbout : Command
     {
         public override string name { get { return "about"; } }
         public override string shortcut { get { return "b"; } }

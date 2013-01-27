@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdWhois : Command
+    public sealed class CmdWhois : Command
     {
         public override string name { get { return "whois"; } }
         public override string shortcut { get { return ""; } }

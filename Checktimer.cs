@@ -12,70 +12,64 @@ BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied. See the Licenses for the specific language governing
 permiusing MCForge;ssions and limitations under the Licenses.
 */
-
-
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Timers;
-using MCForge;
-using System.Threading;
-
-
-public static class Checktimer
+namespace MCForge
 {
-    static System.Timers.Timer t;
-    public static void StartTimer()
+    public static class Checktimer
     {
-    t = new System.Timers.Timer();
-    t.AutoReset = false;
-    t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
-    t.Interval = GetInterval();
-    t.Start();
-    }
-    static double GetInterval()
-    {
-        DateTime now = DateTime.Now;
-        return ((60 - now.Second) * 1000 - now.Millisecond);
-    }
-    /// <summary>
-    /// Put methods to make them execute every 60 seconds
-    /// </summary>
-    /// <param name="sender">For the timer</param>
-    /// <param name="e">For the timer</param>
-    static void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-    {
-        t.Interval = GetInterval();
-        t.Start();
-
-        // methods to be executed every 60 seconds!:
-        TRExpiryCheck();
-    }
-	public static void TRExpiryCheck()
-	{
-        foreach (Player p in Player.players)
+        static System.Timers.Timer t;
+        public static void StartTimer()
         {
-            foreach (string line3 in File.ReadAllLines("text/tempranks.txt"))
+            t = new System.Timers.Timer();
+            t.AutoReset = false;
+            t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
+            t.Interval = GetInterval();
+            t.Start();
+        }
+        static double GetInterval()
+        {
+            DateTime now = DateTime.Now;
+            return ((60 - now.Second) * 1000 - now.Millisecond);
+        }
+        /// <summary>
+        /// Put methods to make them execute every 60 seconds
+        /// </summary>
+        /// <param name="sender">For the timer</param>
+        /// <param name="e">For the timer</param>
+        static void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            t.Interval = GetInterval();
+            t.Start();
+
+            // methods to be executed every 60 seconds!:
+            TRExpiryCheck();
+        }
+        public static void TRExpiryCheck()
+        {
+            foreach (Player p in Player.players)
             {
-                if (line3.Contains(p.name))
+                foreach (string line3 in File.ReadAllLines("text/tempranks.txt"))
                 {
-                    string player = line3.Split(' ')[0];
-                    int period = Convert.ToInt32(line3.Split(' ')[3]);
-                    int minutes = Convert.ToInt32(line3.Split(' ')[4]);
-                    int hours = Convert.ToInt32(line3.Split(' ')[5]);
-                    int days = Convert.ToInt32(line3.Split(' ')[6]);
-                    int months = Convert.ToInt32(line3.Split(' ')[7]);
-                    int years = Convert.ToInt32(line3.Split(' ')[8]);
-                    Player who = Player.Find(player);
-                    DateTime ExpireDate = new DateTime(years, months, days, hours, minutes, 0);
-                    DateTime tocheck = ExpireDate.AddHours(Convert.ToDouble(period));
-                    DateTime tochecknow = DateTime.Now;
-                    double datecompare = DateTime.Compare(tocheck, tochecknow);
-                    if (datecompare <= 0)
-                        Command.all.Find("deltemprank").Use(null, who.name);
+                    if (line3.Contains(p.name))
+                    {
+                        string player = line3.Split(' ')[0];
+                        int period = Convert.ToInt32(line3.Split(' ')[3]);
+                        int minutes = Convert.ToInt32(line3.Split(' ')[4]);
+                        int hours = Convert.ToInt32(line3.Split(' ')[5]);
+                        int days = Convert.ToInt32(line3.Split(' ')[6]);
+                        int months = Convert.ToInt32(line3.Split(' ')[7]);
+                        int years = Convert.ToInt32(line3.Split(' ')[8]);
+                        Player who = Player.Find(player);
+                        DateTime ExpireDate = new DateTime(years, months, days, hours, minutes, 0);
+                        DateTime tocheck = ExpireDate.AddHours(Convert.ToDouble(period));
+                        DateTime tochecknow = DateTime.Now;
+                        double datecompare = DateTime.Compare(tocheck, tochecknow);
+                        if (datecompare <= 0)
+                            Command.all.Find("deltemprank").Use(null, who.name);
+                    }
                 }
             }
         }
-	}
+    }
 }

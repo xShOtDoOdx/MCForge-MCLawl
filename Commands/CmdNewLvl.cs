@@ -16,13 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
-    class CmdNewLvl : Command
+    public sealed class CmdNewLvl : Command
     {
         public override string name { get { return "newlvl"; } }
         public override string shortcut { get { return ""; } }
@@ -40,7 +36,7 @@ namespace MCForge.Commands
             {
                 switch (parameters[4])
                 {
-                    case "flat":                       
+                    case "flat":
                     case "pixel":
                     case "island":
                     case "mountains":
@@ -112,7 +108,7 @@ namespace MCForge.Commands
                     GC.WaitForPendingFinalizers();
                 }
                 Player.GlobalMessage("Level \"" + name + "\" created" + (useSeed ? " with seed \"" + parameters[5] + "\"" : "")); // The player needs some form of confirmation.
-               
+
             }
             else
                 Help(p);

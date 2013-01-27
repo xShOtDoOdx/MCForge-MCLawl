@@ -26,7 +26,7 @@ namespace MCForge {
     /// This is the group object
     /// Where ranks and there data are stored
     /// </summary>
-    public class Group {
+    public sealed class Group {
         public delegate void RankSet(Player p, Group newrank);
         [Obsolete("Please use OnPlayerRankSetEvent.Register()")]
         public static event RankSet OnPlayerRankSet;

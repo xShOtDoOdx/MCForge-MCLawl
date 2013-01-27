@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdSpheroid : Command
+    public sealed class CmdSpheroid : Command
     {
         public override string name { get { return "spheroid"; } }
         public override string shortcut { get { return "e"; } }

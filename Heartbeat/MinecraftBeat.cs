@@ -15,48 +15,55 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-
 using System;
 using System.IO;
+namespace MCForge
+{
+    public sealed class MinecraftBeat : IBeat
+    {
+        public string URL
+        {
+            get
+            {
+                return "https://minecraft.net/heartbeat.jsp";
+            }
+        }
 
-namespace MCForge {
-	class MinecraftBeat : IBeat {
-		public string URL {
-			get {
-					return "https://minecraft.net/heartbeat.jsp";
-			}
-		}
-		
-		public bool Persistance {
-			get { return true; }
-		}
+        public bool Persistance
+        {
+            get { return true; }
+        }
 
-		public string Prepare() {
-			return "&port=" + Server.port +
-				"&max=" + Server.players +
-				"&name=" + Heart.EncodeUrl(Server.name) +
-				"&public=" + Server.pub +
-				"&version=7" +
-				"&salt=" + Server.salt +
-				"&users=" + Player.players.Count;
-		}
+        public string Prepare()
+        {
+            return "&port=" + Server.port +
+                "&max=" + Server.players +
+                "&name=" + Heart.EncodeUrl(Server.name) +
+                "&public=" + Server.pub +
+                "&version=7" +
+                "&salt=" + Server.salt +
+                "&users=" + Player.players.Count;
+        }
 
 
-		public void OnResponse(string line) {
+        public void OnResponse(string line)
+        {
 
-			// Only run the code below if we receive a response
-			if ( !String.IsNullOrEmpty(line.Trim()) ) {
-				string newHash = line.Substring(line.LastIndexOf('/') + 1);
+            // Only run the code below if we receive a response
+            if (!String.IsNullOrEmpty(line.Trim()))
+            {
+                string newHash = line.Substring(line.LastIndexOf('/') + 1);
 
-				// Run this code if we don't already have a hash or if the hash has changed
-				if ( String.IsNullOrEmpty(Server.Hash) || !newHash.Equals(Server.Hash) ) {
-					Server.Hash = newHash;
-					Server.URL = line;
-					Server.s.UpdateUrl(Server.URL);
-					File.WriteAllText("text/externalurl.txt", Server.URL);
-					Server.s.Log("URL found: " + Server.URL);
-				}
-			}
-		}
-	}
+                // Run this code if we don't already have a hash or if the hash has changed
+                if (String.IsNullOrEmpty(Server.Hash) || !newHash.Equals(Server.Hash))
+                {
+                    Server.Hash = newHash;
+                    Server.URL = line;
+                    Server.s.UpdateUrl(Server.URL);
+                    File.WriteAllText("text/externalurl.txt", Server.URL);
+                    Server.s.Log("URL found: " + Server.URL);
+                }
+            }
+        }
+    }
 }

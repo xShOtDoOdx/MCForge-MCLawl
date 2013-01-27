@@ -17,17 +17,14 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
     /// <summary>
     /// This is the command /fetch
     /// use /help fetch in-game for more info
     /// </summary>
-	public class CmdFetch : Command
+	public sealed class CmdFetch : Command
 	{
 		public override string name { get { return "fetch"; } }
 		public override string shortcut { get { return "fb"; } }

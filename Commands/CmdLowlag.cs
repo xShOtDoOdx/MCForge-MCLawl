@@ -15,14 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdLowlag : Command
+    public sealed class CmdLowlag : Command
     {
         public override string name { get { return "lowlag"; } }
         public override string shortcut { get { return ""; } }

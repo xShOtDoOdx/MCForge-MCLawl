@@ -1,6 +1,5 @@
 /*
- 
-        Written by Jack1312
+    Written by Jack1312
   
 	Copyright 2011 MCForge
 		
@@ -19,10 +18,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 namespace MCForge.Commands
 {
-    class CmdExplode : Command
+    public sealed class CmdExplode : Command
     {
         public override string name { get { return "explode"; } }
         public override string shortcut { get { return "ex"; } }

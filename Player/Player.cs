@@ -859,7 +859,7 @@ namespace MCForge {
                 }
 
                 if ( version != Server.version ) { Kick("Wrong version!"); return; }
-                if ( truename.Length > 16 || !ValidName(name, this) ) { Kick("Illegal name!"); return; }
+                if (!ValidName(name, this) ) { Kick("Illegal name!"); return; }
 
                 if ( Server.verify ) {
                     if ( verify == "--" || verify !=
@@ -3887,7 +3887,7 @@ Next: continue;
         }
         public static bool ValidName(string name, Player p = null) {
             string allowedchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._";
-            if (p != null && p.Mojangaccount) allowedchars += "-";
+            if (p != null && p.Mojangaccount) allowedchars += "@-";
             return name.All(ch => allowedchars.IndexOf(ch) != -1);
         }
 

@@ -16,13 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdSummon : Command
+    public sealed class CmdSummon : Command
     {
         public override string name { get { return "summon"; } }
         public override string shortcut { get { return "s"; } }

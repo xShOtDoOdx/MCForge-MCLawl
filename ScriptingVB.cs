@@ -16,15 +16,11 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 using System;
 using System.CodeDom.Compiler;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.IO;
+using System.Reflection;
 using System.Text;
-
-
 namespace MCForge
 {
 	static class ScriptingVB

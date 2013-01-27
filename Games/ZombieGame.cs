@@ -16,20 +16,17 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-
 using System;
 using System.Collections;
-using System.Collections.Generic; 
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using System.IO;
-using System.Timers;
+using System.Linq;
 using System.Threading;
+using System.Timers;
 
 namespace MCForge
 {
-    public class ZombieGame
+    public sealed class ZombieGame
     {
         public int amountOfRounds = 0;
         public int limitRounds = 0;

@@ -15,24 +15,19 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
 namespace MCForge.Commands
 {
-    public class CmdXundo : Command {
-
+    public sealed class CmdXundo : Command
+    {
         public override string name { get { return "xundo"; } }
-
         public override string shortcut { get { return ""; } }
-
         public override string type { get { return "other"; } }
-
         public override bool museumUsable { get { return false; } }
-
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
         public CmdXundo() { }
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
 
             if (message == "") { Help(p); return; }
             int number = message.Split(' ').Length;
@@ -42,7 +37,8 @@ namespace MCForge.Commands
 
             string error = "You are not allowed to undo this player";
 
-            if (who == null || p == null || !(who.group.Permission >= LevelPermission.Operator && p.group.Permission < LevelPermission.Operator)) {
+            if (who == null || p == null || !(who.group.Permission >= LevelPermission.Operator && p.group.Permission < LevelPermission.Operator))
+            {
                 //This executes if who doesn't exist, if who is lower than Operator, or if the user is an op+.
                 //It also executes on any combination of the three
                 Command.all.Find("undo").Use(p, ((who == null) ? message : who.name) + " all"); //Who null check
@@ -52,7 +48,8 @@ namespace MCForge.Commands
         }
 
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/xundo [name]  -  works as 'undo [name] all' but now anyone can use it (up to their undo limit)");
         }
     }

@@ -17,12 +17,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-
 namespace MCForge.Commands
 {
-    class CmdRules : Command
+    public sealed class CmdRules : Command
     {
         public override string name { get { return "rules"; } }
         public override string shortcut { get { return ""; } }

@@ -20,11 +20,9 @@
 using System;
 using System.Data;
 using MCForge.SQL;
-
-
 namespace MCForge.Commands
 {
-    public class CmdOpStats : Command
+    public sealed class CmdOpStats : Command
     {
         public override string name { get { return "opstats"; } }
         public override string shortcut { get { return ""; } }

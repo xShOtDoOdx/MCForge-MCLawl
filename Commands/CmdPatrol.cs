@@ -1,8 +1,7 @@
 /*
+    Written by Jack1312
         
-        Written by Jack1312
-        
-        Copyright 2011 MCForge
+    Copyright 2011 MCForge
 	
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -21,10 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace MCForge.Commands
 {
-    class CmdPatrol : Command
+    public sealed class CmdPatrol : Command
     {
         public override string name { get { return "patrol"; } }
         public override string shortcut { get { return ""; } }

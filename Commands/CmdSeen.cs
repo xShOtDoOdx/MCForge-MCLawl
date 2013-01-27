@@ -15,19 +15,11 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using MCForge.SQL;
-using System.Text.RegularExpressions;
-
-
 namespace MCForge.Commands
 {
-	public class CmdSeen : Command
+	public sealed class CmdSeen : Command
 	{
 		public override string name { get { return "seen"; } }
 		public override string shortcut { get { return ""; } }

@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using MCForge.Commands;
-
 namespace MCForge
 {
 	public abstract class Command
@@ -303,7 +302,7 @@ namespace MCForge
 			all.Add(new CmdWarp());
 			all.Add(new CmdWaypoint());
 			all.Add(new CmdWhisper());
-			if (Server.useWhitelist) { all.Add(new CmdWhitelist()); }
+			all.Add(new CmdWhitelist());
 			all.Add(new CmdWhoip());
 			all.Add(new CmdWhois());
 			all.Add(new CmdWhowas());

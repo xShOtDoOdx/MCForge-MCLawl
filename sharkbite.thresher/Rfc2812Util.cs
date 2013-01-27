@@ -20,11 +20,11 @@
  * the archive of this library for complete text of license.
 */
 
-using System.Text.RegularExpressions;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
-using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Sharkbite.Irc
 {

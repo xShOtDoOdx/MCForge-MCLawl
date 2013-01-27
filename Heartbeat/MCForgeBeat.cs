@@ -18,29 +18,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-namespace MCForge {
-    internal class MCForgeBeat : IBeat {
-
+namespace MCForge
+{
+    internal sealed class MCForgeBeat : IBeat
+    {
         public string URL { get { return ServerSettings.HeartbeatAnnounce; } }
 
-        public bool Persistance {
+        public bool Persistance
+        {
             get { return true; }
         }
 
-        public string Prepare() {
+        public string Prepare()
+        {
 
             string Parameters = "name=" + Heart.EncodeUrl(Server.name) +
                                                      "&users=" + Player.players.Count +
                                                      "&max=" + Server.players +
                                                      "&port=" + Server.port +
                                                      "&version=" + Server.Version +
-                                                     "&gcname=" + Heart.EncodeUrl(Server.UseGlobalChat ? Server.GlobalChatNick : "[Disabled]" ) +
-                                                     "&public=" + ( Server.pub ? "1" : "0" ) +
+                                                     "&gcname=" + Heart.EncodeUrl(Server.UseGlobalChat ? Server.GlobalChatNick : "[Disabled]") +
+                                                     "&public=" + (Server.pub ? "1" : "0") +
                                                      "&motd=" + Heart.EncodeUrl(Server.motd);
 
-            if ( Server.levels != null && Server.levels.Count > 0 ) {
+            if (Server.levels != null && Server.levels.Count > 0)
+            {
                 IEnumerable<string> worlds = from l in Server.levels select l.name;
                 Parameters += "&worlds=" + String.Join(", ", worlds.ToArray());
             }
@@ -49,7 +51,8 @@ namespace MCForge {
             return Parameters;
         }
 
-        public void OnResponse(string line) {
+        public void OnResponse(string line)
+        {
             //Do nothing
         }
 

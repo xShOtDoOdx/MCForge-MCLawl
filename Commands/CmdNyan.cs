@@ -17,14 +17,11 @@
 */
 // Created by Sinjai, for use only with MCForge
 // Special thanks to Nerketur and Kris9006!
-using System;
 using System.IO;
 using System.Net;
-
-
 namespace MCForge.Commands
 {
-    public class CmdNyan : Command
+    public sealed class CmdNyan : Command
     {
         public override string name { get { return "nyan"; } }
         public override string shortcut { get { return ""; } }

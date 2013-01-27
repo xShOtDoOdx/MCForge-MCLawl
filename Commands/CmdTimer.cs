@@ -15,14 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTimer : Command
+    public sealed class CmdTimer : Command
     {
         public override string name { get { return "timer"; } }
         public override string shortcut { get { return ""; } }

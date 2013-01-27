@@ -1,5 +1,5 @@
 /*
- * Written By Jack1312
+    Written By Jack1312
 
 	Copyright 2011 MCForge
 		
@@ -17,13 +17,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdLoginMessage : Command
+    public sealed class CmdLoginMessage : Command
     {
         public override string name { get { return "loginmessage"; } }
         public override string shortcut { get { return ""; } }

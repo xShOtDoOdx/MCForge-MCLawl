@@ -15,17 +15,12 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
-    class CmdResetBot : Command
+    public sealed class CmdResetBot : Command
     {
         public override string name { get { return "resetbot"; } }
-        public override string shortcut { get { return ""; } }
+        public override string shortcut { get { return "resetirc"; } }
         public override string type { get { return "mod"; } }
         public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
@@ -33,7 +28,6 @@ namespace MCForge.Commands
 
         public override void Use(Player p, string message)
         {
-            //IRCBot.Reset();
             Server.IRC.Reset();
             Server.GlobalChat.Reset();
         }

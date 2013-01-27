@@ -17,11 +17,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
 namespace MCForge.Commands
 {
-    public class CmdHigh5 : Command
+    public sealed class CmdHigh5 : Command
     {
         public override string name { get { return "high5"; } }
         public override string shortcut { get { return ""; } }

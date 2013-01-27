@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdMeasure : Command
+    public sealed class CmdMeasure : Command
     {
         public override string name { get { return "measure"; } }
         public override string shortcut { get { return "ms"; } }

@@ -15,14 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands {
-    public class CmdColor : Command {
+    public sealed class CmdColor : Command {
         public override string name { get { return "color"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }

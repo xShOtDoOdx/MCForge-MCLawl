@@ -25,11 +25,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using MonoTorrent.Common;
 
@@ -40,7 +37,7 @@ namespace MonoTorrent.Client
     public delegate void MainLoopTask();
     public delegate bool TimeoutTask();
 
-    public class MainLoop
+    public sealed class MainLoop
     {
         private class DelegateTask : ICacheable
         {

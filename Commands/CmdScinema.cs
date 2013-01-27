@@ -18,14 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdSCinema : Command
+    public sealed class CmdSCinema : Command
     {
-
-
         StreamWriter cin;
         String Filepath = "";
 

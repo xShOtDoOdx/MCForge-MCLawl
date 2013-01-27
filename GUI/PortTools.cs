@@ -31,20 +31,18 @@ using MCForge.Core;
 namespace MCForge.Gui.Popups {
     public partial class PortTools : Form {
 
-        private BackgroundWorker mWorkerChecker;
-        private BackgroundWorker mWorkerForwarder;
+        private readonly BackgroundWorker mWorkerChecker;
+        private readonly BackgroundWorker mWorkerForwarder;
 
         public PortTools() {
             InitializeComponent();
-            mWorkerChecker = new BackgroundWorker();
-            mWorkerChecker.WorkerSupportsCancellation = true;
-            mWorkerChecker.DoWork += new DoWorkEventHandler(mWorker_DoWork);
-            mWorkerChecker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(mWorker_RunWorkerCompleted);
+            mWorkerChecker = new BackgroundWorker { WorkerSupportsCancellation = true };
+            mWorkerChecker.DoWork += mWorker_DoWork;
+            mWorkerChecker.RunWorkerCompleted += mWorker_RunWorkerCompleted;
 
-            mWorkerForwarder = new BackgroundWorker();
-            mWorkerForwarder.WorkerSupportsCancellation = true;
-            mWorkerForwarder.DoWork += new DoWorkEventHandler(mWorkerForwarder_DoWork);
-            mWorkerForwarder.RunWorkerCompleted += new RunWorkerCompletedEventHandler(mWorkerForwarder_RunWorkerCompleted);
+            mWorkerForwarder = new BackgroundWorker { WorkerSupportsCancellation = true };
+            mWorkerForwarder.DoWork += mWorkerForwarder_DoWork;
+            mWorkerForwarder.RunWorkerCompleted += mWorkerForwarder_RunWorkerCompleted;
         }
 
         private void linkManually_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
@@ -53,7 +51,7 @@ namespace MCForge.Gui.Popups {
         }
 
         private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            try { Process.Start("http://www.mcforge.net/forums/forumdisplay.php?fid=19"); }
+            try { Process.Start( "http://www.mcforge.net/community/forum/46-help-support/" ); }
             catch { }
         }
 
@@ -122,7 +120,6 @@ namespace MCForge.Gui.Popups {
             }
             catch {
                 e.Result = 0;
-                return;
             }
         }
 
@@ -180,7 +177,6 @@ namespace MCForge.Gui.Popups {
             try {
                 if (!UPnP.CanUseUpnp) {
                     e.Result = 0;
-                    return;
                 }
                 else {
 
@@ -193,14 +189,12 @@ namespace MCForge.Gui.Popups {
                         UPnP.DeleteForwardingRule(port, ProtocolType.Tcp);
                         e.Result = 3;
                     }
-                    return;
                 }
             }
             catch {
                 if (tries < 2) goto retry;
 
                 e.Result = 2;
-                return;
             }
         }
 
@@ -233,5 +227,6 @@ namespace MCForge.Gui.Popups {
                     return;
             }
         }
+
     }
 }

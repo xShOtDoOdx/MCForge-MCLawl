@@ -16,14 +16,9 @@
     permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    class CmdPause : Command
+    public sealed class CmdPause : Command
     {
         public override string name { get { return "pause"; } }
         public override string shortcut { get { return ""; } }

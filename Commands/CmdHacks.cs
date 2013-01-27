@@ -16,17 +16,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
-    public class CmdHacks : Command
+    public sealed class CmdHacks : Command
     {
         public override string name { get { return "hacks"; } }
         public override string shortcut { get { return "hax"; } }

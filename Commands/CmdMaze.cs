@@ -15,16 +15,12 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-		
 using System;
-using System.Threading;
 using System.Collections;
 using System.Security.Cryptography;
-
-
 namespace MCForge.Commands
 {
-    public class CmdMaze : Command
+    public sealed class CmdMaze : Command
     {
         public override string name { get { return "maze"; } }
         public override string shortcut { get { return ""; } }

@@ -1,13 +1,29 @@
+/*
+	Copyright 2011 MCForge
+		
+	Dual-licensed under the	Educational Community License, Version 2.0 and
+	the GNU General Public License, Version 3 (the "Licenses"); you may
+	not use this file except in compliance with the Licenses. You may
+	obtain a copy of the Licenses at
+	
+	http://www.opensource.org/licenses/ecl2.php
+	http://www.gnu.org/licenses/gpl-3.0.html
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the Licenses are distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the Licenses for the specific language governing
+	permissions and limitations under the Licenses.
+*/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Net;
+using System.Threading;
 
-namespace MCForge {
-    public class Donators {
-
+namespace MCForge
+{
+    public sealed class Donators
+    {
         private readonly static Timer timer;
         private const int TEN_MINUTES = 600000;
 
@@ -16,33 +32,39 @@ namespace MCForge {
         /// </summary>
         public static readonly List<DonatorPlayers> DonatorList;
 
-        static Donators() {
+        static Donators()
+        {
             timer = new Timer(CallBack, null, 0, TEN_MINUTES);
             DonatorList = new List<DonatorPlayers>();
         }
 
-        private static void CallBack(object state) {
-            using ( var client = new WebClient() ) {
+        private static void CallBack(object state)
+        {
+            using (var client = new WebClient())
+            {
                 client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(DownloadString);
                 client.DownloadStringAsync(new Uri("http://server.mcforge.net/donators.txt"));
             }
         }
 
-        static void DownloadString(object sender, DownloadStringCompletedEventArgs e) {
+        static void DownloadString(object sender, DownloadStringCompletedEventArgs e)
+        {
 
-            if ( e.Cancelled || e.Error != null ) {
+            if (e.Cancelled || e.Error != null)
+            {
                 return;
             }
 
             DonatorList.Clear();
 
-            string[] lines = e.Result.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = e.Result.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach ( string line in lines ) {
+            foreach (string line in lines)
+            {
 
                 string[] sections = line.Split(':');
 
-                if ( sections.Length != 3 )
+                if (sections.Length != 3)
                     continue;
 
                 DonatorList.Add(new DonatorPlayers(sections[0], sections[1], sections[2][0]));
@@ -56,17 +78,21 @@ namespace MCForge {
         /// <returns>
         ///   <c>true</c> if the specified player is in the list; otherwise, <c>false</c>.
         /// </returns>
-        public static bool Contains(Player player) {
-            foreach ( var p in DonatorList ) {
-                if ( p.Username.Equals(player.name) )
+        public static bool Contains(Player player)
+        {
+            foreach (var p in DonatorList)
+            {
+                if (p.Username.Equals(player.name))
                     return true;
             }
             return false;
         }
 
-        public static DonatorPlayers GetDonationAtribs(Player player) {
-            foreach ( var donate in DonatorList ) {
-                if(donate.Username.Equals(player.name))
+        public static DonatorPlayers GetDonationAtribs(Player player)
+        {
+            foreach (var donate in DonatorList)
+            {
+                if (donate.Username.Equals(player.name))
                     return donate;
             }
             return null;
@@ -76,7 +102,8 @@ namespace MCForge {
     /// <summary>
     /// Class containing username, title, and colors.
     /// </summary>
-    public class DonatorPlayers {
+    public class DonatorPlayers
+    {
 
         /// <summary>
         /// Gets or sets the username.
@@ -108,7 +135,8 @@ namespace MCForge {
         /// <param name="username">The username.</param>
         /// <param name="title">The title.</param>
         /// <param name="color">The color.</param>
-        public DonatorPlayers(string username, string title, char color) {
+        public DonatorPlayers(string username, string title, char color)
+        {
             this.Username = username;
             this.Title = title;
             this.Color = color;

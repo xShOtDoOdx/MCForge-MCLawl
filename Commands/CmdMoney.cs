@@ -16,21 +16,27 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-namespace MCForge.Commands {
-    public class CmdMoney : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdMoney : Command
+    {
         public override string name { get { return "money"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
         public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             bool emptyMessage = message == "" || message == null || message == string.Empty;
-            if (p != null && emptyMessage) {
+            if (p != null && emptyMessage)
+            {
                 Player.SendMessage(p, "You currently have %f" + p.money + " %3" + Server.moneys);
-            } else if (message.Split().Length == 1) {
+            }
+            else if (message.Split().Length == 1)
+            {
                 Player who = Player.Find(message);
-                if (who == null) { //player is offline
+                if (who == null)
+                { //player is offline
                     Economy.EcoStats ecos = Economy.RetrieveEcoStats(message);
                     Player.SendMessage(p, ecos.playerName + "(%foffline" + Server.DefaultColor + ") currently has %f" + ecos.money + " %3" + Server.moneys);
                     return;
@@ -41,16 +47,21 @@ namespace MCForge.Commands {
                     return;
                 }*/
                 Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " currently has %f" + who.money + " %3" + Server.moneys);
-            } else if (p == null && emptyMessage) {
+            }
+            else if (p == null && emptyMessage)
+            {
                 Player.SendMessage(p, "%Console can't have %3" + Server.moneys);
-            } else {
+            }
+            else
+            {
                 Player.SendMessage(p, "%cInvalid parameters!");
                 Help(p);
             }
 
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "%f/money <player>" + Server.DefaultColor + " - Shows how much %3" + Server.moneys + Server.DefaultColor + " <player> has");
         }
     }

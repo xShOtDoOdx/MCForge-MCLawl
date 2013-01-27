@@ -15,12 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
+using System.IO;
 namespace MCForge.Commands
 {
-    using System;
-    using System.IO;
-    public class CmdXJail : Command
+    public sealed class CmdXJail : Command
     {
         public override string name { get { return "xjail"; } }
         public override string shortcut { get { return "xj"; } }
@@ -40,83 +38,83 @@ namespace MCForge.Commands
             if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
             if (!File.Exists(jailMapFile))
             {
-				using (StreamWriter SW = new StreamWriter(jailMapFile))
-				{
-					SW.WriteLine(Server.mainLevel.name);
-				}
+                using (StreamWriter SW = new StreamWriter(jailMapFile))
+                {
+                    SW.WriteLine(Server.mainLevel.name);
+                }
             }
             if (message == "") { Help(p); return; }
             else
             {
-				using (StreamReader SR = new StreamReader(jailMapFile))
-				{
-					string xjailMap = SR.ReadLine();
-					SR.Close();
-					Command jail = Command.all.Find("jail");
-					if (message == "set")
-					{
-						if (!p.level.name.Contains("cMuseum"))
-						{
-							jail.Use(p, "create");
-							using (StreamWriter SW = new StreamWriter(jailMapFile))
-							{
-								SW.WriteLine(p.level.name);
-							}
-							Player.SendMessage(p, "The xjail map was set from '" + xjailMap + "' to '" + p.level.name + "'");
-							return;
-						}
-						else { Player.SendMessage(p, "You are in a museum!"); return; }
-					}
-					else
-					{
-						Player player = Player.Find(message);
-                       
-						if (player != null)
-						{
-							Command move = Command.all.Find("move");
-							Command spawn = Command.all.Find("spawn");
-							Command freeze = Command.all.Find("freeze");
-							Command mute = Command.all.Find("mute");
-							string playerFile = dir + player.name + "_temp.xjail";
-							if (!File.Exists(playerFile))
-							{
-								using (StreamWriter writeFile = new StreamWriter(playerFile))
-								{
-									writeFile.WriteLine(player.level.name);
-								}
-								if (!player.muted) { mute.Use(p, message); }
-								if (!player.frozen) { freeze.Use(p, message); }
-								move.Use(p, message + " " + xjailMap);
-								while (player.Loading)
-								{
-								}
-								if (!player.jailed) { jail.Use(p, message); }
-								Player.GlobalMessage(player.color + player.name + Server.DefaultColor + " was XJailed!");
-								return;
-							}
-							else
-							{
-								using (StreamReader readFile = new StreamReader(playerFile))
-								{
-									string playerMap = readFile.ReadLine();
-									readFile.Close();
-									File.Delete(playerFile);
-									move.Use(p, message + " " + playerMap);
-									while (player.Loading)
-									{
-									}
-									mute.Use(p, message);
-									jail.Use(p, message);
-									freeze.Use(p, message);
-									spawn.Use(player, "");
-									Player.GlobalMessage(player.color + player.name + Server.DefaultColor + " was released from XJail!");
-								}
-								return;
-							}
-						}
-						else { Player.SendMessage(p, "Player not found"); return; }
-					}
-				}
+                using (StreamReader SR = new StreamReader(jailMapFile))
+                {
+                    string xjailMap = SR.ReadLine();
+                    SR.Close();
+                    Command jail = Command.all.Find("jail");
+                    if (message == "set")
+                    {
+                        if (!p.level.name.Contains("cMuseum"))
+                        {
+                            jail.Use(p, "create");
+                            using (StreamWriter SW = new StreamWriter(jailMapFile))
+                            {
+                                SW.WriteLine(p.level.name);
+                            }
+                            Player.SendMessage(p, "The xjail map was set from '" + xjailMap + "' to '" + p.level.name + "'");
+                            return;
+                        }
+                        else { Player.SendMessage(p, "You are in a museum!"); return; }
+                    }
+                    else
+                    {
+                        Player player = Player.Find(message);
+
+                        if (player != null)
+                        {
+                            Command move = Command.all.Find("move");
+                            Command spawn = Command.all.Find("spawn");
+                            Command freeze = Command.all.Find("freeze");
+                            Command mute = Command.all.Find("mute");
+                            string playerFile = dir + player.name + "_temp.xjail";
+                            if (!File.Exists(playerFile))
+                            {
+                                using (StreamWriter writeFile = new StreamWriter(playerFile))
+                                {
+                                    writeFile.WriteLine(player.level.name);
+                                }
+                                if (!player.muted) { mute.Use(p, message); }
+                                if (!player.frozen) { freeze.Use(p, message); }
+                                move.Use(p, message + " " + xjailMap);
+                                while (player.Loading)
+                                {
+                                }
+                                if (!player.jailed) { jail.Use(p, message); }
+                                Player.GlobalMessage(player.color + player.name + Server.DefaultColor + " was XJailed!");
+                                return;
+                            }
+                            else
+                            {
+                                using (StreamReader readFile = new StreamReader(playerFile))
+                                {
+                                    string playerMap = readFile.ReadLine();
+                                    readFile.Close();
+                                    File.Delete(playerFile);
+                                    move.Use(p, message + " " + playerMap);
+                                    while (player.Loading)
+                                    {
+                                    }
+                                    mute.Use(p, message);
+                                    jail.Use(p, message);
+                                    freeze.Use(p, message);
+                                    spawn.Use(player, "");
+                                    Player.GlobalMessage(player.color + player.name + Server.DefaultColor + " was released from XJail!");
+                                }
+                                return;
+                            }
+                        }
+                        else { Player.SendMessage(p, "Player not found"); return; }
+                    }
+                }
             }
         }
     }

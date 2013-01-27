@@ -17,12 +17,11 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 namespace MCForge
 {
-    public class Block
+    public sealed class Block
     {
         public const byte air = (byte)0;
         public const byte rock = (byte)1;

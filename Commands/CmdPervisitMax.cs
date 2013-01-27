@@ -1,5 +1,4 @@
 /*
-
     Written by Jack1312
  
 	Copyright 2011 MCForge
@@ -18,14 +17,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    class CmdPervisitMax : Command
+    public sealed class CmdPervisitMax : Command
     {
         public override string name { get { return "pervisitmax"; } }
         public override string shortcut { get { return ""; } }

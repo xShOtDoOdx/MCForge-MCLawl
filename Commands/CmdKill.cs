@@ -15,13 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdKill : Command
+    public sealed class CmdKill : Command
     {
         public override string name { get { return "kill"; } }
         public override string shortcut { get { return ""; } }

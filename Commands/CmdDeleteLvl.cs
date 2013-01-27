@@ -17,15 +17,9 @@
 */
 using System;
 using System.IO;
-using System.Data;
-using System.Collections.Generic;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands {
-    public class CmdDeleteLvl : Command {
+    public sealed class CmdDeleteLvl : Command {
         public override string name { get { return "deletelvl"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }

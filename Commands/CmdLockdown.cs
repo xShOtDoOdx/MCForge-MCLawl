@@ -15,24 +15,16 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdLockdown : Command
+    public sealed class CmdLockdown : Command
     {
         public override string name { get { return "lockdown"; } }
-
         public override string shortcut { get { return "ld"; } }
-
         public override string type { get { return "other"; } }
-
         public override bool museumUsable { get { return false; } }
-
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
         public override void Use(Player p, string message)

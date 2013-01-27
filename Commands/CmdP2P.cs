@@ -17,16 +17,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Data;
-using System.Collections.Generic;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdP2P : Command
+    public sealed class CmdP2P : Command
     {
         public override string name { get { return "p2p"; } }
         public override string shortcut { get { return ""; } }

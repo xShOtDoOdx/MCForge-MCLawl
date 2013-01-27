@@ -16,18 +16,16 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace MCForge
 {
-    public class Awards
+    public sealed class Awards
     {
         public struct playerAwards { public string playerName; public List<string> awards; }
-        public class awardData { 
+        public class awardData
+        {
             public string awardName, description;
             public void setAward(string name) { awardName = camelCase(name); }
         }
@@ -39,16 +37,16 @@ namespace MCForge
         {
             if (!File.Exists("text/awardsList.txt"))
             {
-				using (StreamWriter SW = File.CreateText("text/awardsList.txt"))
-				{
-					SW.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
-					SW.WriteLine("#Format is:");
-					SW.WriteLine("# awardName : Description of award goes after the colon");
-					SW.WriteLine();
-					SW.WriteLine("Gotta start somewhere : Built your first house");
-					SW.WriteLine("Climbing the ladder : Earned a rank advancement");
-					SW.WriteLine("Do you live here? : Joined the server a huge bunch of times");
-				}
+                using (StreamWriter SW = File.CreateText("text/awardsList.txt"))
+                {
+                    SW.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
+                    SW.WriteLine("#Format is:");
+                    SW.WriteLine("# awardName : Description of award goes after the colon");
+                    SW.WriteLine();
+                    SW.WriteLine("Gotta start somewhere : Built your first house");
+                    SW.WriteLine("Climbing the ladder : Earned a rank advancement");
+                    SW.WriteLine("Do you live here? : Joined the server a huge bunch of times");
+                }
             }
 
             allAwards = new List<awardData>();
@@ -92,20 +90,20 @@ namespace MCForge
 
         public static void Save()
         {
-			using (StreamWriter SW = File.CreateText("text/awardsList.txt"))
-			{
-				SW.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
-				SW.WriteLine("#Format is:");
-				SW.WriteLine("# awardName : Description of award goes after the colon");
-				SW.WriteLine();
-				foreach (awardData aD in allAwards)
-					SW.WriteLine(camelCase(aD.awardName) + " : " + aD.description);
-			}
+            using (StreamWriter SW = File.CreateText("text/awardsList.txt"))
+            {
+                SW.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
+                SW.WriteLine("#Format is:");
+                SW.WriteLine("# awardName : Description of award goes after the colon");
+                SW.WriteLine();
+                foreach (awardData aD in allAwards)
+                    SW.WriteLine(camelCase(aD.awardName) + " : " + aD.description);
+            }
             using (StreamWriter SW = File.CreateText("text/playerAwards.txt"))
-			{
-            foreach (playerAwards pA in playersAwards)
-                SW.WriteLine(pA.playerName.ToLower() + " : " + string.Join(",", pA.awards.ToArray()));
-			}
+            {
+                foreach (playerAwards pA in playersAwards)
+                    SW.WriteLine(pA.playerName.ToLower() + " : " + string.Join(",", pA.awards.ToArray()));
+            }
         }
 
         public static bool giveAward(string playerName, string awardName)

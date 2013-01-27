@@ -12,12 +12,9 @@ BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdSearch : Command
+    public sealed class CmdSearch : Command
     {
         public override string name { get { return "search"; } }
         public override string shortcut { get { return ""; } }

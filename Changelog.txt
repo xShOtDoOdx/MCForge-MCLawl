@@ -1,8 +1,14 @@
 v5.5.11
 -New:
   -Rewrote /report with the option to clear all reports
+  -New Global Chat banlist
+  -New interface for /unloaded (colors show the perbuildrank)
 -Fixes:
-  -MySQL fixed bug that the MCZallDB couldn't be found when starting server
+  -!!!SQL Injection fix!!! Database is now save against SQL Injection attacks
+  -The /report command is rewritten and fixed
+  -Whitespace removal from/to GC (caused some clients to crash)
+  -Variable '$' is removed when communicating via GC
+  -SQL: fixed bug that the MCZallDB couldn't be found when starting server
   -Muted players now remain muted after a relog
   -Titlefix with using /whowas
   -Prefix coloring fix with brackets
@@ -10,7 +16,9 @@ v5.5.11
   -Whenever an invalid rank is set to the map's rank properties, it is auto-set to Permissionlevel 0 (Guest)
   -Minor bug fixes
 -Removals:
-  -Restriction to the rank name devs/mods/gcmods etc. removed
+  -Restriction to the rankname devs/mods/gcmods etc. removed
+  -Staff cannot use protection commands anymore
+  -LavaMapSubmission to MCForge.net deleted
 
 v5.5.10
 -New:

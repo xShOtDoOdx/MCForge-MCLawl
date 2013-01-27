@@ -28,7 +28,7 @@ namespace MCForge
     /// <summary>
     /// This is the team class for CTF
     /// </summary>
-    public class Teams
+    public sealed class Teams
     {
         public string color;
         public int points = 0;
@@ -63,7 +63,7 @@ namespace MCForge
                 return false;
         }
     }
-    internal class Data
+    internal sealed class Data
     {
         public Player p;
         public int cap = 0;
@@ -78,7 +78,7 @@ namespace MCForge
             blue = team; this.p = p;
         }
     }
-    internal class Base
+    internal sealed class Base
     {
         public ushort x;
         public ushort y;
@@ -118,7 +118,7 @@ namespace MCForge
     /// <summary>
     /// This is the CTF gamemode
     /// </summary>
-    public class Auto_CTF
+    public sealed class Auto_CTF
     {
         public System.Timers.Timer tagging = new System.Timers.Timer(500);
         public bool voting = false;

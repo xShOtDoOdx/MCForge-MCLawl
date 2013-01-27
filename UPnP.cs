@@ -13,21 +13,18 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using System.Xml;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-
+using System.Xml;
 //This upnp class comes from http://www.codeproject.com/Articles/27992/NAT-Traversal-with-UPnP-in-C, Modified for use with MCForge
 
 namespace MCForge.Core {
 
-    public class UPnP {
+    public sealed class UPnP {
 
         public static bool CanUseUpnp { get {return Discover(); } }
 

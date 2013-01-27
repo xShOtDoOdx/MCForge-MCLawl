@@ -1,6 +1,5 @@
 /*
- 
-        Written by Jack1312
+    Written by Jack1312
   
 	Copyright 2011 MCForge
 		
@@ -19,13 +18,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdRankMsg : Command
+    public sealed class CmdRankMsg : Command
     {
         public override string name { get { return "rankmsg"; } }
         public override string shortcut { get { return "rm"; } }

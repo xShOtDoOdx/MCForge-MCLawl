@@ -16,14 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
-    public class CmdCrashServer : Command
+    public sealed class CmdCrashServer : Command
     {
         public override string name { get { return "crashserver"; } }
         public override string shortcut { get { return "crash"; } }

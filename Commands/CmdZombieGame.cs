@@ -1,6 +1,6 @@
 /*
 	Copyright 2010 MCLawl Team - 
-Created by Snowl (David D.) and Cazzar (Cayde D.)
+    Created by Snowl (David D.) and Cazzar (Cayde D.)
 
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -16,13 +16,10 @@ Created by Snowl (David D.) and Cazzar (Cayde D.)
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdZombieGame : Command
+    public sealed class CmdZombieGame : Command
     {
         public override string name { get { return "zombiegame"; } }
         public override string shortcut { get { return "zg"; } }

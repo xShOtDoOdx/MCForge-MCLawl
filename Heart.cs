@@ -16,13 +16,11 @@
     permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Net;
 using System.IO;
-using System.Threading;
+using System.Net;
 using System.Net.Cache;
+using System.Text;
+using System.Threading;
 
 namespace MCForge {
 

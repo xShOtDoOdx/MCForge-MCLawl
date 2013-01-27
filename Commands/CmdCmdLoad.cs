@@ -15,22 +15,15 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
-using System.IO;
-using System.Reflection;
-
-
 namespace MCForge.Commands
 {
-    class CmdCmdLoad : Command
+    public sealed class CmdCmdLoad : Command
     {
         public override string name { get { return "cmdload"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
         public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
-        public CmdCmdLoad() { }
 
         public override void Use(Player p, string message)
         {

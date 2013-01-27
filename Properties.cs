@@ -17,10 +17,9 @@
 */
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCForge {
 	public static class SrvProperties {

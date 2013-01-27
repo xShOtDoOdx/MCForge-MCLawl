@@ -16,14 +16,13 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
 using System.Collections.Generic;
-using Sharkbite.Irc;
+using System.IO;
 using System.Text;
-//using System.Threading;
+using Sharkbite.Irc;
 
 namespace MCForge {
-	public class ForgeBot {
+	public sealed class ForgeBot {
 		public static readonly string ColorSignal = "\x03";
 		public static readonly string ResetSignal = "\x0F";
 		private Connection connection;

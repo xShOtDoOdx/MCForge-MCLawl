@@ -18,77 +18,75 @@
 */
 using System;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-        public class CmdXmute : Command
+    public sealed class CmdXmute : Command
+    {
+        public override string name { get { return "xmute"; } }
+        public override string shortcut { get { return ""; } }
+        public override string type { get { return "mod"; } }
+        public override bool museumUsable { get { return false; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+        public override void Use(Player p, string message)
         {
-                public override string name { get { return "xmute"; } }
-                public override string shortcut { get { return ""; } }
-                public override string type { get { return "mod"; } }
-                public override bool museumUsable { get { return false; } }
-                public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-                public override void Use(Player p, string message)
-                {
-					if(message == "")
-					{
-						Help(p);
-						return;
-					}
+            if (message == "")
+            {
+                Help(p);
+                return;
+            }
 
-                    if (p == null)
-                    {
-                        Player.SendMessage(p, "This command can only be used in-game. Use /mute [Player] instead.");
-                        return;
-                    }
+            if (p == null)
+            {
+                Player.SendMessage(p, "This command can only be used in-game. Use /mute [Player] instead.");
+                return;
+            }
 
-					var split = message.Split(' ');
-            		Player muter = Player.Find(split[0]);
-		            if (muter == null)
-        		    {
-                		Player.SendMessage(p, "Player not found.");
-						return;
-		            }
+            var split = message.Split(' ');
+            Player muter = Player.Find(split[0]);
+            if (muter == null)
+            {
+                Player.SendMessage(p, "Player not found.");
+                return;
+            }
 
-    		        if (p != null && muter.group.Permission > p.group.Permission)
-	                {
-	                    Player.SendMessage(p, "You cannot xmute someone ranked higher than you!");
-						return;
-	                }
-                    if (p == muter)
-                    {
-                        Player.SendMessage(p, "You cannot use xmute on yourself!");
-                        return;
-                    }
-                    Command.all.Find("mute").Use(p, muter.name);
-					
-					int time = 120;
-					try
-					{
-                    	time = Convert.ToInt32(message.Split(' ')[1]);
-					}
-					catch/* (Exception ex)*/
-					{
-						Player.SendMessage(p, "Invalid time given.");
-						Help(p);
-						return;
-					}
-					
-                    Player.GlobalMessage(muter.color + muter.name + " has been muted for " + time + " seconds");
-                    Player.SendMessage(muter, "You have been muted for " + time + " seconds");
+            if (p != null && muter.group.Permission > p.group.Permission)
+            {
+                Player.SendMessage(p, "You cannot xmute someone ranked higher than you!");
+                return;
+            }
+            if (p == muter)
+            {
+                Player.SendMessage(p, "You cannot use xmute on yourself!");
+                return;
+            }
+            Command.all.Find("mute").Use(p, muter.name);
 
-                    Thread.Sleep(time * 1000);
+            int time = 120;
+            try
+            {
+                time = Convert.ToInt32(message.Split(' ')[1]);
+            }
+            catch/* (Exception ex)*/
+            {
+                Player.SendMessage(p, "Invalid time given.");
+                Help(p);
+                return;
+            }
 
-                    Command.all.Find("mute").Use(p, muter.name);
-                }
+            Player.GlobalMessage(muter.color + muter.name + " has been muted for " + time + " seconds");
+            Player.SendMessage(muter, "You have been muted for " + time + " seconds");
 
-                // This one controls what happens when you use /help [commandname].
-                public override void Help(Player p)
-                {
-                        Player.SendMessage(p, "/xmute <player> <seconds> - Mutes <player> for <seconds> seconds");
-                }
+            Thread.Sleep(time * 1000);
+
+            Command.all.Find("mute").Use(p, muter.name);
         }
+
+        // This one controls what happens when you use /help [commandname].
+        public override void Help(Player p)
+        {
+            Player.SendMessage(p, "/xmute <player> <seconds> - Mutes <player> for <seconds> seconds");
+        }
+    }
 }
 
 

@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTime : Command
+    public sealed class CmdTime : Command
     {
         public override string name { get { return "time"; } }
         public override string shortcut { get { return ""; } }

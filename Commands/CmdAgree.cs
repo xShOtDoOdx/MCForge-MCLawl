@@ -17,16 +17,11 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses  
 */
-using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace MCForge.Commands
 {
-    public class CmdAgree : Command
+    public sealed class CmdAgree : Command
     {
         public override string name { get { return "agree"; } }
         public override string shortcut { get { return ""; } }

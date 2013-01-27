@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdHollow : Command
+    public sealed class CmdHollow : Command
     {
         public override string name { get { return "hollow"; } }
         public override string shortcut { get { return ""; } }

@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdInfo : Command
+    public sealed class CmdInfo : Command
     {
         public override string name { get { return "info"; } }
         public override string shortcut { get { return ""; } }

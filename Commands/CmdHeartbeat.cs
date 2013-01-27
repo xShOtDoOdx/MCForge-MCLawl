@@ -15,12 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 using System;
-
 namespace MCForge.Commands
 {
-    class CmdHeartbeat : Command
+    public sealed class CmdHeartbeat : Command
     {
         public override string name { get { return "heartbeat"; } }
         public override string shortcut { get { return "beat"; } }

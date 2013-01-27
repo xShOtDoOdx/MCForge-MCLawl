@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdStairs : Command
+    public sealed class CmdStairs : Command
     {
         public override string name { get { return "stairs"; } }
         public override string shortcut { get { return ""; } }
