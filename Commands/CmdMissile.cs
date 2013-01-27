@@ -17,14 +17,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-	public class CmdMissile : Command
+	public sealed class CmdMissile : Command
 	{
 		public override string name { get { return "missile"; } }
 		public override string shortcut { get { return ""; } }

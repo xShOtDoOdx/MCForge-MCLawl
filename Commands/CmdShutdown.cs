@@ -17,13 +17,12 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
+using System;
+using System.IO;
+using System.Threading;
 namespace MCForge.Commands
 {
-    using System;
-    using System.IO;
-    using System.Threading;
-    public class CmdShutdown : Command
+    public sealed class CmdShutdown : Command
     {
         public override string name { get { return "shutdown"; } }
         public override string shortcut { get { return ""; } }

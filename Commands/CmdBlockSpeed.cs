@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdBlockSpeed : Command
+    public sealed class CmdBlockSpeed : Command
     {
         public override string name { get { return "blockspeed"; } }
         public override string shortcut { get { return "bs"; } }

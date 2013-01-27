@@ -15,57 +15,52 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-	public class CmdLastCmd : Command
-	{
-		public override string name { get { return "lastcmd"; } }
-		public override string shortcut { get { return "last"; } }
-		public override string type { get { return "information"; } }
-		public override bool museumUsable { get { return true; } }
-		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-		public CmdLastCmd() { }
+    public sealed class CmdLastCmd : Command
+    {
+        public override string name { get { return "lastcmd"; } }
+        public override string shortcut { get { return "last"; } }
+        public override string type { get { return "information"; } }
+        public override bool museumUsable { get { return true; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+        public CmdLastCmd() { }
 
-		public override void Use(Player p, string message)
-		{
-			if (message == "")
-			{
-				foreach (Player pl in Player.players)
-				{
-					if (pl.lastCMD.Contains("setpass") || pl.lastCMD.Contains("pass"))
-					{
-						pl.lastCMD = "";
-					}
-					if (pl.group.Permission <= p.group.Permission && pl.hidden)
-					{
-						Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " last used \"" + pl.lastCMD + "\"");
-					}
-					if (!pl.hidden)
-					{
-						Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " last used \"" + pl.lastCMD + "\"");
-					}
-				}
-			}
-			else
-			{
-				Player who = Player.Find(message);
-				if (who == null || who.group.Permission > p.group.Permission && who.hidden) { Player.SendMessage(p, "Could not find player entered"); return; }
-				if (who.lastCMD.Contains("setpass") || who.lastCMD.Contains("pass"))
-				{
-					who.lastCMD = "";
-				}
-				Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " last used \"" + who.lastCMD + "\"");
-			}
-		}
-		public override void Help(Player p)
-		{
-			Player.SendMessage(p, "/last [user] - Shows last command used by [user]");
-			Player.SendMessage(p, "/last by itself will show all last commands (SPAMMY)");
-		}
-	}
+        public override void Use(Player p, string message)
+        {
+            if (message == "")
+            {
+                foreach (Player pl in Player.players)
+                {
+                    if (pl.lastCMD.Contains("setpass") || pl.lastCMD.Contains("pass"))
+                    {
+                        pl.lastCMD = "";
+                    }
+                    if (pl.group.Permission <= p.group.Permission && pl.hidden)
+                    {
+                        Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " last used \"" + pl.lastCMD + "\"");
+                    }
+                    if (!pl.hidden)
+                    {
+                        Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " last used \"" + pl.lastCMD + "\"");
+                    }
+                }
+            }
+            else
+            {
+                Player who = Player.Find(message);
+                if (who == null || who.group.Permission > p.group.Permission && who.hidden) { Player.SendMessage(p, "Could not find player entered"); return; }
+                if (who.lastCMD.Contains("setpass") || who.lastCMD.Contains("pass"))
+                {
+                    who.lastCMD = "";
+                }
+                Player.SendMessage(p, who.color + who.name + Server.DefaultColor + " last used \"" + who.lastCMD + "\"");
+            }
+        }
+        public override void Help(Player p)
+        {
+            Player.SendMessage(p, "/last [user] - Shows last command used by [user]");
+            Player.SendMessage(p, "/last by itself will show all last commands (SPAMMY)");
+        }
+    }
 }

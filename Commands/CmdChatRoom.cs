@@ -16,13 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdChatRoom : Command
+    public sealed class CmdChatRoom : Command
     {
         public override string name { get { return "chatroom"; } }
         public override string shortcut { get { return "cr"; } }

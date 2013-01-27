@@ -18,10 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace MCForge.Commands
 {
-    public class CmdReplaceNot : Command
+    public sealed class CmdReplaceNot : Command
     {
         public override string name { get { return "replacenot"; } }
         public override string shortcut { get { return "rn"; } }

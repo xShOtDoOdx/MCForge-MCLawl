@@ -13,16 +13,10 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-
-
-
 namespace MCForge.Commands
 {
-    class CmdDelTempRank : Command
+    public sealed class CmdDelTempRank : Command
     {
         public override string name { get { return "deltemprank"; } }
         public override string shortcut { get { return "dtr"; } }

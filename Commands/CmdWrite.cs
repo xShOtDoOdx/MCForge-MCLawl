@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdWrite : Command
+    public sealed class CmdWrite : Command
     {
         public override string name { get { return "write"; } }
         public override string shortcut { get { return ""; } }

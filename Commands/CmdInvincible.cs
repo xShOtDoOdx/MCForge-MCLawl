@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdInvincible : Command
+    public sealed class CmdInvincible : Command
     {
         public override string name { get { return "invincible"; } }
         public override string shortcut { get { return "inv"; } }

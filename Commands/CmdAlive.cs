@@ -15,13 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdAlive : Command
+    public sealed class CmdAlive : Command
     {
         public override string name { get { return "alive"; } }
         public override string shortcut { get { return "alive"; } }

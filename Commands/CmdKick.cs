@@ -15,11 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
-namespace MCForge.Commands {
-    public class CmdKick : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdKick : Command
+    {
         public override string name { get { return "kick"; } }
         public override string shortcut { get { return "k"; } }
         public override string type { get { return "mod"; } }
@@ -27,23 +26,27 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public CmdKick() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             if (message == "") { Help(p); return; }
             Player who = Player.Find(message.Split(' ')[0]);
             if (who == null) { Player.SendMessage(p, "Could not find player specified."); return; }
             if (message.Split(' ').Length > 1)
                 message = message.Substring(message.IndexOf(' ') + 1);
             else
-                if (p == null ) message = "You were kicked by an IRC controller!";
+                if (p == null) message = "You were kicked by an IRC controller!";
                 else if (p != null)
                     message = "You were kicked by " + p.name + "!";
 
-            if (p != null){
-                if (who == p){
+            if (p != null)
+            {
+                if (who == p)
+                {
                     Player.SendMessage(p, "You cannot kick yourself!");
                     return;
                 }
-                if (who.@group.Permission >= p.@group.Permission){
+                if (who.@group.Permission >= p.@group.Permission)
+                {
                     Player.GlobalChat(p,
                                       p.color + p.name + Server.DefaultColor + " tried to kick " + who.color + who.name + Server.DefaultColor +
                                       " but failed.",
@@ -53,7 +56,8 @@ namespace MCForge.Commands {
             }
             who.Kick(message);
         }
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/kick <player> [message] - Kicks a player.");
         }
     }

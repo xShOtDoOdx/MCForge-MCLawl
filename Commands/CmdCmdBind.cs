@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdCmdBind : Command
+    public sealed class CmdCmdBind : Command
     {
         public override string name { get { return "cmdbind"; } }
         public override string shortcut { get { return "cb"; } }

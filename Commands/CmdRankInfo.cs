@@ -16,14 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    class CmdRankInfo : Command
+    public sealed class CmdRankInfo : Command
     {
         public override string name { get { return "rankinfo"; } }
         public override string shortcut { get { return "ri"; } }

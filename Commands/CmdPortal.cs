@@ -15,18 +15,12 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
 using System.Collections.Generic;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
 using System.Data;
 using MCForge.SQL;
-
-
 namespace MCForge.Commands
 {
-    public class CmdPortal : Command
+    public sealed class CmdPortal : Command
     {
         public override string name { get { return "portal"; } }
         public override string shortcut { get { return "o"; } }

@@ -18,11 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdFly : Command
+    public sealed class CmdFly : Command
     {
         public override string name { get { return "fly"; } }
         public override string shortcut { get { return ""; } }

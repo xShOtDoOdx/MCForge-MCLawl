@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdWaypoint : Command
+    public sealed class CmdWaypoint : Command
     {
         public override string name { get { return "waypoint"; } }
         public override string shortcut { get { return "wp"; } }

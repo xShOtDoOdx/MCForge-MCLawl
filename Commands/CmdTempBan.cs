@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTempBan : Command
+    public sealed class CmdTempBan : Command
     {
         public override string name { get { return "tempban"; } }
         public override string shortcut { get { return "tb"; } }

@@ -16,16 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdServerReport : Command
+    public sealed class CmdServerReport : Command
     {
         public override string name { get { return "serverreport"; } }
         public override string shortcut { get { return "sr"; } }

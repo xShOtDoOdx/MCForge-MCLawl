@@ -12,16 +12,11 @@ BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
-
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    class CmdTempRankInfo : Command
+    public sealed class CmdTempRankInfo : Command
     {
         public override string name { get { return "temprankinfo"; } }
         public override string shortcut { get { return "tri"; } }

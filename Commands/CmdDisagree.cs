@@ -1,6 +1,5 @@
 /*
- 
-		Written by Jack1312
+    Written by Jack1312
   
 	Copyright 2011 MCForge
 		
@@ -18,48 +17,40 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using System.Text.RegularExpressions;
-
-
 namespace MCForge.Commands
 {
-	public class CmdDisagree : Command
-	{
-		public override string name { get { return "disagree"; } }
-		public override string shortcut { get { return ""; } }
-		public override string type { get { return "other"; } }
-		public override bool museumUsable { get { return true; } }
-		public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
-		public CmdDisagree() { }
+    public sealed class CmdDisagree : Command
+    {
+        public override string name { get { return "disagree"; } }
+        public override string shortcut { get { return ""; } }
+        public override string type { get { return "other"; } }
+        public override bool museumUsable { get { return true; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
+        public CmdDisagree() { }
 
-		public override void Use(Player p, string message)
-		{
-			if (!Server.agreetorulesonentry)
-			{
-				Player.SendMessage(p, "This command can only be used if agree-to-rules-on-entry is enabled in the console!");
-				return;
-			}
-			if (p.group.Permission > LevelPermission.Guest)
-			{
-				Player.SendMessage(p, "Your awesomeness prevents you from using this command");
-				return;
-			}
-			if (p == null)
-			{
-				Player.SendMessage(p, "This command can only be used in-game");
-				return;
-			}
-			p.Kick("Consider agreeing next time =S");
-		}
+        public override void Use(Player p, string message)
+        {
+            if (!Server.agreetorulesonentry)
+            {
+                Player.SendMessage(p, "This command can only be used if agree-to-rules-on-entry is enabled in the console!");
+                return;
+            }
+            if (p.group.Permission > LevelPermission.Guest)
+            {
+                Player.SendMessage(p, "Your awesomeness prevents you from using this command");
+                return;
+            }
+            if (p == null)
+            {
+                Player.SendMessage(p, "This command can only be used in-game");
+                return;
+            }
+            p.Kick("Consider agreeing next time =S");
+        }
 
-		public override void Help(Player p)
-		{
-			Player.SendMessage(p, "/disagree - Disagree to the rules when entering the server");
-		}
-	}
+        public override void Help(Player p)
+        {
+            Player.SendMessage(p, "/disagree - Disagree to the rules when entering the server");
+        }
+    }
 }

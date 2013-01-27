@@ -16,10 +16,8 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-
-
 namespace MCForge.Commands {
-    public class CmdBan : Command {
+    public sealed class CmdBan : Command {
         public override string name { get { return "ban"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }

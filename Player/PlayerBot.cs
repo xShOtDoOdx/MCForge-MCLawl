@@ -16,15 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Threading;
-using System.Net;
-using System.Net.Sockets;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-
+using System.Threading;
 namespace MCForge
 {
     public sealed class PlayerBot

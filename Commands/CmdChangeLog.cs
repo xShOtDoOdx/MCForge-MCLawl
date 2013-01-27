@@ -18,10 +18,9 @@
 using System;
 using System.IO;
 using System.Linq;
-
 namespace MCForge.Commands
 {
-    public class CmdChangeLog : Command
+    public sealed class CmdChangeLog : Command
     {
         public override string name { get { return "changelog"; } }
         public override string shortcut { get { return ""; } }

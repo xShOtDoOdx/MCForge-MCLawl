@@ -16,19 +16,21 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
+namespace MCForge
+{
+    namespace SQL
+    {
+        public abstract class DatabaseTransactionHelper : IDisposable
+        {
 
-namespace MCForge {
-    namespace SQL {
-        public abstract class DatabaseTransactionHelper : IDisposable {
-
-            public static DatabaseTransactionHelper Create() {
-                if (Server.useMySQL) {
+            public static DatabaseTransactionHelper Create()
+            {
+                if (Server.useMySQL)
+                {
                     return MySQLTransactionHelper.Create();
-                } else {
+                }
+                else
+                {
                     return SQLiteTransactionHelper.Create();
                 }
             }

@@ -15,13 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.IO;
-using System.Collections.Generic;
-
 namespace MCForge.Commands
 {
-    public class CmdUnlock : Command
+    public sealed class CmdUnlock : Command
     {
         // The command's name, in all lowercase.  What you'll be putting behind the slash when using it.
         public override string name { get { return "unlock"; } }

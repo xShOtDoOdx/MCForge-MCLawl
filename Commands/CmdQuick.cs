@@ -1,5 +1,4 @@
 /*
- 
     Written By Jack1312
  
 	Copyright 2011 MCForge
@@ -19,12 +18,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdQuick : Command
+    public sealed class CmdQuick : Command
     {
         public override string name { get { return "quick"; } }
         public override string shortcut { get { return "q"; } }

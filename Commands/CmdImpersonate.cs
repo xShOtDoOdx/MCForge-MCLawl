@@ -15,11 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 namespace MCForge.Commands
 {
-	using System;
-	public class CmdImpersonate : Command
+    public sealed class CmdImpersonate : Command
 	{
 		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 		public override void Help(Player p) { Player.SendMessage(p, "/impersonate <player> <message> - Sends a message as if it came from <player>"); }

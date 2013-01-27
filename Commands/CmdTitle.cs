@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 /*
 	Copyright 2011 MCForge
 		
@@ -15,13 +16,11 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using MCForge.SQL;
-using System.Text.RegularExpressions;
-
-
-namespace MCForge.Commands {
-    public class CmdTitle : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdTitle : Command
+    {
         public override string name { get { return "title"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -29,21 +28,24 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public CmdTitle() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             if (message == "") { Help(p); return; }
 
             int pos = message.IndexOf(' ');
             Player who = Player.Find(message.Split(' ')[0]);
             if (who == null) { Player.SendMessage(p, "Could not find player."); return; }
-            if (p != null && who.group.Permission > p.group.Permission) {
-                    Player.SendMessage(p, "Cannot change the title of someone of greater rank");
-                    return;
+            if (p != null && who.group.Permission > p.group.Permission)
+            {
+                Player.SendMessage(p, "Cannot change the title of someone of greater rank");
+                return;
             }
 
             string query;
             string newTitle = "";
             if (message.Split(' ').Length > 1) newTitle = message.Substring(pos + 1);
-            else {
+            else
+            {
                 who.title = "";
                 who.SetPrefix();
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " had their title removed.", false);
@@ -53,13 +55,14 @@ namespace MCForge.Commands {
                 return;
             }
 
-            if (newTitle != "") { //remove the brackets from the given title
+            if (newTitle != "")
+            { //remove the brackets from the given title
                 newTitle = newTitle.ToString().Trim().Replace("[", "");
                 newTitle = newTitle.Replace("]", "");
             }
 
             if (newTitle.Length > 17) { Player.SendMessage(p, "Title must be under 17 letters."); return; }
-            
+
 
             /*string title = newTitle.ToLower();
             foreach (char c in Server.ColourCodesNoPercent) { title = title.Replace("%" + c, ""); title = title.Replace("&" + c, ""); }
@@ -72,11 +75,14 @@ namespace MCForge.Commands {
                 Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was given the title of &b[" + newTitle + "%b]", false);
             else Player.GlobalChat(who, who.color + who.prefix + who.name + Server.DefaultColor + " had their title removed.", false);
 
-            if (!Regex.IsMatch(newTitle.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])")) {
-                if (Regex.IsMatch(newTitle.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*")) {
+            if (!Regex.IsMatch(newTitle.ToLower(), @".*%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])%([0-9]|[a-f]|[k-r])"))
+            {
+                if (Regex.IsMatch(newTitle.ToLower(), @".*%([0-9]|[a-f]|[k-r])(.+?).*"))
+                {
                     Regex rg = new Regex(@"%([0-9]|[a-f]|[k-r])(.+?)");
                     MatchCollection mc = rg.Matches(newTitle.ToLower());
-                    if (mc.Count > 0) {
+                    if (mc.Count > 0)
+                    {
                         Match ma = mc[0];
                         GroupCollection gc = ma.Groups;
                         newTitle.Replace("%" + gc[1].ToString().Substring(1), "&" + gc[1].ToString().Substring(1));
@@ -84,10 +90,13 @@ namespace MCForge.Commands {
                 }
             }
 
-            if (newTitle == "") {
+            if (newTitle == "")
+            {
                 query = "UPDATE Players SET Title = '' WHERE Name = @Name";
                 Database.AddParams("@Name", who.name);
-            } else {
+            }
+            else
+            {
                 query = "UPDATE Players SET Title = @Title WHERE Name = @Name";
                 Database.AddParams("@Title", newTitle);
                 Database.AddParams("@Name", who.name);
@@ -96,7 +105,8 @@ namespace MCForge.Commands {
             who.title = newTitle;
             who.SetPrefix();
         }
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/title <player> [title] - Gives <player> the [title].");
             Player.SendMessage(p, "If no [title] is given, the player's title is removed.");
         }

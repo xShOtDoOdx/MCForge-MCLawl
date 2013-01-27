@@ -19,13 +19,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 using MCForge.SQL;
-
-
 namespace MCForge.Commands
 {
-	class CmdClones : Command
+	public sealed class CmdClones : Command
 	{
-
 		public override string name { get { return "clones"; } }
 		public override string shortcut { get { return "alts"; } }
 		public override string type { get { return "information"; } }

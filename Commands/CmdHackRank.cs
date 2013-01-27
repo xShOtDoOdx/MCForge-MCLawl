@@ -18,18 +18,12 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-
 namespace MCForge.Commands
 {
     /// <summary>
-    /// Description of CmdHackRank.
+    /// TODO: Description of CmdHackRank.
     /// </summary>
-    public class CmdHackRank : Command
+    public sealed class CmdHackRank : Command
     {
         public override string name { get { return "hackrank"; } }
         public override string shortcut { get { return ""; } }

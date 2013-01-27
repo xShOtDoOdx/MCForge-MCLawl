@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdFill : Command
+    public sealed class CmdFill : Command
     {
         public override string name { get { return "fill"; } }
         public override string shortcut { get { return "f"; } }

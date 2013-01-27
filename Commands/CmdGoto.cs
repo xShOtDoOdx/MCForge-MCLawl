@@ -17,11 +17,9 @@
 */
 using System;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdGoto : Command
+    public sealed class CmdGoto : Command
     {
         public override string name { get { return "goto"; } }
         public override string shortcut { get { return "g"; } }

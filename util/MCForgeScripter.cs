@@ -15,18 +15,15 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.CodeDom.Compiler;
 
 namespace MCForge.Util {
 
-    public class MCForgeScripter {
+    public sealed class MCForgeScripter {
 
         private static readonly CompilerParameters _settings = new CompilerParameters(new [] {"mscorlib.dll", "MCForge_.dll", "MCForge.exe"}) {
             GenerateInMemory = true
@@ -88,7 +85,7 @@ namespace MCForge.Util {
 
     }
 
-    public class CompileResult {
+    public sealed class CompileResult {
 
         /// <summary>
         /// Array of errors, if any.

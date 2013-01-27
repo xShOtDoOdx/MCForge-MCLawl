@@ -15,13 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdMap : Command
+    public sealed class CmdMap : Command
     {
         public override string name { get { return "map"; } }
         public override string shortcut { get { return ""; } }

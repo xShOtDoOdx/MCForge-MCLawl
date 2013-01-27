@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 /*
 	Copyright 2011 MCForge
 	
@@ -15,16 +16,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Data;
 using MCForge.SQL;
-using System.Text.RegularExpressions;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands {
-	public class CmdClearBlockChanges : Command {
+	public sealed class CmdClearBlockChanges : Command {
 		public override string name { get { return "clearblockchanges"; } }
 		public override string shortcut { get { return "cbc"; } }
 		public override string type { get { return "mod"; } }

@@ -15,14 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdQueue : Command
+    public sealed class CmdQueue : Command
     {
         public override string name { get { return "queue"; } }
         public override string shortcut { get { return "qz"; } }

@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdMegaboid : Command
+    public sealed class CmdMegaboid : Command
     {
         public override string name { get { return "megaboid"; } }
         public override string shortcut { get { return "zm"; } }

@@ -16,14 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-
-
 namespace MCForge.Commands
 {
-    class CmdRestoreSelection : Command
+    public sealed class CmdRestoreSelection : Command
     {
         public override string name { get { return "rs"; } }
         public override string shortcut { get { return ""; } }

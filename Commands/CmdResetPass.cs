@@ -1,6 +1,5 @@
 /*
-
-        Written by Jack1312
+    Written by Jack1312
 
 	Copyright 2011 MCForge
 		

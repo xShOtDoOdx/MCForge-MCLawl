@@ -15,13 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdUBan : Command {
-
+    public sealed class CmdUBan : Command
+    {
         public override string name { get { return "uban"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "mod"; } }
@@ -29,26 +26,31 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
         public CmdUBan() { }
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
 
             if (message == "") { Help(p); return; }
 
             Player who = Player.Find(message.Split(' ')[0]);
             string msg = message.Split(' ')[0];
-            if (who != null) {
+            if (who != null)
+            {
                 string name = who.name;
                 Command.all.Find("ban").Use(p, msg);
                 Command.all.Find("kick").Use(p, message);
                 Command.all.Find("xundo").Use(p, name);
 
-            } else {
+            }
+            else
+            {
                 Command.all.Find("ban").Use(p, msg);
                 Command.all.Find("xundo").Use(p, msg);
 
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/uban [name] [message]- Bans, undoes, and kicks [name] with [message], if specified.");
         }
     }

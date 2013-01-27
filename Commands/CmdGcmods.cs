@@ -15,11 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
-namespace MCForge.Commands {
-    public class CmdGcmods : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdGcmods : Command
+    {
         public override string name { get { return "gcmods"; } }
         public override string shortcut { get { return "gcmod"; } }
         public override string type { get { return "information"; } }
@@ -27,11 +26,13 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public CmdGcmods() { }
 
-        public override void Use(Player p, string message) {
+        public override void Use(Player p, string message)
+        {
             if (message != "") { Help(p); return; }
             string gcmodlist = "";
             string tempgcmods;
-            foreach (string gcmod in Server.GCmods) {
+            foreach (string gcmod in Server.GCmods)
+            {
                 tempgcmods = gcmod.Substring(0, 1);
                 tempgcmods = tempgcmods.ToUpper() + gcmod.Remove(0, 1);
                 gcmodlist += tempgcmods + ", ";
@@ -40,7 +41,8 @@ namespace MCForge.Commands {
             Player.SendMessage(p, "&9MCForge Global Chat Moderation Team: " + Server.DefaultColor + gcmodlist + "&e.");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/gcmods - Displays the list of MCForge global chat moderators.");
         }
     }

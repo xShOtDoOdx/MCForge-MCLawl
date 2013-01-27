@@ -17,17 +17,13 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdImageprint : Command
+    public sealed class CmdImageprint : Command
     {
         public override string name { get { return "imageprint"; } }
         public override string shortcut { get { return "img"; } }

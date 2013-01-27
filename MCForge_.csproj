@@ -124,8 +124,8 @@
     <Compile Include="GUI\Eco\EconomyWindow.Designer.cs">
       <DependentUpon>EconomyWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Games\CTF\Setup.cs" />
-    <Compile Include="GUI\Games\TntWarsGame.cs" />
+    <Compile Include="Games\CTF\Setup.cs" />
+    <Compile Include="Games\TntWarsGame.cs" />
     <Compile Include="GUI\PortTools.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -340,9 +340,9 @@
     <Compile Include="Commands\CmdPLoad.cs" />
     <Compile Include="Commands\CmdPUnload.cs" />
     <Compile Include="Commands\CommandOtherPerms.cs" />
-    <Compile Include="GUI\Games\CTF\Auto_CTF.cs" />
+    <Compile Include="Games\CTF\Auto_CTF.cs" />
     <Compile Include="GlobalChatBot.cs" />
-    <Compile Include="GUI\Games\CountdownGame.cs" />
+    <Compile Include="Games\CountdownGame.cs" />
     <Compile Include="Economy.cs" />
     <Compile Include="ForgeBot.cs" />
     <Compile Include="GUI\EditText.cs">
@@ -352,14 +352,14 @@
       <DependentUpon>EditText.cs</DependentUpon>
     </Compile>
     <Compile Include="Heartbeat\WOMBeat.cs" />
-    <Compile Include="GUI\Games\LavaSurvival.cs" />
+    <Compile Include="Games\LavaSurvival.cs" />
     <Compile Include="Levels\BlockQueue.cs" />
     <Compile Include="MySQLTransactionHelper.cs" />
     <Compile Include="OmniBan.cs" />
     <Compile Include="Player\Player.Events.cs" />
     <Compile Include="Plugins\Utils\Events.cs" />
     <Compile Include="Plugins\Manager\Plugin_Manager.cs" />
-    <Compile Include="Plugins\Manager\Plugin_Simpile.cs" />
+    <Compile Include="Plugins\Manager\Plugin_Simple.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -531,7 +531,7 @@
     <Compile Include="GUI\UpdateWindow.Designer.cs">
       <DependentUpon>UpdateWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Heartbeat\Beat.cs" />
+    <Compile Include="Heartbeat\IBeat.cs" />
     <Compile Include="Heartbeat\MCForgeBeat.cs" />
     <Compile Include="Heartbeat\MinecraftBeat.cs" />
     <Compile Include="Levels\Level.cs" />
@@ -580,7 +580,7 @@
     <Compile Include="Util\Serializer.cs" />
     <Compile Include="VIP.cs" />
     <Compile Include="Warp.cs" />
-    <Compile Include="GUI\Games\ZombieGame.cs" />
+    <Compile Include="Games\ZombieGame.cs" />
     <EmbeddedResource Include="GUI\Eco\EcoLevelWindow.resx">
       <DependentUpon>EcoLevelWindow.cs</DependentUpon>
     </EmbeddedResource>

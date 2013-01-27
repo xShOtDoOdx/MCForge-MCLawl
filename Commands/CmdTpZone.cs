@@ -15,15 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTpZone : Command
+    public sealed class CmdTpZone : Command
     {
         public override string name { get { return "tpzone"; } }
         public override string shortcut { get { return ""; } }

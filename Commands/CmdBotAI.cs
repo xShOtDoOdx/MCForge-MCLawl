@@ -17,11 +17,9 @@
 */
 using System;
 using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdBotAI : Command
+    public sealed class CmdBotAI : Command
     {
         public override string name { get { return "botai"; } }
         public override string shortcut { get { return "bai"; } }

@@ -16,18 +16,13 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Collections.Generic;
-using MCForge.SQL;
 using System.Text.RegularExpressions;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
+using MCForge.SQL;
 namespace MCForge.Commands {
-    public class CmdBanip : Command {
+    public sealed class CmdBanip : Command {
         public override string name { get { return "banip"; } }
         public override string shortcut { get { return "bi"; } }
         public override string type { get { return "mod"; } }

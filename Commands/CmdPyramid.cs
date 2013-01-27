@@ -1,7 +1,6 @@
 /*
-   Thanks to aaron1tasker
-*/
-/*
+    Thanks to aaron1tasker
+
 	Copyright 2010 MCSharp team (Modified for use with MCZall/MCLawl/MCForge)
 
 	Dual-licensed under the	Educational Community License, Version 2.0 and
@@ -20,12 +19,9 @@
 */
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-
 namespace MCForge.Commands
 {
-    public class CmdPyramid : Command
+    public sealed class CmdPyramid : Command
     {
         public override string name { get { return "pyramid"; } }
         public override string shortcut { get { return "pd"; } }

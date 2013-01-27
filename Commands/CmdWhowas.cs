@@ -16,16 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 using System.Data;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using SData.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdWhowas : Command
+    public sealed class CmdWhowas : Command
     {
         public override string name { get { return "whowas"; } }
         public override string shortcut { get { return ""; } }
@@ -37,12 +32,12 @@ namespace MCForge.Commands
         public override void Use(Player p, string message)
         {
             if (message == "") { Help(p); return; }
-            Player pl = Player.Find(message); 
+            Player pl = Player.Find(message);
             if (pl != null && !pl.hidden)
-            { 
-                Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " is online, using /whois instead."); 
+            {
+                Player.SendMessage(p, pl.color + pl.name + Server.DefaultColor + " is online, using /whois instead.");
                 Command.all.Find("whois").Use(p, message);
-                return; 
+                return;
             }
 
             if (message.IndexOf("'") != -1) { Player.SendMessage(p, "Cannot parse request."); return; }
@@ -72,20 +67,25 @@ namespace MCForge.Commands
             Player.SendMessage(p, "> > first logged into the server on &a" + playerDb.Rows[0]["FirstLogin"]);
             Player.SendMessage(p, "> > logged in &a" + playerDb.Rows[0]["totalLogin"] + Server.DefaultColor + " times, &c" + playerDb.Rows[0]["totalKicked"] + Server.DefaultColor + " of which ended in a kick.");
             Player.SendMessage(p, "> > " + Awards.awardAmount(message) + " awards");
-            if (Ban.Isbanned(message)) {
-            	string[] data = Ban.Getbandata(message);
-            	Player.SendMessage(p, "> > was banned by " + data[0] + " for " + data[1] + " on " + data[2]);
+            if (Ban.Isbanned(message))
+            {
+                string[] data = Ban.Getbandata(message);
+                Player.SendMessage(p, "> > was banned by " + data[0] + " for " + data[1] + " on " + data[2]);
             }
 
-            if (Server.Devs.Contains(message.ToLower())) {
+            if (Server.Devs.Contains(message.ToLower()))
+            {
                 Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
                 if (Server.forgeProtection == ForgeProtection.Mod || Server.forgeProtection == ForgeProtection.Dev)
                     Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
-            } else if (Server.Mods.Contains(message.ToLower())) {
+            }
+            else if (Server.Mods.Contains(message.ToLower()))
+            {
                 Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9MCForge Moderator");
                 if (Server.forgeProtection == ForgeProtection.Mod)
                     Player.SendMessage(p, Server.DefaultColor + "> > Player is &CPROTECTED" + Server.DefaultColor + " under MCForge Staff protection");
-            } else if (Server.GCmods.Contains(message.ToLower()))
+            }
+            else if (Server.GCmods.Contains(message.ToLower()))
                 Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Global Chat Moderator");
 
             if (!(p != null && (int)p.group.Permission <= CommandOtherPerms.GetPerm(this)))

@@ -17,12 +17,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-	class CmdLavaSurvival : Command
+	public sealed class CmdLavaSurvival : Command
 	{
 		public override string name { get { return "lavasurvival"; } }
 		public override string shortcut { get { return "ls"; } }

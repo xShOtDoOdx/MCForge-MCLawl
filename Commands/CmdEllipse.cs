@@ -16,11 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-
 namespace MCForge.Commands
 {
-    public class CmdEllipse : Command
+    public sealed class CmdEllipse : Command
     {
         public override string name { get { return "ellipse"; } }
         public override string shortcut { get { return "el"; } }

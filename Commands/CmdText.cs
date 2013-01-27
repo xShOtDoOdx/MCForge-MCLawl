@@ -15,16 +15,11 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
-
-
 namespace MCForge.Commands
 {
-    public class CmdText : Command
+    public sealed class CmdText : Command
     {
         public override string name { get { return "text"; } }
         public override string shortcut { get { return ""; } }

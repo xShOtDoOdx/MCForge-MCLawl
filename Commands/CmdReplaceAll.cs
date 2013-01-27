@@ -17,12 +17,11 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace MCForge.Commands
 {
-    class CmdReplaceAll : Command
+    public sealed class CmdReplaceAll : Command
     {
         public override string name { get { return "replaceall"; } }
         public override string shortcut { get { return "ra"; } }

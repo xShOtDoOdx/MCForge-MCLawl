@@ -16,8 +16,6 @@
 	permissions and limitations under the Licenses.
 */
 // Copyright 2009, 2010 Matvei Stefarov <me@matvei.org>
-using System;
-
 /*
 This generator was developed by Neko_baron.
 
@@ -26,11 +24,10 @@ Ideas, concepts, and code were used from the following two sources:
 2) http://www.lighthouse3d.com/opengl/terrain/index.php3?introduction
 
 */
-
+using System;
 namespace MCForge
 {
-
-    public class MapGenerator
+    public sealed class MapGenerator
     {
         static bool Inuse = false;
         static float[] terrain;

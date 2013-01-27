@@ -17,15 +17,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdSendCmd : Command
+    public sealed class CmdSendCmd : Command
     {
         public override string name { get { return "sendcmd"; } }
         public override string shortcut { get { return ""; } }

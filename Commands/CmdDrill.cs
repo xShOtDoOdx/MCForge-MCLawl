@@ -15,13 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdDrill : Command
+    public sealed class CmdDrill : Command
     {
         public override string name { get { return "drill"; } }
         public override string shortcut { get { return ""; } }

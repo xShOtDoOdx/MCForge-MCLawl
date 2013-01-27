@@ -15,12 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
-    public class CmdClick : Command
+    public sealed class CmdClick : Command
     {
         public override string name { get { return "click"; } }
         public override string shortcut { get { return "x"; } }

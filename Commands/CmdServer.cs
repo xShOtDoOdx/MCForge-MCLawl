@@ -17,18 +17,14 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.IO.Compression;
 using System.IO.Packaging;
-using MCForge.SQL;
 using System.Threading;
-
-
+using MCForge.SQL;
 namespace MCForge.Commands
 {
-    class CmdServer : Command {
+    public sealed class CmdServer : Command
+    {
         public override string name { get { return "server"; } }
         public override string shortcut { get { return "serv"; } }
         public override string type { get { return "other"; } }
@@ -36,8 +32,10 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public CmdServer() { }
 
-        public override void Use(Player p, string message) {
-            switch (message) {
+        public override void Use(Player p, string message)
+        {
+            switch (message)
+            {
                 case "": // To prevent '/server' from causing an error message
                     Help(p);
                     break;
@@ -57,7 +55,8 @@ namespace MCForge.Commands
                     Server.s.Log("Server is now private!");
                     break;
                 case "reset":  //made so ONLY the owner or console can use this command.
-                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch")) {
+                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch"))
+                    {
                         p.SendMessage("Sorry.  You must be the Server Owner or Console to reset the server.");
                         return;
                     }
@@ -70,7 +69,8 @@ namespace MCForge.Commands
                     //    Rank
                     //    Command
                     Player.SendMessage(p, "Backing up and deleting current property files.");
-                    foreach (string name in Directory.GetFiles("properties")) {
+                    foreach (string name in Directory.GetFiles("properties"))
+                    {
                         File.Copy(name, name + ".bkp"); // create backup first.
                         File.Delete(name);
                     }
@@ -79,7 +79,8 @@ namespace MCForge.Commands
                     setToDefault();
                     goto case "reload";
                 case "reload":  // For security, only the owner and Console can use this.
-                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch")) {
+                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch"))
+                    {
                         p.SendMessage("Sorry.  You must be the Server Owner or Console to reload the server settings.");
                         return;
                     }
@@ -116,7 +117,8 @@ namespace MCForge.Commands
                     Save(false, p);
                     break;
                 case "restore":
-                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch")) {
+                    if (p != null && !Server.server_owner.ToLower().Equals(p.name.ToLower()) || Server.server_owner.Equals("Notch"))
+                    {
                         p.SendMessage("Sorry.  You must be the defined Server Owner or Console to restore the server.");
                         return;
                     }
@@ -132,11 +134,13 @@ namespace MCForge.Commands
             }
         }
 
-        private void Save(bool withDB, Player p) {
+        private void Save(bool withDB, Player p)
+        {
             Save(true, withDB, p);
         }
 
-        private void Save(bool withFiles, bool withDB, Player p) {
+        private void Save(bool withFiles, bool withDB, Player p)
+        {
             ParameterizedThreadStart pts = new ParameterizedThreadStart(CreatePackage);
             Thread doWork = new Thread(new ParameterizedThreadStart(CreatePackage));
             List<object> param = new List<object>();
@@ -147,7 +151,8 @@ namespace MCForge.Commands
             doWork.Start(param);
         }
 
-        private void setToDefault() { // could do this elsewhere, but will worry about that later.
+        private void setToDefault()
+        { // could do this elsewhere, but will worry about that later.
             //Other
             Server.higherranktp = true;
             Server.agreetorulesonentry = false;
@@ -194,7 +199,7 @@ namespace MCForge.Commands
             Server.pub = true;
             Server.verify = true;
             Server.worldChat = true;
-//            Server.guestGoto = false; //Never used
+            //            Server.guestGoto = false; //Never used
 
             Server.autorestart = false;
             Server.restarttime = DateTime.Now;
@@ -215,7 +220,7 @@ namespace MCForge.Commands
 
             Server.irc = false;
             Server.ircColorsEnable = false;
-//            Server.safemode = false;
+            //            Server.safemode = false;
             Server.ircPort = 6667;
             Server.ircNick = "ForgeBot";
             Server.ircServer = "irc.esper.net";
@@ -319,7 +324,8 @@ namespace MCForge.Commands
             #endregion
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/server <reset|restart|reload|update|shutdown|public|private|backup|restore> - All server commands.");
             Player.SendMessage(p, "/server <reset>    - Reset everything to defaults. (Owner only)  WARNING: This will erase ALL properties.  Use with caution. (Likely requires restart)");
             Player.SendMessage(p, "/server <restart>  - Restart the server.");
@@ -336,7 +342,8 @@ namespace MCForge.Commands
             Player.SendMessage(p, "allbutdb - Backup everything BUT the database.");
         }
 
-        private static void CreatePackage(object par) {
+        private static void CreatePackage(object par)
+        {
             List<object> param = (List<object>)par;
             CreatePackage((string)param[0], (bool)param[1], (bool)param[2], (Player)param[3]);
         }
@@ -345,27 +352,33 @@ namespace MCForge.Commands
         /// <summary>
         ///   Creates a package zip file containing specified
         ///   content and resource files.</summary>
-        private static void CreatePackage(string packagePath, bool withFiles, bool withDB, Player p) {
+        private static void CreatePackage(string packagePath, bool withFiles, bool withDB, Player p)
+        {
 
             // Create the Package
-            if (withDB) {
+            if (withDB)
+            {
                 Server.s.Log("Saving DB...");
                 SaveDatabase("SQL.sql");
                 Server.s.Log("Saved DB to SQL.sql");
             }
 
             Server.s.Log("Creating package...");
-            using (ZipPackage package = (ZipPackage)ZipPackage.Open(packagePath, FileMode.Create)) {
+            using (ZipPackage package = (ZipPackage)ZipPackage.Open(packagePath, FileMode.Create))
+            {
 
-                if (withFiles) {
+                if (withFiles)
+                {
                     Server.s.Log("Collecting Directory structure...");
                     string currDir = Directory.GetCurrentDirectory() + "\\";
                     List<Uri> partURIs = GetAllFiles(new DirectoryInfo("./"), new Uri(currDir));
                     Server.s.Log("Structure complete");
 
                     Server.s.Log("Saving data...");
-                    foreach (Uri loc in partURIs) {
-                        if (!Uri.UnescapeDataString(loc.ToString()).Contains(packagePath)) {
+                    foreach (Uri loc in partURIs)
+                    {
+                        if (!Uri.UnescapeDataString(loc.ToString()).Contains(packagePath))
+                        {
 
                             // Add the part to the Package
 
@@ -374,13 +387,15 @@ namespace MCForge.Commands
 
                             // Copy the data to the Document Part
                             using (FileStream fileStream = new FileStream(
-                                    "./" + Uri.UnescapeDataString(loc.ToString()), FileMode.Open, FileAccess.Read)) {
+                                    "./" + Uri.UnescapeDataString(loc.ToString()), FileMode.Open, FileAccess.Read))
+                            {
                                 CopyStream(fileStream, packagePart.GetStream());
                             }// end:using(fileStream) - Close and dispose fileStream.
                         }
                     }// end:foreach(Uri loc)
                 }
-                if (withDB) { // If we don't want to back up database, we don't do this part.
+                if (withDB)
+                { // If we don't want to back up database, we don't do this part.
                     Server.s.Log("Compressing Database...");
                     ZipPackagePart packagePart =
                                 (ZipPackagePart)package.CreatePart(new Uri("/SQL.sql", UriKind.Relative), "", CompressionOption.Normal);
@@ -389,27 +404,35 @@ namespace MCForge.Commands
                 }// end:if(withFiles)
                 Server.s.Log("Data saved!");
             }// end:using (Package package) - Close and dispose package.
-            Player.SendMessage(p, "Server backup (" + (withFiles ? "Everything" + (withDB ? "" : " but Database") : "Database" ) + "): Complete!");
+            Player.SendMessage(p, "Server backup (" + (withFiles ? "Everything" + (withDB ? "" : " but Database") : "Database") + "): Complete!");
             Server.s.Log("Server backed up!");
         }// end:CreatePackage()
 
-        private static void SaveDatabase(string filename) {
-            using (StreamWriter sql = new StreamWriter(File.Create(filename))) {
+        private static void SaveDatabase(string filename)
+        {
+            using (StreamWriter sql = new StreamWriter(File.Create(filename)))
+            {
                 Database.CopyDatabase(sql);
             }
         }
 
-        private static List<Uri> GetAllFiles(DirectoryInfo currDir, Uri baseUri) {
+        private static List<Uri> GetAllFiles(DirectoryInfo currDir, Uri baseUri)
+        {
             List<Uri> uriList = new List<Uri>();
-            foreach (FileSystemInfo entry in currDir.GetFileSystemInfos()) {
-                if (entry is FileInfo) {
+            foreach (FileSystemInfo entry in currDir.GetFileSystemInfos())
+            {
+                if (entry is FileInfo)
+                {
                     // Make a relative URI
                     Uri fullURI = new Uri(((FileInfo)entry).FullName);
                     Uri relURI = baseUri.MakeRelativeUri(fullURI);
-                    if (relURI.ToString().IndexOfAny("/\\".ToCharArray()) > 0) {
+                    if (relURI.ToString().IndexOfAny("/\\".ToCharArray()) > 0)
+                    {
                         uriList.Add(PackUriHelper.CreatePartUri(relURI));
                     }
-                } else {
+                }
+                else
+                {
                     uriList.AddRange(GetAllFiles((DirectoryInfo)entry, baseUri));
                 }
             }
@@ -424,7 +447,8 @@ namespace MCForge.Commands
         ///   The source stream to copy from.</param>
         /// <param name="target">
         ///   The destination stream to copy to.</param>
-        private static void CopyStream(Stream source, Stream target) {
+        private static void CopyStream(Stream source, Stream target)
+        {
             const int bufSize = 0x1000;
             byte[] buf = new byte[bufSize];
             int bytesRead = 0;
@@ -432,18 +456,27 @@ namespace MCForge.Commands
                 target.Write(buf, 0, bytesRead);
         }// end:CopyStream()
 
-        private static void ExtractPackage(object p) {
+        private static void ExtractPackage(object p)
+        {
             int errors = 0;
-            using (ZipPackage zip = (ZipPackage)ZipPackage.Open(File.OpenRead("MCForge.zip"))) {
+            using (ZipPackage zip = (ZipPackage)ZipPackage.Open(File.OpenRead("MCForge.zip")))
+            {
                 PackagePartCollection pc = zip.GetParts();
-                foreach (ZipPackagePart item in pc) {
-                    try {
+                foreach (ZipPackagePart item in pc)
+                {
+                    try
+                    {
                         CopyStream(item.GetStream(), File.Create("./" + Uri.UnescapeDataString(item.Uri.ToString())));
-                    } catch {
-                        try {
+                    }
+                    catch
+                    {
+                        try
+                        {
                             Directory.CreateDirectory("./" + item.Uri.ToString().Substring(0, item.Uri.ToString().LastIndexOfAny("\\/".ToCharArray())));
                             CopyStream(item.GetStream(), File.Create("./" + Uri.UnescapeDataString(item.Uri.ToString())));
-                        } catch (IOException e) {
+                        }
+                        catch (IOException e)
+                        {
                             Server.ErrorLog(e);
                             Server.s.Log("Caught ignoreable Error.  See log for more details.  Will continue with rest of files.");
                             errors++;
@@ -451,12 +484,13 @@ namespace MCForge.Commands
                     }
                     // To make life easier, we reload settings now, to maker it less likely to need restart
                     Command.all.Find("server").Use(null, "reload"); //Reload, as console
-                    if (item.Uri.ToString().ToLower().Contains("sql.sql")) { // If it's in there, they backed it up, meaning they want it restored
+                    if (item.Uri.ToString().ToLower().Contains("sql.sql"))
+                    { // If it's in there, they backed it up, meaning they want it restored
                         Database.fillDatabase(item.GetStream());
                     }
                 }
             }
-            Player.SendMessage((Player)p, "Server restored" + (errors > 0 ? " with errors.  May be a partial restore" : "" ) + ".  Restart is reccommended, though not required.");
+            Player.SendMessage((Player)p, "Server restored" + (errors > 0 ? " with errors.  May be a partial restore" : "") + ".  Restart is reccommended, though not required.");
         }
     }
 }

@@ -16,12 +16,9 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdFollow : Command
+    public sealed class CmdFollow : Command
     {
         public override string name { get { return "follow"; } }
         public override string shortcut { get { return ""; } }

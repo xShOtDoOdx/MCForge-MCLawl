@@ -12,13 +12,9 @@
 	or implied. See the License for the specific language governing
 	permissions and limitations under the License.
 */
-using System;
-using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdPlayerBlock : Command
+    public sealed class CmdPlayerBlock : Command
     {
         public override string name { get { return "playerblock"; } }
         public override string shortcut { get { return "pblock"; } }

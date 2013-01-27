@@ -15,14 +15,10 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
 using MCForge.SQL;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTColor : Command
+    public sealed class CmdTColor : Command
     {
         public override string name { get { return "tcolor"; } }
         public override string shortcut { get { return ""; } }

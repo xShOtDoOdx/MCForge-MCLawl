@@ -17,14 +17,10 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
-    class CmdPlayers : Command
+    public sealed class CmdPlayers : Command
     {
-
         public override string name { get { return "players"; } }
         public override string shortcut { get { return "who"; } }
         public override string type { get { return "information"; } }

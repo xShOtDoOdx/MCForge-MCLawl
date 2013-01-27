@@ -17,14 +17,11 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-
-
 namespace MCForge
 {
     //I
-    class AutoSaver
+    public sealed class AutoSaver
     {
         static int _interval;
         string backupPath = @Server.backupLocation;

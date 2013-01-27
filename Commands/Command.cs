@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using MCForge.Commands;
-
 namespace MCForge
 {
 	public abstract class Command

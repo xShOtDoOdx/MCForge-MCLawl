@@ -16,16 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 using System.Data;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    public class CmdInbox : Command
+    public sealed class CmdInbox : Command
     {
         public override string name { get { return "inbox"; } }
         public override string shortcut { get { return ""; } }

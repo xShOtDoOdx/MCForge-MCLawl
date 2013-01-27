@@ -15,12 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-
 namespace MCForge.Commands
 {
-    public class CmdAwardMod : Command
+    public sealed class CmdAwardMod : Command
     {
         public override string name { get { return "awardmod"; } }
         public override string shortcut { get { return ""; } }

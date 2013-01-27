@@ -18,11 +18,9 @@
 using System;
 using System.Data;
 using MCForge.SQL;
-
-
 namespace MCForge.Commands
 {
-    public class CmdTopTen : Command
+    public sealed class CmdTopTen : Command
     {
         public override string name { get { return "topten"; } }
         public override string shortcut { get { return "10"; } }

@@ -1,7 +1,7 @@
 /*
 	Copyright 2010 MCLawl Team - Written by Valek (Modified for use with MCForge)
  
-   Dual-licensed under the	Educational Community License, Version 2.0 and
+    Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
@@ -15,18 +15,11 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-
-using System;
 using System.Data;
-using System.IO;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-
-
 namespace MCForge.Commands
 {
-    class CmdPCount : Command
+    public sealed class CmdPCount : Command
     {
         public override string name { get { return "pcount"; } }
         public override string shortcut { get { return ""; } }

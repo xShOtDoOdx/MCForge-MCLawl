@@ -17,17 +17,12 @@
     permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Net;
-using System.Security.Authentication;
-using System.Text;
 using MCForge.Util;
-
-
-namespace MCForge.Commands {
-    public class CmdSetPass : Command {
+namespace MCForge.Commands
+{
+    public sealed class CmdSetPass : Command
+    {
         public override string name { get { return "setpass"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -35,30 +30,37 @@ namespace MCForge.Commands {
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
         public CmdSetPass() { }
 
-        public override void Use(Player p, string message) {
-        	if (!Directory.Exists("extra/passwords"))
-        		Directory.CreateDirectory("extra/passwords");
-            if ( p.group.Permission < Server.verifyadminsrank ) {
+        public override void Use(Player p, string message)
+        {
+            if (!Directory.Exists("extra/passwords"))
+                Directory.CreateDirectory("extra/passwords");
+            if (p.group.Permission < Server.verifyadminsrank)
+            {
                 Player.SendMessage(p, "You do not have the &crequired rank " + Server.DefaultColor + "to use this command!");
                 return;
             }
-            if ( !Server.verifyadmins ) {
+            if (!Server.verifyadmins)
+            {
                 Player.SendMessage(p, "Verification of admins is &cdisabled!");
                 return;
             }
-            if ( p.adminpen ) {
-                if ( File.Exists("extra/passwords/" + p.name + ".dat") ) {
+            if (p.adminpen)
+            {
+                if (File.Exists("extra/passwords/" + p.name + ".dat"))
+                {
                     Player.SendMessage(p, "&cYou already have a password set. " + Server.DefaultColor + "You &ccannot change " + Server.DefaultColor + "it unless &cyou verify it with &a/pass [Password]. " + Server.DefaultColor + "If you have &cforgotten " + Server.DefaultColor + "your password, contact &c" + Server.server_owner + Server.DefaultColor + " and they can &creset it!");
                     return;
                 }
             }
-            if ( String.IsNullOrEmpty(message.Trim()) ) {
+            if (String.IsNullOrEmpty(message.Trim()))
+            {
                 Help(p);
                 return;
 
             }
             int number = message.Split(' ').Length;
-            if ( number > 1 ) {
+            if (number > 1)
+            {
                 Player.SendMessage(p, "Your password must be one word!");
                 return;
             }
@@ -67,7 +69,8 @@ namespace MCForge.Commands {
             Player.SendMessage(p, "&c" + message);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             Player.SendMessage(p, "/setpass [Password] - Sets your admin password to [password].");
             Player.SendMessage(p, "Note: Do NOT set this as your Minecraft password!");
         }

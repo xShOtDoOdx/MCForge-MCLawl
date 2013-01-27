@@ -15,14 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Net;
-using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdUpdate : Command
+    public sealed class CmdUpdate : Command
     {
         public override string name { get { return "update"; } }
         public override string shortcut { get { return ""; } }

@@ -16,17 +16,13 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-
 namespace MCForge.Commands
 {
     /// <summary>
     /// This is the command /afk
     /// use /help afk in-game for more info
     /// </summary>
-    class CmdAfk : Command
+    public sealed class CmdAfk : Command
     {
         public override string name { get { return "afk"; } }
         public override string shortcut { get { return ""; } }

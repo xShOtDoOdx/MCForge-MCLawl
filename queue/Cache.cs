@@ -25,11 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MonoTorrent.Common
 {
@@ -40,7 +36,7 @@ namespace MonoTorrent.Common
         void Enqueue(T instance);
     }
 
-    class Cache<T> : ICache<T>
+    sealed class Cache<T> : ICache<T>
         where T : class, ICacheable, new()
     {
         bool autoCreate;
@@ -81,7 +77,7 @@ namespace MonoTorrent.Common
         }
     }
 
-    class SynchronizedCache<T> : ICache<T>
+    sealed class SynchronizedCache<T> : ICache<T>
     {
         ICache<T> cache;
 

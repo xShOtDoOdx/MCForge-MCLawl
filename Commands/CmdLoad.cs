@@ -17,13 +17,10 @@
 */
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdLoad : Command
+    public sealed class CmdLoad : Command
     {
         public override string name { get { return "load"; } }
         public override string shortcut { get { return ""; } }

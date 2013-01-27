@@ -18,17 +18,10 @@ for full licences please go to http://www.binpress.com/license/view/l/2043171cc2
 _______________________________________________________________________________________________________
  Idea by tommyz_. made by xTYx728
 */
-
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    public class CmdKillPhysics : Command
+    public sealed class CmdKillPhysics : Command
     {
         public override string name { get { return "killphysics"; } }
         public override string shortcut { get { return "kp"; } }

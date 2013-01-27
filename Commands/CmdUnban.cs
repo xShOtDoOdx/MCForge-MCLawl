@@ -15,16 +15,13 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-
-
 namespace MCForge.Commands
 {
     /// <summary>
     /// BUG: cannot unban while typing player names partially, code is not written optimal
     /// TODO: Fix this bug
     /// </summary>
-    public class CmdUnban : Command
+    public sealed class CmdUnban : Command
     {
         public override string name { get { return "unban"; } }
         public override string shortcut { get { return ""; } }

@@ -17,11 +17,9 @@
 */
 using System;
 using System.Collections.Generic;
-
-
 namespace MCForge.Commands
 {
-    public class CmdOutline : Command
+    public sealed class CmdOutline : Command
     {
         public override string name { get { return "outline"; } }
         public override string shortcut { get { return ""; } }

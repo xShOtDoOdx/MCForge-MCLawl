@@ -16,13 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
 using System.Collections.Generic;
-
-
+using System.IO;
 namespace MCForge.Commands
 {
-    public class CmdUnloaded : Command
+    public sealed class CmdUnloaded : Command
     {
         public override string name { get { return "unloaded"; } }
         public override string shortcut { get { return ""; } }

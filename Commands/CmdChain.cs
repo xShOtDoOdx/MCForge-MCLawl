@@ -16,13 +16,10 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.Collections.Generic;
 using System.Threading;
-
-
 namespace MCForge.Commands
 {
-    public class CmdChain : Command
+    public sealed class CmdChain : Command
     {
         public override string name { get { return "chain"; } }
         public override string shortcut { get { return ""; } }

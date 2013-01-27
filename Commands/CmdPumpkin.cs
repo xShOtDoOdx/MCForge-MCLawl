@@ -16,14 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 //Thanks to the /nyan creators...
-using System;
 using System.IO;
 using System.Net;
-
-
 namespace MCForge.Commands
 {
-    public class CmdPumpkin : Command
+    public sealed class CmdPumpkin : Command
     {
         public override string name { get { return "pumpkin"; } }
         public override string shortcut { get { return ""; } }

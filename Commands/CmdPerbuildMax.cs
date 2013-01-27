@@ -1,7 +1,5 @@
 /*
-
     Written by Jack1312
- 
 	Copyright 2011 MCForge
 	
 	Dual-licensed under the	Educational Community License, Version 2.0 and
@@ -18,14 +16,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-
 namespace MCForge.Commands
 {
-    class CmdPerbuildMax : Command
+    public sealed class CmdPerbuildMax : Command
     {
         public override string name { get { return "perbuildmax"; } }
         public override string shortcut { get { return ""; } }
