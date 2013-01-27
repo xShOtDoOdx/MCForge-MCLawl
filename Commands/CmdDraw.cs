@@ -296,7 +296,7 @@ namespace MCForge.Commands
 
 					p.SendMessage("Place a block");
 					p.ClearBlockchange();
-					p.Blockchange += new Player.BlockchangeEventHandler(BlockchangeValcano);
+					p.Blockchange += new Player.BlockchangeEventHandler(BlockchangeVolcano);
 
 					return;
 				}

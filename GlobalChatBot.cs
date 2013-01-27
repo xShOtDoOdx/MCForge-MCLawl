@@ -16,18 +16,11 @@
 	permissions and limitations under the Licenses.
 */
 using System;
-using System.IO;
-using System.Collections.Generic;
-//using System.Timers;
-using System.Text;
-using System.Text.RegularExpressions;
-using Sharkbite.Irc;
 using System.Net;
-//using System.Threading;
-
+using Sharkbite.Irc;
 namespace MCForge
 {
-    public class GlobalChatBot
+    public sealed class GlobalChatBot
     {
         public delegate void RecieveChat(string nick, string message);
         public static event RecieveChat OnNewRecieveGlobalMessage;

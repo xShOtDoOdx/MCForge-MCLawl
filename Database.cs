@@ -17,18 +17,18 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Data;
-//using MySql.Data.MySqlClient;
-//using System.Data.SQLite;
-
-
-namespace MCForge {
-    namespace SQL {
-        class Database {
-            public static void CopyDatabase(StreamWriter sql) {
+namespace MCForge
+{
+    namespace SQL
+    {
+        public sealed class Database
+        {
+            public static void CopyDatabase(StreamWriter sql)
+            {
                 //We technically know all tables in the DB...  But since this is MySQL, we can also get them all with a MySQL command
                 //So we show the tables, and store the result.
                 //Also output information data (Same format as phpMyAdmin's dump)
@@ -47,7 +47,8 @@ namespace MCForge {
                 sql.WriteLine();
                 //database here
                 List<String> sqlTables = (Database.getTables());
-                foreach (string tableName in sqlTables) {
+                foreach (string tableName in sqlTables)
+                {
                     //For each table, we iterate through all rows, (and save them)
                     sql.WriteLine("-- --------------------------------------------------------");
                     sql.WriteLine();
@@ -56,17 +57,21 @@ namespace MCForge {
                     sql.WriteLine("--");
                     sql.WriteLine();
                     List<string[]> tableSchema = new List<string[]>();
-                    if (Server.useMySQL) {
+                    if (Server.useMySQL)
+                    {
                         string[] rowParams;
                         string pri;
                         sql.WriteLine("CREATE TABLE IF NOT EXISTS `{0}` (", tableName);
-                        using (DataTable tableRowSchema = Database.fillData("DESCRIBE " + tableName)) {
+                        using (DataTable tableRowSchema = Database.fillData("DESCRIBE " + tableName))
+                        {
                             rowParams = new string[tableRowSchema.Columns.Count];
                             pri = "";
-                            foreach (DataRow row in tableRowSchema.Rows) {
+                            foreach (DataRow row in tableRowSchema.Rows)
+                            {
                                 //Save the info contained to file
                                 List<string> tmp = new List<string>();
-                                for (int col = 0; col < tableRowSchema.Columns.Count; col++) {
+                                for (int col = 0; col < tableRowSchema.Columns.Count; col++)
+                                {
                                     tmp.Add(row.Field<string>(col));
                                 }// end:for(col)
                                 rowParams = tmp.ToArray<string>();
@@ -76,10 +81,12 @@ namespace MCForge {
                                 tableSchema.Add(rowParams);
                             }// end:foreach(DataRow row)
                         }
-                        if (!pri.Equals("")) {
+                        if (!pri.Equals(""))
+                        {
                             string[] tmp = pri.Substring(0, pri.Length - 1).Split(';');
                             sql.Write("PRIMARY KEY (`");
-                            foreach (string prim in tmp) {
+                            foreach (string prim in tmp)
+                            {
                                 sql.Write(prim);
                                 sql.Write("`" + (tmp[tmp.Count() - 1].Equals(prim) ? ")" : ", `"));
                             }
@@ -88,15 +95,19 @@ namespace MCForge {
                             sql.BaseStream.Seek(-3, SeekOrigin.Current);
                         }*/
                         sql.WriteLine(");");
-                    } else {
+                    }
+                    else
+                    {
                         using (DataTable tableSQL = Database.fillData("SELECT sql FROM" +
                                                                             "   (SELECT * FROM sqlite_master UNION ALL" +
                                                                             "    SELECT * FROM sqlite_temp_master)" +
                                                                             "WHERE tbl_name LIKE '" + tableName + "'" +
                                                                             "  AND type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%'" +
-                                                                            "ORDER BY substr(type,2,1), name")) {
+                                                                            "ORDER BY substr(type,2,1), name"))
+                        {
                             //just print out the data in the table.
-                            foreach (DataRow row in tableSQL.Rows) {
+                            foreach (DataRow row in tableSQL.Rows)
+                            {
                                 string tableSQLString = row.Field<string>(0);
                                 sql.WriteLine(tableSQLString.Replace(" " + tableName, " `" + tableName + "`").Replace("CREATE TABLE `" + tableName + "`", "CREATE TABLE IF NOT EXISTS `" + tableName + "`") + ";");
                                 //We parse this ourselves to find the actual types.
@@ -106,43 +117,58 @@ namespace MCForge {
                         }
                     }
                     sql.WriteLine();
-                    using (DataTable tableRowData = Database.fillData("SELECT * FROM  " + tableName)) {
-                        if (tableRowData.Rows.Count > 0) {
+                    using (DataTable tableRowData = Database.fillData("SELECT * FROM  " + tableName))
+                    {
+                        if (tableRowData.Rows.Count > 0)
+                        {
                             sql.WriteLine("--");
                             sql.WriteLine("-- Dumping data for table `{0}`", tableName);
                             sql.WriteLine("--");
                             sql.WriteLine();
                             List<DataColumn> allCols = new List<DataColumn>();
-                            foreach (DataColumn col in tableRowData.Columns) {
+                            foreach (DataColumn col in tableRowData.Columns)
+                            {
                                 allCols.Add(col);
                             }
-                            foreach (DataRow row in tableRowData.Rows) { //We rely on the correct datatype being given here.
+                            foreach (DataRow row in tableRowData.Rows)
+                            { //We rely on the correct datatype being given here.
                                 sql.WriteLine();
                                 sql.Write("INSERT INTO `{0}` (`", tableName);
-                                foreach (string[] rParams in tableSchema) {
+                                foreach (string[] rParams in tableSchema)
+                                {
                                     sql.Write(rParams[0]);
                                     sql.Write((tableSchema.ElementAt<string[]>(tableSchema.Count() - 1).Equals(rParams) ? "`) VALUES" : "`, `"));
                                 }
                                 //Save the info contained to file
                                 sql.WriteLine();
                                 sql.Write("(");
-                                for (int col = 0; col < row.ItemArray.Length; col++) {
+                                for (int col = 0; col < row.ItemArray.Length; col++)
+                                {
                                     //The values themselves can be integers or strings, or null
                                     Type eleType = allCols[col].DataType;
-                                    if (row.IsNull(col)) {
+                                    if (row.IsNull(col))
+                                    {
                                         sql.Write("NULL");
 
-                                    } else if (eleType.Name.Equals("DateTime")) { // special format
+                                    }
+                                    else if (eleType.Name.Equals("DateTime"))
+                                    { // special format
                                         DateTime dt = row.Field<DateTime>(col);
                                         sql.Write("'{0:yyyy-MM-dd HH:mm:ss.ffff}'", dt);
 
-                                    } else if (eleType.Name.Equals("Boolean")) {
+                                    }
+                                    else if (eleType.Name.Equals("Boolean"))
+                                    {
                                         sql.Write(row.Field<Boolean>(col) ? "1" : "0");
 
-                                    } else if (eleType.Name.Equals("String")) { // Requires ''
+                                    }
+                                    else if (eleType.Name.Equals("String"))
+                                    { // Requires ''
                                         sql.Write("'{0}'", row.Field<string>(col));
 
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         sql.Write(row.Field<Object>(col)); // We assume all other data is left as-is
                                         //This includes numbers, blobs, etc.  (As well as objects, but we don't save them into the database)
 
@@ -151,7 +177,9 @@ namespace MCForge {
                                 }// end:for(col)
 
                             }// end:foreach(DataRow row)
-                        } else {
+                        }
+                        else
+                        {
                             sql.WriteLine("-- No data in table `{0}`!", tableName);
                         }
                         sql.WriteLine();
@@ -161,7 +189,8 @@ namespace MCForge {
 
             }
 
-            private static List<string[]> getSchema(string tableSQLString) {
+            private static List<string[]> getSchema(string tableSQLString)
+            {
                 // All SQL for creating tables looks like "CREATE TABLE [IF NOT EXISTS] <TableName> (<ColumnDef>[, ... [, PRIMARY KEY (<ColumnName>[, ...])]])
                 // <ColumnDef> = <name> <type> [[NOT|DEFAULT] NULL] [PRIMARY KEY] [AUTO_INCREMENT]
                 List<string[]> schema = new List<string[]>();
@@ -170,8 +199,10 @@ namespace MCForge {
                 tableSQLString = tableSQLString.Substring(foundStart, foundLength);
                 // Now we have everything inside the parenthisies.
                 string[] column = tableSQLString.Split(',');
-                foreach (string col in column) {
-                    if (!col.ToUpper().StartsWith("PRIMARY KEY")) {
+                foreach (string col in column)
+                {
+                    if (!col.ToUpper().StartsWith("PRIMARY KEY"))
+                    {
                         string[] split = col.TrimStart('\n', '\r', '\t').Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         //Just to make it the same as the MySQL schema.
                         schema.Add(new string[] { split[0].Trim('`'), split[1].Trim('\t', '`'),
@@ -184,10 +215,13 @@ namespace MCForge {
                 return schema;
             }
 
-            private static List<string> getTables() {
+            private static List<string> getTables()
+            {
                 List<string> tableNames = new List<string>();
-                using (DataTable tables = fillData((Server.useMySQL ? "SHOW TABLES" : "SELECT * FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"))) {
-                    foreach (DataRow row in tables.Rows) {
+                using (DataTable tables = fillData((Server.useMySQL ? "SHOW TABLES" : "SELECT * FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")))
+                {
+                    foreach (DataRow row in tables.Rows)
+                    {
                         string tableName = row.Field<string>((Server.useMySQL ? 0 : 1));
                         tableNames.Add(tableName);
                     }
@@ -201,36 +235,51 @@ namespace MCForge {
             /// </summary>
             /// <param name="name">The name of the parameter</param>
             /// <param name="param">The value of the parameter</param>
-            public static void AddParams(string name, object param) {
+            public static void AddParams(string name, object param)
+            {
                 if (Server.useMySQL)
                     MySQL.AddParams(name, param);
                 else
                     SQLite.AddParams(name, param);
             }
 
-            public static void executeQuery(string queryString, bool createDB = false) {
+            public static void executeQuery(string queryString, bool createDB = false)
+            {
                 int totalCount = 0;
-            retry: try {
-                    if (Server.useMySQL) {
+            retry: try
+                {
+                    if (Server.useMySQL)
+                    {
                         MySQL.execute(queryString, createDB);
-                    } else {
+                    }
+                    else
+                    {
                         if (!createDB) // Databases do not need to be created in SQLite.
                             SQLite.execute(queryString);
                     }
-                } catch (Exception e) {
-                    if (!createDB || !Server.useMySQL) {
+                }
+                catch (Exception e)
+                {
+                    if (!createDB || !Server.useMySQL)
+                    {
                         totalCount++;
-                        if (totalCount > 10) {
+                        if (totalCount > 10)
+                        {
                             File.AppendAllText("MySQL_error.log", DateTime.Now + " " + queryString + "\r\n");
                             Server.ErrorLog(e);
-                        } else {
+                        }
+                        else
+                        {
                             goto retry;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         throw e;
                     }
                 }
-                finally {
+                finally
+                {
                     if (Server.useMySQL)
                         MySQL.ClearParams();
                     else
@@ -238,26 +287,38 @@ namespace MCForge {
                 }
             }
 
-            public static DataTable fillData(string queryString, bool skipError = false) {
+            public static DataTable fillData(string queryString, bool skipError = false)
+            {
                 int totalCount = 0;
-                using (DataTable toReturn = new DataTable("toReturn")) {
-                retry: try {
-                        if (Server.useMySQL) {
+                using (DataTable toReturn = new DataTable("toReturn"))
+                {
+                retry: try
+                    {
+                        if (Server.useMySQL)
+                        {
                             MySQL.fill(queryString, toReturn);
-                        } else {
+                        }
+                        else
+                        {
                             SQLite.fill(queryString, toReturn);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         totalCount++;
-                        if (totalCount > 10) {
-                            if (!skipError) {
+                        if (totalCount > 10)
+                        {
+                            if (!skipError)
+                            {
                                 File.AppendAllText("MySQL_error.log", DateTime.Now + " " + queryString + "\r\n");
                                 Server.ErrorLog(e);
                             }
-                        } else
+                        }
+                        else
                             goto retry;
                     }
-                    finally {
+                    finally
+                    {
                         if (Server.useMySQL)
                             MySQL.ClearParams();
                         else
@@ -267,14 +328,17 @@ namespace MCForge {
                 }
             }
 
-            internal static void fillDatabase(Stream stream) {
+            internal static void fillDatabase(Stream stream)
+            {
                 //Backup
-                using (FileStream backup = File.Create("backup.sql")) {
+                using (FileStream backup = File.Create("backup.sql"))
+                {
                     CopyDatabase(new StreamWriter(backup));
                 }
                 //Delete old
                 List<string> tables = getTables();
-                foreach (string name in tables) {
+                foreach (string name in tables)
+                {
                     executeQuery(String.Format("DROP TABLE `{0}`", name));
                 }
                 //Make new
@@ -282,16 +346,21 @@ namespace MCForge {
                 string[] cmds = script.Split(';');
                 StringBuilder sb = new StringBuilder();
 
-                using (DatabaseTransactionHelper helper = DatabaseTransactionHelper.Create()) {
+                using (DatabaseTransactionHelper helper = DatabaseTransactionHelper.Create())
+                {
 
-                    foreach (string cmd in cmds) {
+                    foreach (string cmd in cmds)
+                    {
                         String newCmd = cmd.Trim(" \r\n\t".ToCharArray());
                         int index = newCmd.ToUpper().IndexOf("CREATE TABLE");
-                        if (index > -1) {
+                        if (index > -1)
+                        {
                             newCmd = newCmd.Remove(0, index);
                             //Do we have a primary key?
-                            try {
-                                if (Server.useMySQL) {
+                            try
+                            {
+                                if (Server.useMySQL)
+                                {
                                     int priIndex = newCmd.ToUpper().IndexOf(" PRIMARY KEY AUTOINCREMENT");
                                     int priCount = " PRIMARY KEY AUTOINCREMENT".Length;
                                     int attIdx = newCmd.Substring(0, newCmd.Substring(0, priIndex - 1).LastIndexOfAny("` \n".ToCharArray())).LastIndexOfAny("` \n".ToCharArray()) + 1;
@@ -302,7 +371,9 @@ namespace MCForge {
                                     newCmd = newCmd.Insert(newCmd.LastIndexOf(")"), ", PRIMARY KEY (`" + attName + "`)");
                                     newCmd = newCmd.Insert(newCmd.IndexOf(',', priIndex), " AUTO_INCREMENT");
 
-                                } else {
+                                }
+                                else
+                                {
                                     int priIndex = newCmd.ToUpper().IndexOf(",\r\nPRIMARY KEY");
                                     int priIndexEnd = newCmd.ToUpper().IndexOf(')', priIndex);
                                     int attIdx = newCmd.IndexOf("(", priIndex) + 1;
@@ -315,11 +386,12 @@ namespace MCForge {
                                     newCmd = newCmd.Insert(newCmd.IndexOf(attName) + attName.Length, " INTEGER PRIMARY KEY AUTOINCREMENT");
                                     newCmd = newCmd.Replace(" auto_increment", "").Replace(" AUTO_INCREMENT", "").Replace("True", "1").Replace("False", "0");
                                 }
-                            } catch (ArgumentOutOfRangeException) { } // If we don't, just ignore it.
+                            }
+                            catch (ArgumentOutOfRangeException) { } // If we don't, just ignore it.
                         }
                         //Run the command in the transaction.
                         helper.Execute(newCmd.Replace(" unsigned", "").Replace(" UNSIGNED", "") + ";");
-//                        sb.Append(newCmd).Append(";\n");
+                        //                        sb.Append(newCmd).Append(";\n");
                     }
                     helper.Commit();
 

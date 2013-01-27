@@ -15,13 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MCForge
 {
-    public class Report
+    public sealed class Report
     {
         string name, ip, reason;
 

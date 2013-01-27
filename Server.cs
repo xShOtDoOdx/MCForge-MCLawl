@@ -26,17 +26,14 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using MCForge.SQL;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
-using Newtonsoft.Json.Linq;
 using MonoTorrent.Client;
+using Newtonsoft.Json.Linq;
 
 namespace MCForge
 {
     public enum ForgeProtection { Off = 0, Mod = 1, Dev = 2 }
-    public class Server
+    public sealed class Server
     {
-        //testing git, amidoinitrite?
         public static bool cancelcommand = false;
         public static bool canceladmin = false;
         public static bool cancellog = false;
