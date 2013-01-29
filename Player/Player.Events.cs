@@ -181,6 +181,20 @@ namespace MCForge
         /// </summary>
         public event OnPlayerMove OnMove = null;
         /// <summary>
+        /// This method is called when a player rotates on the server.
+        /// </summary>
+        /// <param name="p">The player that rotated.</param>
+        /// <param name="rot">Array containing yaw and pitch rotation.</param>
+        public delegate void OnPlayerRotate(Player p, byte[] rot);
+        /// <summary>
+        /// PlayerRotate is called when a player rotates. (Player p, byte[] rot)
+        /// </summary>
+        public static event OnPlayerRotate PlayerRotate = null;
+        /// <summary>
+        /// OnRotate is called when the player rotates (Player p, byte[] rot)
+        /// </summary>
+        public event OnPlayerRotate OnRotate = null;
+        /// <summary>
         /// PlayerDeath is called when the player dies (Player p, byte deathblock)
         /// </summary>
         [Obsolete("Please use OnPlayerDeathEvent.Register()")]

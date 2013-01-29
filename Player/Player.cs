@@ -1676,6 +1676,12 @@ return;
                 if ( PlayerMove != null )
                     PlayerMove(this, x, y, z);
                 PlayerMoveEvent.Call(this, x, y, z);
+
+                if (OnRotate != null)
+                    OnRotate(this, rot);
+                if (PlayerRotate != null)
+                    PlayerRotate(this, rot);
+                PlayerRotateEvent.Call(this, rot);
                 if ( cancelmove ) {
                     unchecked { SendPos((byte)-1, pos[0], pos[1], pos[2], rot[0], rot[1]); }
                     return;

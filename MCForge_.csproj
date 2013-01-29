@@ -161,6 +161,7 @@
     <Compile Include="Plugins\LevelEvents\OnLevelSaveEvent.cs" />
     <Compile Include="Plugins\LevelEvents\OnLevelUnloadEvent.cs" />
     <Compile Include="Plugins\LevelEvents\OnPhysicsUpdate.cs" />
+    <Compile Include="Plugins\PlayerEvents\PlayerRotateEvent.cs" />
     <Compile Include="Plugins\PlayerEvents\OnBlockChangeEvent.cs" />
     <Compile Include="Plugins\PlayerEvents\OnMessageRecieveEvent.cs" />
     <Compile Include="Plugins\PlayerEvents\OnMySQLSaveEvent.cs" />
