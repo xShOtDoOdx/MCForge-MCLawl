@@ -22,13 +22,37 @@ using System.Threading;
 
 namespace MCForge
 {
+    /// <summary>
+    /// This is the same as a normal plugin, except it contains less info.
+    /// </summary>
     public abstract class Plugin_Simple
     {
+        #region Abstract
+        /// <summary>
+        /// Use this to load all your events and everything you need.
+        /// </summary>
+        /// <param name="startup">True if this was used from the server startup and not loaded from the command.</param>
         public abstract void Load(bool startup);
+        /// <summary>
+        /// Use this method to dispose of everything you used.
+        /// </summary>
+        /// <param name="shutdown">True if this was used by the server shutting down and not a command.</param>
         public abstract void Unload(bool shutdown);
+        /// <summary>
+        /// Name of the plugin.
+        /// </summary>
         public abstract string name { get; }
+        /// <summary>
+        /// The creator/author of this plugin. (Your name)
+        /// </summary>
         public abstract string creator { get; }
+        /// <summary>
+        /// Oldest version of MCForge the plugin is compatible with.
+        /// </summary>
         public abstract string MCForge_Version { get; }
+        #endregion
+
+        #region Loading
         /// <summary>
         /// Load a simple plugin
         /// </summary>
@@ -69,29 +93,31 @@ namespace MCForge
             catch { }
             if (instance == null)
             {
-                Server.s.Log("The plugin " + pluginname + " couldnt be loaded!");
+                Server.s.Log("The plugin " + pluginname + " couldn't be loaded!");
                 return false;
             }
             String plugin_version = ((Plugin_Simple)instance).MCForge_Version;
             if (plugin_version != "" && new Version(plugin_version) != Server.Version)
             {
-                Server.s.Log("This plugin (" + ((Plugin_Simple)instance).name + ") isnt compatible with this version of MCForge!");
+                Server.s.Log("This plugin (" + ((Plugin_Simple)instance).name + ") isn't compatible with this version of MCForge!");
                 Thread.Sleep(1000);
                 if (Server.unsafe_plugin)
                 {
                     Server.s.Log("Will attempt to load!");
-                    goto here;
+                    Plugin.all_simple.Add((Plugin_Simple)instance);
+                    creator = ((Plugin_Simple)instance).creator;
+                    ((Plugin_Simple)instance).Load(startup);
+                    Server.s.Log("Plugin: " + ((Plugin_Simple)instance).name + " loaded...");
+                    Thread.Sleep(1000);
+                    return true;
                 }
                 else
+                {
                     return false;
+                }
             }
-        here:
-            Plugin.all_simple.Add((Plugin_Simple)instance);
-            creator = ((Plugin_Simple)instance).creator;
-            ((Plugin_Simple)instance).Load(startup);
-            Server.s.Log("Plugin: " + ((Plugin_Simple)instance).name + " loaded...");
-            Thread.Sleep(1000);
-            return true;
+            return true; // It loaded...
         }
+        #endregion
     }
 }

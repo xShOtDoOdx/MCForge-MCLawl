@@ -28,8 +28,19 @@ using MCForge.SQL;
 
 namespace MCForge {
     public sealed partial class Player : IDisposable {
+        /// <summary>
+        /// List of all server players.
+        /// </summary>
         public static List<Player> players = new List<Player>();
+        /// <summary>
+        /// Key - Name
+        /// Value - IP
+        /// All players who have left this restart.
+        /// </summary>
         public static Dictionary<string, string> left = new Dictionary<string, string>();
+        /// <summary>
+        /// 
+        /// </summary>
         public static List<Player> connections = new List<Player>(Server.players);
         System.Timers.Timer muteTimer = new System.Timers.Timer(1000);
         public static List<string> emoteList = new List<string>();
@@ -40,7 +51,6 @@ namespace MCForge {
         public static byte number { get { return (byte)players.Count; } }
         static System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
         static MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-        public static List<Player> totalplayers = new List<Player>(); //this isnt used anywhere? I suggest removing this..
         public static string lastMSG = "";
 
         public static bool storeHelp = false;
@@ -310,7 +320,14 @@ namespace MCForge {
             public string name, color, title, titleColor;
             public int money;
             //need moar? add moar! just make sure you adjust Player.FindOffline() method
-
+            /// <summary>
+            /// Creates a new OfflinePlayer object.
+            /// </summary>
+            /// <param name="nm">Name of the player.</param>
+            /// <param name="clr">Color of player name.</param>
+            /// <param name="tl">Title of player.</param>
+            /// <param name="tlclr">Title color of player</param>
+            /// <param name="mon">Player's money.</param>
             public OfflinePlayer(string nm, string clr, string tl, string tlclr, int mon) { name = nm; color = clr; title = tl; titleColor = tlclr; money = mon; }
         }
 
@@ -808,8 +825,6 @@ namespace MCForge {
                         Server.s.Log("Failed to load global ignore list!");
                     }
                 }
-                totalplayers.Add(this); //why?
-
                 // ban check
                 if (!isDev && !isMod) {
                     if (Server.bannedIP.Contains(ip)) {

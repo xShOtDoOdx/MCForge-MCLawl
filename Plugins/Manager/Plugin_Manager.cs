@@ -18,27 +18,75 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.CodeDom.Compiler;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Threading;
 
 namespace MCForge
 {
+    /// <summary>
+    /// This class provides for more advanced modification to MCForge
+    /// </summary>
     public abstract partial class Plugin
     {
+        #region Static Variables
+        /// <summary>
+        /// List of all plugins.
+        /// </summary>
         public static List<Plugin> all = new List<Plugin>();
+        /// <summary>
+        /// List of all simple plugins.
+        /// </summary>
         public static List<Plugin_Simple> all_simple = new List<Plugin_Simple>();
+        #endregion
+
+        #region Abstract
+        /// <summary>
+        /// Use this to load all your events and everything you need.
+        /// </summary>
+        /// <param name="startup">True if this was used from the server startup and not loaded from the command.</param>
         public abstract void Load(bool startup);
+        /// <summary>
+        /// Use this method to dispose of everything you used.
+        /// </summary>
+        /// <param name="shutdown">True if this was used by the server shutting down and not a command.</param>
         public abstract void Unload(bool shutdown);
-        public abstract string name { get; }
-        public abstract string website { get; }
-        public abstract string MCForge_Version { get; } // Oldest version of MCForge the plugin is compatible with.
-        public abstract int build { get; }
-        public abstract string welcome { get; }
-	    public abstract string creator { get; }
-	    public abstract bool LoadAtStartup { get; }
+        /// <summary>
+        /// This method is runned when a player does /help <pluginame>
+        /// Use it to show player's what this command is about.
+        /// </summary>
+        /// <param name="p">Player who runned this command.</param>
         public abstract void Help(Player p);
+        /// <summary>
+        /// Name of the plugin.
+        /// </summary>
+        public abstract string name { get; }
+        /// <summary>
+        /// Your website.
+        /// </summary>
+        public abstract string website { get; }
+        /// <summary>
+        /// Oldest version of MCForge the plugin is compatible with.
+        /// </summary>
+        public abstract string MCForge_Version { get; }
+        /// <summary>
+        /// Version of your plugin.
+        /// </summary>
+        public abstract int build { get; }
+        /// <summary>
+        /// Message to display once plugin is loaded.
+        /// </summary>
+        public abstract string welcome { get; }
+        /// <summary>
+        /// The creator/author of this plugin. (Your name)
+        /// </summary>
+        public abstract string creator { get; }
+        /// <summary>
+        /// Whether or not to load this plugin at startup.
+        /// </summary>
+        public abstract bool LoadAtStartup { get; }
+        #endregion
+
+        #region Plugin Find
         /// <summary>
         /// Look to see if a plugin is loaded
         /// </summary>
@@ -65,6 +113,9 @@ namespace MCForge
             if (tempPlayer != null) return tempPlayer;
             return null;
         }
+        #endregion
+
+        #region Loading/Unloading
         /// <summary>
         /// Load a plugin
         /// </summary>
@@ -72,7 +123,7 @@ namespace MCForge
         /// <param name="startup">Is this startup?</param>
         public static void Load(string pluginname, bool startup)
         {
-	    String creator = "";
+            String creator = "";
             try
             {
                 object instance = null;
@@ -106,33 +157,32 @@ namespace MCForge
                 catch { }
                 if (instance == null)
                 {
-                    Server.s.Log("The plugin " + pluginname + " couldnt be loaded!");
+                    Server.s.Log("The plugin " + pluginname + " couldn't be loaded!");
                     return;
                 }
                 String plugin_version = ((Plugin)instance).MCForge_Version;
                 if (!String.IsNullOrEmpty(plugin_version) && new Version(plugin_version) > Server.Version)
                 {
-                    Server.s.Log("This plugin (" + ((Plugin)instance).name + ") isnt compatible with this version of MCForge!");
+                    Server.s.Log("This plugin (" + ((Plugin)instance).name + ") isn't compatible with this version of MCForge!");
                     Thread.Sleep(1000);
                     if (Server.unsafe_plugin)
                     {
                         Server.s.Log("Will attempt to load!");
-                        goto here;
+                        Plugin.all.Add((Plugin)instance);
+                        creator = ((Plugin)instance).creator;
+                        if (((Plugin)instance).LoadAtStartup)
+                        {
+                            ((Plugin)instance).Load(startup);
+                            Server.s.Log("Plugin: " + ((Plugin)instance).name + " loaded...build: " + ((Plugin)instance).build);
+                        }
+                        else
+                            Server.s.Log("Plugin: " + ((Plugin)instance).name + " was not loaded, you can load it with /pload");
+                        Server.s.Log(((Plugin)instance).welcome);
+                        return;
                     }
                     else
                         return;
                 }
-                here:
-                Plugin.all.Add((Plugin)instance);
-		        creator = ((Plugin)instance).creator;
-                if (((Plugin)instance).LoadAtStartup)
-                {
-                    ((Plugin)instance).Load(startup);
-                    Server.s.Log("Plugin: " + ((Plugin)instance).name + " loaded...build: " + ((Plugin)instance).build);
-                }
-                else
-                    Server.s.Log("Plugin: " + ((Plugin)instance).name + " was not loaded, you can load it with /pload");
-                Server.s.Log(((Plugin)instance).welcome);
             }
             catch (FileNotFoundException)
             {
@@ -154,10 +204,10 @@ namespace MCForge
                 try { Server.s.Log("Attempting a simple plugin!"); if (Plugin_Simple.Load(pluginname, startup)) return; }
                 catch { }
                 Server.ErrorLog(e);
-				Server.s.Log("The plugin " + pluginname + " failed to load!");
-				if (creator != "")
-					Server.s.Log("You can go bug " + creator + " about it");
-				Thread.Sleep(1000);
+                Server.s.Log("The plugin " + pluginname + " failed to load!");
+                if (creator != "")
+                    Server.s.Log("You can go bug " + creator + " about it.");
+                Thread.Sleep(1000);
             }
         }
         /// <summary>
@@ -167,13 +217,18 @@ namespace MCForge
         /// <param name="shutdown">Is this shutdown?</param>
         public static void Unload(Plugin p, bool shutdown)
         {
-            try { p.Unload(shutdown);
-            all.Remove(p);
+            try
+            {
+                p.Unload(shutdown);
+                all.Remove(p);
 
-            Server.s.Log(p.name + " was unloaded.");
+                Server.s.Log(p.name + " was unloaded.");
             }
-            catch { Server.s.Log("An Error occurred while unloading a plugin"); }
+            catch { Server.s.Log("An error occurred while unloading a plugin."); }
         }
+        #endregion
+
+        #region Global Loading/Unloading
         /// <summary>
         /// Unload all plugins
         /// </summary>
@@ -204,8 +259,8 @@ namespace MCForge
             CTF.Setup temp = new CTF.Setup();
             temp.Load(true);
             Plugin.all_simple.Add(temp);
-            
         }
+        #endregion
     }
 }
 
