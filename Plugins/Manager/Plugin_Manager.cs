@@ -168,21 +168,23 @@ namespace MCForge
                     if (Server.unsafe_plugin)
                     {
                         Server.s.Log("Will attempt to load!");
-                        Plugin.all.Add((Plugin)instance);
-                        creator = ((Plugin)instance).creator;
-                        if (((Plugin)instance).LoadAtStartup)
-                        {
-                            ((Plugin)instance).Load(startup);
-                            Server.s.Log("Plugin: " + ((Plugin)instance).name + " loaded...build: " + ((Plugin)instance).build);
-                        }
-                        else
-                            Server.s.Log("Plugin: " + ((Plugin)instance).name + " was not loaded, you can load it with /pload");
-                        Server.s.Log(((Plugin)instance).welcome);
-                        return;
+                        goto here;
                     }
                     else
                         return;
                 }
+                here:
+                Plugin.all.Add((Plugin)instance);
+                creator = ((Plugin)instance).creator;
+                if (((Plugin)instance).LoadAtStartup)
+                {
+                    ((Plugin)instance).Load(startup);
+                    Server.s.Log("Plugin: " + ((Plugin)instance).name + " loaded...build: " + ((Plugin)instance).build);
+                }
+                else
+                    Server.s.Log("Plugin: " + ((Plugin)instance).name + " was not loaded, you can load it with /pload");
+                Server.s.Log(((Plugin)instance).welcome);
+                return;
             }
             catch (FileNotFoundException)
             {

@@ -104,19 +104,20 @@ namespace MCForge
                 if (Server.unsafe_plugin)
                 {
                     Server.s.Log("Will attempt to load!");
-                    Plugin.all_simple.Add((Plugin_Simple)instance);
-                    creator = ((Plugin_Simple)instance).creator;
-                    ((Plugin_Simple)instance).Load(startup);
-                    Server.s.Log("Plugin: " + ((Plugin_Simple)instance).name + " loaded...");
-                    Thread.Sleep(1000);
-                    return true;
+                    goto here;
                 }
                 else
                 {
                     return false;
                 }
             }
-            return true; // It loaded...
+            here:
+            Plugin.all_simple.Add((Plugin_Simple)instance);
+            creator = ((Plugin_Simple)instance).creator;
+            ((Plugin_Simple)instance).Load(startup);
+            Server.s.Log("Plugin: " + ((Plugin_Simple)instance).name + " loaded...");
+            Thread.Sleep(1000);
+            return true;
         }
         #endregion
     }
