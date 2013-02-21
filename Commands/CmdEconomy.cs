@@ -711,7 +711,7 @@ namespace MCForge.Commands {
                                 if (Economy.Settings.Ranks == false) { Player.SendMessage(p, "%cRanks are not enabled for the economy system"); return; }
                                 Player.SendMessage(p, ecoColor + "%3===Economy info: Ranks===");
                                 Player.SendMessage(p, "%fThe maximum buyable rank is: " + Group.Find(Economy.Settings.MaxRank).color + Economy.Settings.MaxRank);
-                                Player.SendMessag(p, "%cRanks purchased, will be bought in order.")
+                                Player.SendMessage(p, "%cRanks purchased will be bought in order.")
                                 Player.SendMessage(p, "%fRanks cost:");
                                 foreach (Economy.Settings.Rank rnk in Economy.Settings.RanksList) {
                                     Player.SendMessage(p, rnk.group.color + rnk.group.name + ": %f" + rnk.price + " %3" + Server.moneys);
